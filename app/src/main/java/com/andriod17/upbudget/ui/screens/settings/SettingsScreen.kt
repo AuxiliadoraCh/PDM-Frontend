@@ -1,9 +1,9 @@
-package com.andriod17.upbudget.ui.screens.info
+package com.andriod17.upbudget.ui.screens.settings
 
 import androidx.compose.runtime.Composable
 
 @Composable
-fun FinancialTipsScreen(
+fun SettingsScreen(
     onNavigate: () -> Unit
 ) {
     onNavigate()
