@@ -50,10 +50,7 @@ dependencies {
         implementation(libs.androidx.ui.tooling.preview)
         implementation(libs.androidx.material3)
         implementation(libs.navigation.compose)
-        implementation(libs.navigation.runtime.compose)
-        implementation(libs.navigation.kotlinx.serialization)
         implementation(libs.kotlinx.serialization.json)
-
         testImplementation(libs.junit)
         androidTestImplementation(libs.androidx.junit)
         androidTestImplementation(libs.androidx.espresso.core)
