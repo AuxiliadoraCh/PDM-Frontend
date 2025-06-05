@@ -17,7 +17,6 @@ import androidx.navigation.compose.rememberNavController
 import com.andriod17.upbudget.ui.icons.IconContent
 import com.andriod17.upbudget.ui.icons.IconHome
 import com.andriod17.upbudget.ui.icons.IconPromotions
-import com.andriod17.upbudget.ui.icons.IconReports
 import com.andriod17.upbudget.ui.icons.IconSettings
 import com.andriod17.upbudget.ui.navigation.AppDestination
 import com.andriod17.upbudget.ui.navigation.ContentNavigation
@@ -28,7 +27,7 @@ import com.andriod17.upbudget.ui.navigation.SettingsNavigation
 @Composable
 fun CustomScaffold(
 ) {
-    var selectedItem by rememberSaveable { mutableStateOf<AppDestination>(PromotionsNavigation) }
+    var selectedItem by rememberSaveable { mutableStateOf<AppDestination>(HomeNavigation) }
 
     val navItems = listOf(
         NavItem("Home", IconHome, HomeNavigation),
@@ -40,7 +39,7 @@ fun CustomScaffold(
 
     fun onItemSelected(currentItem: AppDestination) {
         selectedItem = currentItem
-        navController.navigate(currentItem)
+        navController.navigate(selectedItem.toString())
     }
 
 
@@ -65,7 +64,6 @@ fun CustomScaffold(
             )
         },
         content = { innerPadding ->
-            // Main content of the screen
             Text(
                 text = "Welcome to UPBudget",
                 modifier = Modifier

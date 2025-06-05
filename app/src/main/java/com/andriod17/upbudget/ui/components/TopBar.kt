@@ -29,7 +29,7 @@ fun TopBar(
     Box(
     modifier = modifier
         .fillMaxWidth()
-        .height(60.dp)c
+        .height(60.dp)
         .background(Color(0xFFDED8F6))
     ) {
     IconButton(
