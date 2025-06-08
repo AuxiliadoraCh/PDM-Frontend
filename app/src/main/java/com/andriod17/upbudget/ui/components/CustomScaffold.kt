@@ -25,42 +25,39 @@ import com.andriod17.upbudget.ui.navigation.PromotionsNavigation
 import com.andriod17.upbudget.ui.navigation.SettingsNavigation
 
 @Composable
-fun CustomScaffold(
-) {
-    var selectedItem by rememberSaveable { mutableStateOf<AppDestination>(HomeNavigation) }
-
-    val navItems = listOf(
-        NavItem("Home", IconHome, HomeNavigation),
-        NavItem("Promotions", IconPromotions, PromotionsNavigation),
-        NavItem("Content", IconContent, ContentNavigation),
-        NavItem("Settings", IconSettings, SettingsNavigation)
-    )
+fun CustomScaffold() {
+    var selectedItem by rememberSaveable { mutableStateOf("home") }
     val navController = rememberNavController()
 
-    fun onItemSelected(currentItem: AppDestination) {
-        selectedItem = currentItem
-        navController.navigate(selectedItem.toString())
-    }
-
+    val navItems = listOf(
+        NavItem("Home", IconHome, "home"),
+        NavItem("Promotions", IconPromotions, "promotions"),
+        NavItem("Content", IconContent, "financial_tips"),
+        NavItem("Settings", IconSettings, "settings")
+    )
 
     Scaffold(
         topBar = {
             TopBar(
                 title = when (selectedItem) {
-                    HomeNavigation -> "Home"
-                    PromotionsNavigation -> "Promotions"
-                    ContentNavigation -> "Content"
-                    SettingsNavigation -> "Settings"
+                    "home" -> "Home"
+                    "promotions" -> "Promotions"
+                    "financial_tips" -> "Content"
+                    "settings" -> "Settings"
+                    else -> "UPBudget"
                 },
                 onBackPressed = {},
-                onSettingsPressed = {},
+                onSettingsPressed = {}
             )
-         },
+        },
         bottomBar = {
             NavigationBar(
                 navItems = navItems,
                 selectedItem = selectedItem,
-                onItemSelected = ::onItemSelected
+                onItemSelected = { route ->
+                    selectedItem = route
+                    navController.navigate(route)
+                }
             )
         },
         content = { innerPadding ->
@@ -70,7 +67,6 @@ fun CustomScaffold(
                     .padding(innerPadding)
                     .padding(16.dp)
             )
-
         }
     )
 }

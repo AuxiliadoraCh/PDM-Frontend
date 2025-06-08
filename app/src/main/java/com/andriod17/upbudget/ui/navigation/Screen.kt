@@ -1,17 +1,23 @@
 package com.andriod17.upbudget.ui.navigation
 import kotlinx.serialization.Serializable
 
-@Serializable
-sealed interface AppDestination
+sealed interface AppDestination {
+    val route: String
+}
 
-@Serializable
-object HomeNavigation : AppDestination
+object HomeNavigation : AppDestination {
+    override val route = "home"
+}
 
-@Serializable
-object PromotionsNavigation : AppDestination
+object PromotionsNavigation : AppDestination {
+    override val route = "promotions"
+}
 
-@Serializable
-object ContentNavigation : AppDestination
+object ContentNavigation : AppDestination {
+    override val route = "financial_tips"
+}
 
-@Serializable
-object SettingsNavigation : AppDestination
+object SettingsNavigation : AppDestination {
+    override val route = "settings"
+}
+

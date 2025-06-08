@@ -3,7 +3,9 @@ package com.andriod17.upbudget.ui.screens.onboarding
 import androidx.compose.foundation.Image
 import androidx.compose.foundation.background
 import androidx.compose.foundation.layout.Arrangement
+import androidx.compose.foundation.layout.Box
 import androidx.compose.foundation.layout.Column
+import androidx.compose.foundation.layout.fillMaxSize
 import androidx.compose.foundation.layout.height
 import androidx.compose.foundation.layout.offset
 import androidx.compose.foundation.layout.width
@@ -19,31 +21,32 @@ import androidx.compose.ui.unit.dp
 import com.andriod17.upbudget.R
 
 @Composable
-fun OnboardingScreen(
-    modifier: Modifier = Modifier
-        .width(412.dp)
-        .height(917.dp)
-        .background(
-            color = Color(0xFFEDEAF5),
-            shape = RoundedCornerShape(size = 25.dp)
-        ),
-) {
-    Column(
-        verticalArrangement = Arrangement.spacedBy(10.dp, Alignment.CenterVertically),
-        horizontalAlignment = Alignment.CenterHorizontally,
+fun OnboardingScreen() {
+    Box(
+        modifier = Modifier
+            .width(412.dp)
+            .height(917.dp)
+            .background(color = Color(0xFFEDEAF5))
     ) {
-        Image(
+        Column(
+            modifier = Modifier
+                .align(Alignment.Center)
+                .fillMaxSize(),
+            verticalArrangement = Arrangement.Center,
+            horizontalAlignment = Alignment.CenterHorizontally
+        ) {
+            Image(
                 painter = painterResource(id = R.drawable.icon_up_budget),
                 contentDescription = "UpBudgetLogo",
                 contentScale = ContentScale.Fit,
                 modifier = Modifier
-                    .offset(x = 141.dp, y = 393.dp)
                     .width(130.dp)
                     .height(130.dp)
-        )
-
+            )
+        }
     }
 }
+
 @Preview(showBackground = true, showSystemUi = true)
 @Composable
 fun OnboardingScreenPreview() {

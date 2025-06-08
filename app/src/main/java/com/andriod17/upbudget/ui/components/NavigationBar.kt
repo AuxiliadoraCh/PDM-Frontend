@@ -10,19 +10,18 @@ import androidx.compose.ui.Modifier
 import androidx.compose.ui.graphics.Color
 import androidx.compose.ui.graphics.vector.ImageVector
 import androidx.compose.ui.unit.dp
-import com.andriod17.upbudget.ui.navigation.AppDestination
 
 data class NavItem(
     val label: String,
     val icon: ImageVector,
-    val destination: AppDestination
+    val destination: String
 )
 
 @Composable
 fun NavigationBar(
     navItems: List<NavItem>,
-    selectedItem: AppDestination,
-    onItemSelected: (AppDestination) -> Unit
+    selectedItem: String,
+    onItemSelected: (String) -> Unit
 )
 {
     NavigationBar(containerColor = Color.White,
