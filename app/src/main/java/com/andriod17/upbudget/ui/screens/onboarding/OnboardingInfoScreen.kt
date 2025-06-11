@@ -8,6 +8,7 @@ import androidx.compose.foundation.layout.Column
 import androidx.compose.foundation.layout.Row
 import androidx.compose.foundation.layout.Spacer
 import androidx.compose.foundation.layout.fillMaxSize
+import androidx.compose.foundation.layout.fillMaxWidth
 import androidx.compose.foundation.layout.height
 import androidx.compose.foundation.layout.padding
 import androidx.compose.foundation.layout.width
@@ -20,6 +21,8 @@ import androidx.compose.material3.Icon
 import androidx.compose.material3.Text
 import androidx.compose.runtime.Composable
 import androidx.compose.material3.TextButton
+import androidx.compose.runtime.mutableStateOf
+import androidx.compose.runtime.remember
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.graphics.Color
@@ -35,18 +38,43 @@ import androidx.compose.ui.text.TextStyle
 import androidx.compose.ui.text.font.Font
 import androidx.compose.ui.text.style.TextDecoration
 import androidx.compose.ui.tooling.preview.Preview
+import androidx.compose.foundation.layout.size
+import androidx.compose.runtime.getValue
+import androidx.compose.runtime.setValue
+
+
+data class OnboardingContent(
+    val image: Int,
+    val title: String,
+    val description: String
+)
 
 @Composable
 fun OnboardingInfoScreen() {
+    var currentPage by remember { mutableStateOf(0) }
+    val onboardingData = listOf(
+        OnboardingContent(R.drawable.person_money, "Take Control", "Manage your money smarter,\n track your spending,\n and start saving with\n confidence."),
+        OnboardingContent(R.drawable.investing, "Budget Smarter", "Create simple budgets,\n set financial goals, and get reminders to stay on track."),
+        OnboardingContent(R.drawable.learn_save, "Learn & Save", "Get financial tips, unlock\n exclusive discounts, and\n grow your money every\n day.")
+    )
+
+    val page = onboardingData[currentPage]
+
     Box(
         modifier = Modifier
             .width(412.dp)
             .height(917.dp)
-            .background(
-                color = Color(0xFFFFFFFF),
-            )
-            .padding(25.dp)
+            .background(color = Color(0xFFFFFFFF))
     ) {
+
+        Image(
+            painter = painterResource(id = R.drawable.vector_wave_top),
+            contentDescription = "Top Wave",
+            modifier = Modifier
+                .fillMaxWidth()
+                .height(95.dp),
+            contentScale = ContentScale.FillBounds
+        )
         Column(
             modifier = Modifier.fillMaxSize(),
             horizontalAlignment = Alignment.CenterHorizontally,
@@ -55,7 +83,7 @@ fun OnboardingInfoScreen() {
             Spacer(modifier = Modifier.height(50.dp))
 
             Image(
-                painter = painterResource(id = R.drawable.person_money),
+                painter = painterResource(id = page.image),
                 contentDescription = "Illustration",
                 contentScale = ContentScale.Fit,
                 modifier = Modifier
@@ -64,38 +92,45 @@ fun OnboardingInfoScreen() {
             )
 
             Text(
-                    text = "Take Control",
-
-                    // Heading3
-                    style = TextStyle(
-                        fontSize = 36.sp,
-                        fontFamily = FontFamily(Font(R.font.nunito_regular)),
-                        fontWeight = FontWeight(400),
-                        color = Color(0xFF000000),
-                        textAlign = TextAlign.Center,
-
+                text = page.title,
+                style = TextStyle(
+                    fontSize = 36.sp,
+                    fontFamily = FontFamily(Font(R.font.nunito_regular)),
+                    fontWeight = FontWeight(400),
+                    color = Color(0xFF000000),
+                    textAlign = TextAlign.Center,
                 )
             )
 
             Text(
-                text = "Manage your money smarter,\ntrack your spending,\nand start saving with confidence.",
+                text = page.description,
                 style = TextStyle(
-                    fontSize = 16.sp,
+                    fontSize = 20.sp,
+                    lineHeight = 24.sp,
                     fontFamily = FontFamily(Font(R.font.nunito_regular)),
-                    fontWeight = FontWeight.Normal,
+                    fontWeight = FontWeight(400),
                     color = Color.Black,
                     textAlign = TextAlign.Center
                 ),
                 modifier = Modifier.padding(horizontal = 20.dp)
             )
 
-            Image(
-                painter = painterResource(id = R.drawable.pagination),
-                contentDescription = "Pagination Dots",
-                modifier = Modifier
-                    .width(60.dp)
-                    .height(10.dp)
-            )
+            Row(
+                horizontalArrangement = Arrangement.Center,
+                verticalAlignment = Alignment.CenterVertically
+            ) {
+                onboardingData.forEachIndexed { index, _ ->
+                    Box(
+                        modifier = Modifier
+                            .padding(4.dp)
+                            .size(10.dp)
+                            .background(
+                                if (index == currentPage) Color(0xFF216B8A) else Color.Gray,
+                                shape = RoundedCornerShape(50)
+                            )
+                    )
+                }
+            }
 
             Column(
                 modifier = Modifier.height(110.dp),
@@ -103,7 +138,11 @@ fun OnboardingInfoScreen() {
                 horizontalAlignment = Alignment.CenterHorizontally,
             ) {
                 Button(
-                    onClick = { /* TODO: Navegar al siguiente */ },
+                    onClick = {
+                        if (currentPage < onboardingData.size - 1) {
+                            currentPage++
+                        }
+                    },
                     colors = ButtonDefaults.buttonColors(containerColor = Color(0xFF216B8A)),
                     shape = RoundedCornerShape(20.dp),
                     modifier = Modifier
@@ -128,11 +167,9 @@ fun OnboardingInfoScreen() {
                             contentDescription = "Next Icon",
                             tint = Color.White
                         )
-
                     }
                 }
-
-                TextButton(onClick = { }) {
+                TextButton(onClick = {}) {
                     Text(
                         text = "Skip",
                         style = TextStyle(
@@ -145,10 +182,17 @@ fun OnboardingInfoScreen() {
                     )
                 }
             }
-
-
             Spacer(modifier = Modifier.height(20.dp))
         }
+        Image(
+            painter = painterResource(id = R.drawable.vector_wave_bottom),
+            contentDescription = "Bottom Wave",
+            modifier = Modifier
+                .align(Alignment.BottomCenter)
+                .fillMaxWidth()
+                .height(113.dp),
+            contentScale = ContentScale.FillBounds
+        )
     }
 }
 
