@@ -4,5 +4,10 @@ data class PromotionItem (
     val title:String,
     val subtitle: String,
     val description: String,
-    val imageResId:Int
+    val imageResId:Int,
+    val restaurantList: List<String> = emptyList(),
+    val couponCode: String = ""
 )
+
+
+

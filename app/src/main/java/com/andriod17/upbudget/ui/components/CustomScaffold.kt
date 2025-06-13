@@ -1,5 +1,6 @@
 package com.andriod17.upbudget.ui.components
 
+import androidx.compose.foundation.layout.PaddingValues
 import androidx.compose.foundation.layout.padding
 import androidx.compose.runtime.getValue
 import androidx.compose.runtime.setValue
@@ -25,7 +26,9 @@ import com.andriod17.upbudget.ui.navigation.PromotionsNavigation
 import com.andriod17.upbudget.ui.navigation.SettingsNavigation
 
 @Composable
-fun CustomScaffold() {
+fun CustomScaffold(
+    content: @Composable (innerPadding: PaddingValues) -> Unit
+) {
     var selectedItem by rememberSaveable { mutableStateOf("home") }
     val navController = rememberNavController()
 
@@ -60,19 +63,12 @@ fun CustomScaffold() {
                 }
             )
         },
-        content = { innerPadding ->
-            Text(
-                text = "Welcome to UPBudget",
-                modifier = Modifier
-                    .padding(innerPadding)
-                    .padding(16.dp)
-            )
-        }
+        content = content
     )
 }
 
 @Preview(showBackground = true)
 @Composable
 fun CustomScaffoldPreview() {
-    CustomScaffold()
+    //CustomScaffold()
 }
