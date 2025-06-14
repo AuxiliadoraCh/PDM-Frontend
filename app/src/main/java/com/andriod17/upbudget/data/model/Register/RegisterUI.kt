@@ -1,4 +1,4 @@
-package com.andriod17.upbudget.data.model
+package com.andriod17.upbudget.data.model.Register
 
 data class RegisterUiState(
     val username: String = "",

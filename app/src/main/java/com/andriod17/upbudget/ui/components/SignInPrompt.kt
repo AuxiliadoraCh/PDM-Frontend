@@ -19,19 +19,23 @@ import androidx.compose.ui.text.style.TextAlign
 import androidx.compose.ui.text.withStyle
 import androidx.compose.ui.unit.dp
 import androidx.compose.ui.unit.sp
-import com.andriod17.upbudget.R // Make sure R is imported
-
+import com.andriod17.upbudget.R
 @Composable
-fun SignInPrompt(onSignInClick: () -> Unit) {
+fun SignInPrompt(
+    promptText: String = "Already have an account?",
+    actionText: String = "Sign in",
+    onActionClick: () -> Unit
+) {
     val annotatedString = buildAnnotatedString {
-        append("Already have an account? ")
-        pushStringAnnotation(tag = "SIGN_IN", annotation = "SIGN_IN")
-        withStyle(style = SpanStyle(
-            color = Color(0xFF211557),
-            fontWeight = FontWeight.Bold
-        )
+        append("$promptText ")
+        pushStringAnnotation(tag = "ACTION", annotation = "ACTION")
+        withStyle(
+            style = SpanStyle(
+                color = Color(0xFF211557),
+                fontWeight = FontWeight.Bold
+            )
         ) {
-            append("Sign in")
+            append(actionText)
         }
         pop()
     }
@@ -48,10 +52,9 @@ fun SignInPrompt(onSignInClick: () -> Unit) {
             color = Color(0xFF180F3E)
         ),
         onClick = { offset ->
-            annotatedString.getStringAnnotations(tag = "SIGN_IN", start = offset, end = offset)
-                .firstOrNull()?.let {
-                    onSignInClick()
-                }
+            annotatedString.getStringAnnotations("ACTION", offset, offset).firstOrNull()?.let {
+                onActionClick()
+            }
         }
     )
 }

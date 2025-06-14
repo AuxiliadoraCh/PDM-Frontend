@@ -23,13 +23,17 @@ import androidx.compose.ui.unit.sp
 import com.andriod17.upbudget.R
 
 @Composable
-fun GoogleSignInButton(onClick:() -> Unit) {
+fun GoogleSignInButton(
+    text: String,
+    onClick: () -> Unit,
+    modifier: Modifier = Modifier
+) {
     Box(
-        modifier = Modifier.fillMaxWidth(),
+        modifier = modifier.fillMaxWidth(),
         contentAlignment = Alignment.Center
     ) {
         Button(
-            onClick = { /* Handle Google Sign In */ },
+            onClick = onClick,
             modifier = Modifier
                 .width(254.dp)
                 .height(56.dp),
@@ -40,14 +44,17 @@ fun GoogleSignInButton(onClick:() -> Unit) {
         ) {
             Icon(
                 painter = painterResource(id = R.drawable.logo_googleg_48dp),
-                contentDescription = "Sign up with Google",
+                contentDescription = text,
                 modifier = Modifier.size(24.dp),
                 tint = Color.Unspecified
             )
             Spacer(modifier = Modifier.width(8.dp))
             Text(
-                text = "Sign up with Google",
-                style = TextStyle(fontSize = 16.sp, fontWeight = FontWeight.Bold),
+                text = text,
+                style = TextStyle(
+                    fontSize = 16.sp,
+                    fontWeight = FontWeight.Bold
+                ),
                 color = Color.White
             )
         }

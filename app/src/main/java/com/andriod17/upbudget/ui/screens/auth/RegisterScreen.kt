@@ -8,6 +8,7 @@ import androidx.compose.runtime.getValue
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.graphics.Color
+import androidx.compose.ui.platform.LocalContext
 import androidx.compose.ui.text.TextStyle
 import androidx.compose.ui.text.font.Font
 import androidx.compose.ui.text.font.FontFamily
@@ -23,7 +24,8 @@ import com.andriod17.upbudget.ui.components.CustomTextField
 import com.andriod17.upbudget.ui.components.GoogleSignInButton
 import com.andriod17.upbudget.ui.components.PrimaryActionButton
 import com.andriod17.upbudget.ui.components.SignInPrompt
-import com.andriod17.upbudget.viewmodel.RegisterViewModel
+import com.andriod17.upbudget.viewmodel.Register.RegisterViewModel
+//import com.andriod17.upbudget.viewmodel.Register.RegisterViewModelFactory
 
 
 @Composable
@@ -33,12 +35,15 @@ fun RegisterScreen(
     onGoogleSignInClick: () -> Unit = {},
     onSignInClick: () -> Unit = {}
 ) {
+    val context = LocalContext.current
+    //val userRepository = UserRepository(AppDatabase.getInstance(context).userDao())
+    //val viewModel: RegisterViewModel = viewModel(factory = RegisterViewModelFactory(userRepository))
     val state by viewModel.uiState.collectAsState()
 
     Column(
         modifier = Modifier
             .fillMaxSize()
-            .padding(16.dp),
+            .padding(19.dp),
         horizontalAlignment = Alignment.CenterHorizontally
     ) {
         Spacer(modifier = Modifier.height(30.dp))
@@ -72,14 +77,21 @@ fun RegisterScreen(
                     textAlign = TextAlign.Center,
                 )
             )
-            GoogleSignInButton(onClick = viewModel::signInWithGoogle)
-            SignInPrompt(onSignInClick = onSignInClick)
+            GoogleSignInButton(
+                text = "Sign up with Google",
+                onClick = onGoogleSignInClick
+            )
+            SignInPrompt(
+                promptText = "Already have an account?",
+                actionText = "Sign in",
+                onActionClick = onSignInClick
+            )
         }
     }
 }
 
 
-@Preview(showBackground = true)
+@Preview(showBackground = true, showSystemUi = true)
 @Composable
 fun RegisterScreenPreview() {
     RegisterScreen()

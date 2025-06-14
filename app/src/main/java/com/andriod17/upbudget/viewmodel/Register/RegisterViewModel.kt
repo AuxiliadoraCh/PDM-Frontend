@@ -1,15 +1,17 @@
-package com.andriod17.upbudget.viewmodel
+package com.andriod17.upbudget.viewmodel.Register
 
 import androidx.lifecycle.ViewModel
 import androidx.lifecycle.viewModelScope
-import com.andriod17.upbudget.data.model.RegisterUiState
+import com.andriod17.upbudget.data.model.Register.RegisterUiState
 import kotlinx.coroutines.delay
 import kotlinx.coroutines.flow.MutableStateFlow
 import kotlinx.coroutines.flow.StateFlow
 import kotlinx.coroutines.flow.update
 import kotlinx.coroutines.launch
 
-class RegisterViewModel : ViewModel() {
+class RegisterViewModel( // private val userRepository: UserRepository //
+) : ViewModel() {
+
 
     private val _uiState = MutableStateFlow(RegisterUiState())
     val uiState: StateFlow<RegisterUiState> = _uiState
