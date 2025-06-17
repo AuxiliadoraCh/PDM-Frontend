@@ -13,6 +13,7 @@ import androidx.compose.material3.Text
 import androidx.compose.runtime.Composable
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
+import androidx.compose.ui.draw.shadow
 import androidx.compose.ui.graphics.Color
 import androidx.compose.ui.graphics.painter.Painter
 import androidx.compose.ui.graphics.vector.ImageVector
@@ -49,7 +50,8 @@ fun DashboardActionButton(
                     painter = iconPainter,
                     contentDescription = label,
                     tint = Color(0xFF3829A9),
-                    modifier = Modifier.size(50.dp)
+                modifier = Modifier.size(50.dp)
+
                 )
             }
         }
@@ -59,7 +61,7 @@ fun DashboardActionButton(
         Text(
             text = label,
             fontSize = 14.sp,
-            fontFamily = FontFamily(Font(R.font.nunito_regular)),
+            fontFamily = FontFamily(Font(R.font.nunito_semibolditalic)),
             color = Color(0xFF35218A)
         )
     }

@@ -20,9 +20,11 @@ import androidx.compose.ui.unit.dp
 import androidx.compose.ui.unit.sp
 import com.andriod17.upbudget.R
 import androidx.compose.material.icons.Icons
+import androidx.compose.material.icons.filled.KeyboardArrowDown
 import androidx.compose.material.icons.filled.Star
 import androidx.compose.material3.Icon
 import androidx.compose.ui.graphics.vector.ImageVector
+import androidx.compose.ui.text.font.FontWeight.Companion.Bold
 import androidx.compose.ui.text.style.TextAlign
 
 @Composable
@@ -40,19 +42,18 @@ fun IncomeSummarySection(
             Text(
                 text = "Monthly Income",
                 style = TextStyle(
-                    fontSize = 20.sp,
-                    fontFamily = FontFamily(Font(R.font.nunito_regular)),
-                    fontWeight = FontWeight.SemiBold,
-                    color = Color(0xFF211557),
+                    fontSize = 22.sp,
+                    fontFamily = FontFamily(Font(R.font.nunito_semibold)),
+                    color = Color(0xFF34218D),
                     textAlign = TextAlign.Center
                 )
             )
-            Spacer(modifier = Modifier.width(6.dp))
+            Spacer(modifier = Modifier.width(2.dp))
 
             Icon(
                 imageVector = icon,
                 contentDescription = "Income Icon",
-                tint = Color(0xFF211557),
+                tint =  Color(0xFF34218D),
                 modifier = Modifier.size(24.dp)
             )
         }

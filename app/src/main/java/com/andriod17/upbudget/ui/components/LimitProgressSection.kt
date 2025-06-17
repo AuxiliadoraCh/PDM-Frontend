@@ -62,20 +62,20 @@ fun LimitProgressSection(
                         progress = { progress },
                         modifier = Modifier
                             .fillMaxWidth()
-                            .height(12.dp)
-                            .background(Color(0xFFE0E0E0), RoundedCornerShape(64.dp)),
+                            .height(20.dp)
+                            .background(Color(0xFFE0E0E0), RoundedCornerShape(62.dp)),
                         color = Color(0xFF35218A),
                         trackColor = Color.Transparent,
                     )
                     Row(
                         modifier = Modifier
                             .fillMaxWidth()
-                            .height(12.dp)
-                            .padding(horizontal = 4.dp),
+                            .height(20.dp)
+                            .padding(horizontal = 7.dp),
                         horizontalArrangement = Arrangement.SpaceBetween,
                         verticalAlignment = Alignment.CenterVertically
                     ) {
-                        repeat(5) {
+                        repeat(4) {
                             Box(
                                 modifier = Modifier
                                     .size(5.dp)

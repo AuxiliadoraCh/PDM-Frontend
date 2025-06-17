@@ -1,18 +1,17 @@
 package com.andriod17.upbudget.ui.screens.dashboard
 
-import androidx.compose.foundation.background
 import androidx.compose.foundation.layout.Arrangement
 import androidx.compose.foundation.layout.Column
 import androidx.compose.foundation.layout.Row
-import androidx.compose.foundation.layout.Spacer
 import androidx.compose.foundation.layout.fillMaxWidth
 import androidx.compose.foundation.layout.padding
+import androidx.compose.foundation.rememberScrollState
+import androidx.compose.foundation.verticalScroll
 import androidx.compose.runtime.Composable
 import androidx.compose.runtime.collectAsState
 import androidx.compose.runtime.getValue
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
-import androidx.compose.ui.graphics.Color
 import androidx.compose.ui.tooling.preview.Preview
 import androidx.lifecycle.viewmodel.compose.viewModel
 import com.andriod17.upbudget.ui.components.IncomeSummarySection
@@ -38,27 +37,16 @@ fun HomeScreen() {
 
     CustomScaffold(
         title = "Dashboard",
-        showBackButton = false,
         useOptionsIcon = true,
-        onOptionsClick = { },
         floatingActionButton = {
-            FloatingActionButton(
-                onClick = {  },
-                containerColor = Color(0xFFB9A9EA)
-            ) {
-                Icon(
-                    imageVector = Icons.Default.Add,
-                    contentDescription = "Add Category",
-                    tint = Color.White
-                )
+            FloatingActionButton(onClick = { /*TODO*/ }) {
+                Icon(Icons.Default.Add, contentDescription = "Add")
             }
         }
     ) { innerPadding ->
         HomeScreenContent(
             state = state,
-            modifier = Modifier
-                .padding(innerPadding)
-                .background(Color.White)
+            modifier = Modifier.padding(innerPadding)
         )
     }
 }
@@ -69,7 +57,9 @@ fun HomeScreenContent(
     modifier: Modifier = Modifier
 ) {
     Column(
-        modifier = modifier.padding(horizontal = 16.dp)
+        modifier = modifier
+            .verticalScroll(rememberScrollState())
+            .padding(horizontal = 16.dp)
     ) {
         IncomeSummarySection(
             incomeAmount = "$${state.income}",
@@ -84,7 +74,7 @@ fun HomeScreenContent(
         )
 
         Row(
-            modifier = Modifier.fillMaxWidth(),
+            modifier = Modifier.fillMaxWidth().padding(vertical = 24.dp),
             horizontalArrangement = Arrangement.SpaceEvenly,
             verticalAlignment = Alignment.CenterVertically
         ) {
@@ -99,7 +89,6 @@ fun HomeScreenContent(
                 onClick = { /* TODO */ }
             )
         }
-        Spacer(modifier = Modifier.padding(top = 24.dp))
         CategoriesSection()
     }
 }
@@ -107,6 +96,4 @@ fun HomeScreenContent(
 @Preview(showBackground = true, showSystemUi = true)
 @Composable
 fun HomeScreenPreview() {
-    HomeScreen(
-    )
-}
+    HomeScreen()}
