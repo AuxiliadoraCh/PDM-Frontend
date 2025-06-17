@@ -33,7 +33,18 @@ class ExpenseScreenViewModel : ViewModel() {
         _uiState.value = _uiState.value.copy(saveExpense = saveDetails)
     }
 
+    private val _expenses = MutableStateFlow<List<ExpenseUi>>(emptyList())
+    val expenses: StateFlow<List<ExpenseUi>> = _expenses
+
     fun saveExpense() {
-        val expense = _uiState.value.copy(date = getCurrentDateCompat())
+        val current = uiState.value
+
+        if (current.amount.isBlank() || current.category.isBlank()) return
+
+        val newExpense = current.copy(isSaving = false)
+        _expenses.value = _expenses.value + newExpense
+
+        _uiState.value = ExpenseUi()
     }
+
 }
