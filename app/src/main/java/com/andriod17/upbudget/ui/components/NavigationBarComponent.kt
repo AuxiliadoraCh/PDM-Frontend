@@ -1,8 +1,6 @@
 package com.andriod17.upbudget.ui.components
 
-
 import androidx.compose.foundation.layout.padding
-import androidx.compose.foundation.layout.size
 import androidx.compose.material3.*
 import androidx.compose.runtime.Composable
 import androidx.compose.ui.Alignment
@@ -11,38 +9,28 @@ import androidx.compose.ui.graphics.Color
 import androidx.compose.ui.graphics.vector.ImageVector
 import androidx.compose.ui.tooling.preview.Preview
 import androidx.compose.ui.unit.dp
+import com.andriod17.upbudget.ui.navigation.NavItem
 
-data class NavItem(
-    val label: String,
-    val icon: ImageVector,
-    val destination: String
-)
 
 @Composable
-fun NavigationBar(
+fun NavigationBarComponent(
     navItems: List<NavItem>,
     selectedItem: String,
     onItemSelected: (String) -> Unit
-)
-{
-    NavigationBar(containerColor = Color.White,
-    ) {
+) {
+    NavigationBar(containerColor = Color.White) {
         navItems.forEach { item ->
             NavigationBarItem(
-                modifier = Modifier.align(Alignment.CenterVertically)
-                    .padding(horizontal = 11.dp),
                 icon = {
                     Icon(
                         imageVector = item.icon,
-                        contentDescription = item.label,
-                        modifier = Modifier.padding(horizontal = 5.dp, vertical = 10.dp)
+                        contentDescription = item.title
                     )
                 },
-                selected = selectedItem == item.destination,
-                onClick = { onItemSelected(item.destination) },
+                selected = selectedItem == item.route,
+                onClick = { onItemSelected(item.route) },
                 colors = NavigationBarItemDefaults.colors(
-                    selectedIconColor = Color(
-                        0xFF261863),
+                    selectedIconColor = Color(0xFF261863),
                     unselectedIconColor = Color(0xFF180F3E),
                     indicatorColor = Color(0xFFCDE5EF)
                 )

@@ -22,11 +22,14 @@ import com.andriod17.upbudget.ui.components.CustomScaffold
 import com.andriod17.upbudget.ui.components.LearningCard
 import com.andriod17.upbudget.viewmodel.Learning.LearningViewModel
 import androidx.lifecycle.viewmodel.compose.viewModel
+import androidx.navigation.NavHostController
 import com.andriod17.upbudget.R
 import com.andriod17.upbudget.viewmodel.Learning.LearningViewModelFactory
 
 @Composable
-fun LearningScreen() {
+fun LearningScreen(
+    navController: NavHostController
+) {
     val learningItems = listOf(
         LearningItem(
             title = "Ahorrar en compras",
@@ -63,14 +66,15 @@ fun LearningScreen() {
                     }
                 }
             }
-        }
+        },
+        navController = navController
     )
 }
 
 @Preview(showBackground = true)
 @Composable
 fun LearningScreenPreview() {
-    LearningScreen()
+    //LearningScreen()
 }
 
 

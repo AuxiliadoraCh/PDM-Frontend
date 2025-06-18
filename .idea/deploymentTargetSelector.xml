@@ -17,7 +17,7 @@
       <SelectionState runConfigName="PreviewSetLimitScreen">
         <option name="selectionMode" value="DROPDOWN" />
       </SelectionState>
-      <SelectionState runConfigName="LearningScreenPreview">
+      <SelectionState runConfigName="CustomScaffoldPreview">
         <option name="selectionMode" value="DROPDOWN" />
       </SelectionState>
     </selectionStates>

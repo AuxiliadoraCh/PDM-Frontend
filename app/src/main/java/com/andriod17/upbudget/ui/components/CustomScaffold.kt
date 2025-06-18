@@ -5,11 +5,13 @@ import androidx.compose.material3.Scaffold
 import androidx.compose.runtime.*
 import androidx.compose.runtime.saveable.rememberSaveable
 import androidx.compose.ui.tooling.preview.Preview
+import androidx.navigation.NavHostController
 import androidx.navigation.compose.rememberNavController
 import com.andriod17.upbudget.ui.icons.IconContent
 import com.andriod17.upbudget.ui.icons.IconHome
 import com.andriod17.upbudget.ui.icons.IconPromotions
 import com.andriod17.upbudget.ui.icons.IconSettings
+import com.andriod17.upbudget.ui.navigation.NavItem
 
 @Composable
 fun CustomScaffold(
@@ -21,11 +23,10 @@ fun CustomScaffold(
     useOptionsIcon: Boolean = false,
     onOptionsClick: () -> Unit = {},
     floatingActionButton: @Composable (() -> Unit)? = null,
-    content: @Composable (PaddingValues) -> Unit
-
+    content: @Composable (PaddingValues) -> Unit = {},
+    navController: NavHostController
 ) {
     var selectedItem by rememberSaveable { mutableStateOf("home") }
-    val navController = rememberNavController()
 
     val navItems = listOf(
         NavItem("Home", IconHome, "home"),
@@ -47,7 +48,7 @@ fun CustomScaffold(
             )
         },
         bottomBar = {
-            NavigationBar(
+            NavigationBarComponent(
                 navItems = navItems,
                 selectedItem = selectedItem,
                 onItemSelected = { route ->
@@ -66,7 +67,5 @@ fun CustomScaffold(
 @Preview(showBackground = true)
 @Composable
 fun CustomScaffoldPreview() {
-    CustomScaffold {
-        // Puedes poner un Text() o algo visual de prueba
-    }
+    //CustomScaffold()
 }
