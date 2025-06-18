@@ -12,9 +12,14 @@ composeNavigation = "2.7.6"
 serialization = "1.6.3"
 coilCompose = "3.2.0"
 coilNetworkOkhttp = "3.2.0"
+<<<<<<< HEAD
 material3 = "1.4.0-alpha15"
 compose = "2.1.3"
 vico = "1.13.0"
+=======
+materialIconsCore = "1.7.8"
+adsMobileSdk = "0.16.0-alpha01"
+>>>>>>> 5144ea01664002d12552014faf2356919dc5edc5
 
 [libraries]
 androidx-core-ktx = { group = "androidx.core", name = "core-ktx", version.ref = "coreKtx" }
@@ -36,11 +41,15 @@ navigation-compose = { group = "androidx.navigation", name = "navigation-compose
 kotlinx-serialization-json = { group = "org.jetbrains.kotlinx", name = "kotlinx-serialization-json", version.ref = "serialization" }
 coil-compose = { group = "io.coil-kt.coil3", name = "coil-compose", version.ref = "coilCompose" }
 coil-network-okhttp = { group = "io.coil-kt.coil3", name = "coil-network-okhttp", version.ref = "coilNetworkOkhttp" }
+<<<<<<< HEAD
 compose = { group = "com.patrykandpatrick.vico", name = "compose", version.ref = "compose" }
 vico-core = { group = "com.patrykandpatrick.vico", name = "core", version.ref = "vico" }
 vico-compose = { group = "com.patrykandpatrick.vico", name = "compose", version.ref = "vico" }
 vico-compose-m3 = { group = "com.patrykandpatrick.vico", name = "compose-m3", version.ref = "vico" }
 
+=======
+ads-mobile-sdk = { group = "com.google.android.libraries.ads.mobile.sdk", name = "ads-mobile-sdk", version.ref = "adsMobileSdk" }
+>>>>>>> 5144ea01664002d12552014faf2356919dc5edc5
 
 [plugins]
 android-application = { id = "com.android.application", version.ref = "agp" }

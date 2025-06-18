@@ -1,33 +1,28 @@
 package com.andriod17.upbudget.ui.components
 
 import androidx.compose.foundation.layout.PaddingValues
-import androidx.compose.foundation.layout.padding
-import androidx.compose.runtime.getValue
-import androidx.compose.runtime.setValue
 import androidx.compose.material3.Scaffold
-import androidx.compose.material3.Text
-import androidx.compose.material3.TopAppBar
-import androidx.compose.runtime.Composable
-import androidx.compose.runtime.getValue
-import androidx.compose.runtime.mutableStateOf
+import androidx.compose.runtime.*
 import androidx.compose.runtime.saveable.rememberSaveable
-import androidx.compose.ui.Modifier
 import androidx.compose.ui.tooling.preview.Preview
-import androidx.compose.ui.unit.dp
 import androidx.navigation.compose.rememberNavController
 import com.andriod17.upbudget.ui.icons.IconContent
 import com.andriod17.upbudget.ui.icons.IconHome
 import com.andriod17.upbudget.ui.icons.IconPromotions
 import com.andriod17.upbudget.ui.icons.IconSettings
-import com.andriod17.upbudget.ui.navigation.AppDestination
-import com.andriod17.upbudget.ui.navigation.ContentNavigation
-import com.andriod17.upbudget.ui.navigation.HomeNavigation
-import com.andriod17.upbudget.ui.navigation.PromotionsNavigation
-import com.andriod17.upbudget.ui.navigation.SettingsNavigation
 
 @Composable
 fun CustomScaffold(
-    content: @Composable (innerPadding: PaddingValues) -> Unit
+    title: String = "UPBudget",
+    onBackPressed: () -> Unit = {},
+    onSettingsPressed: () -> Unit = {},
+    showBackButton: Boolean = true,
+    showSettingsIcon: Boolean = true,
+    useOptionsIcon: Boolean = false,
+    onOptionsClick: () -> Unit = {},
+    floatingActionButton: @Composable (() -> Unit)? = null,
+    content: @Composable (PaddingValues) -> Unit
+
 ) {
     var selectedItem by rememberSaveable { mutableStateOf("home") }
     val navController = rememberNavController()
@@ -42,15 +37,13 @@ fun CustomScaffold(
     Scaffold(
         topBar = {
             TopBar(
-                title = when (selectedItem) {
-                    "home" -> "Home"
-                    "promotions" -> "Promotions"
-                    "financial_tips" -> "Content"
-                    "settings" -> "Settings"
-                    else -> "UPBudget"
-                },
-                onBackPressed = {},
-                onSettingsPressed = {}
+                title = title,
+                onBackPressed = onBackPressed,
+                onSettingsPressed = onSettingsPressed,
+                showBackButton = showBackButton,
+                showSettingsIcon = showSettingsIcon,
+                useOptionsIcon = useOptionsIcon,
+                onOptionsClick = onOptionsClick
             )
         },
         bottomBar = {
@@ -63,12 +56,17 @@ fun CustomScaffold(
                 }
             )
         },
-        content = content
-    )
+        floatingActionButton = floatingActionButton ?: {}
+    ) { innerPadding ->
+        content(innerPadding)
+    }
 }
+
 
 @Preview(showBackground = true)
 @Composable
 fun CustomScaffoldPreview() {
-    //CustomScaffold()
+    CustomScaffold {
+        // Puedes poner un Text() o algo visual de prueba
+    }
 }
