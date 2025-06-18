@@ -1,20 +1,15 @@
 package com.andriod17.upbudget.ui.components
 
 import androidx.compose.foundation.Image
-import androidx.compose.foundation.layout.Column
-import androidx.compose.foundation.layout.Row
-import androidx.compose.foundation.layout.Spacer
-import androidx.compose.foundation.layout.fillMaxWidth
-import androidx.compose.foundation.layout.height
-import androidx.compose.foundation.layout.padding
-import androidx.compose.foundation.layout.width
-import androidx.compose.material3.MaterialTheme
-import androidx.compose.material3.OutlinedButton
-import androidx.compose.material3.Text
+import androidx.compose.foundation.layout.*
+import androidx.compose.foundation.shape.RoundedCornerShape
+import androidx.compose.material3.*
 import androidx.compose.runtime.Composable
+import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.res.painterResource
 import androidx.compose.ui.text.font.FontWeight
+import androidx.compose.ui.text.style.TextAlign
 import androidx.compose.ui.unit.dp
 import com.andriod17.upbudget.data.model.Promotion.PromotionItem
 import com.andriod17.upbudget.ui.theme.Purple40
@@ -24,38 +19,83 @@ fun PromotionDetailSheet(promotion: PromotionItem, onClose: () -> Unit) {
     Column(
         modifier = Modifier
             .fillMaxWidth()
-            .padding(16.dp)
+            .padding(horizontal = 24.dp, vertical = 16.dp)
     ) {
-        Text(promotion.title, style = MaterialTheme.typography.titleLarge)
-        Spacer(modifier = Modifier.height(8.dp))
+
+        Text(
+            text = promotion.title,
+            style = MaterialTheme.typography.titleMedium.copy(fontWeight = FontWeight.Bold),
+            textAlign = TextAlign.Center,
+            modifier = Modifier
+                .fillMaxWidth()
+                .padding(bottom = 16.dp)
+        )
+
+
         Image(
             painter = painterResource(id = promotion.imageResId),
             contentDescription = null,
             modifier = Modifier
                 .fillMaxWidth()
                 .height(100.dp)
+                .padding(bottom = 24.dp)
         )
-        Spacer(modifier = Modifier.height(16.dp))
-        Text("Description:", color = Purple40)
-        Text(promotion.description)
-        Spacer(modifier = Modifier.height(8.dp))
+
+
+        Text(
+            text = "Description:",
+            style = MaterialTheme.typography.labelMedium.copy(color = Purple40),
+            modifier = Modifier.padding(bottom = 4.dp)
+        )
+        Text(
+            text = promotion.description,
+            style = MaterialTheme.typography.bodyMedium,
+            modifier = Modifier.padding(bottom = 16.dp)
+        )
+
+
         if (promotion.restaurantList.isNotEmpty()) {
-            Text("Restaurants List:")
-            promotion.restaurantList.forEach {
-                Text("• $it")
+            Text(
+                text = "Restaurants List:",
+                style = MaterialTheme.typography.labelMedium.copy(color = Purple40),
+                modifier = Modifier.padding(bottom = 4.dp)
+            )
+            Column(modifier = Modifier.padding(start = 12.dp, bottom = 24.dp)) {
+                promotion.restaurantList.forEach {
+                    Text(text = "• $it", style = MaterialTheme.typography.bodySmall)
+                }
             }
         }
-        Spacer(modifier = Modifier.height(16.dp))
-        Text("CODE:", fontWeight = FontWeight.Bold, color = Purple40)
-        Text(promotion.couponCode, fontWeight = FontWeight.Bold)
 
-        Spacer(modifier = Modifier.height(16.dp))
-        Row {
-            OutlinedButton(onClick = { }) {
+        Text(
+            text = "CODE:",
+            style = MaterialTheme.typography.labelMedium.copy(color = Purple40),
+            modifier = Modifier.padding(bottom = 4.dp)
+        )
+        Text(
+            text = promotion.couponCode,
+            style = MaterialTheme.typography.bodyMedium.copy(fontWeight = FontWeight.Bold),
+            modifier = Modifier.padding(bottom = 24.dp)
+        )
+
+
+        Row(
+            modifier = Modifier.fillMaxWidth(),
+            horizontalArrangement = Arrangement.spacedBy(12.dp, Alignment.CenterHorizontally)
+        ) {
+            Button(
+                onClick = { /* TODO: implementar copia */ },
+                shape = RoundedCornerShape(16.dp),
+                colors = ButtonDefaults.buttonColors(containerColor = Purple40)
+            ) {
                 Text("Copy Code")
             }
-            Spacer(modifier = Modifier.width(8.dp))
-            OutlinedButton(onClick = onClose) {
+
+            OutlinedButton(
+                onClick = onClose,
+                shape = RoundedCornerShape(16.dp),
+                colors = ButtonDefaults.outlinedButtonColors(contentColor = Purple40)
+            ) {
                 Text("Close")
             }
         }

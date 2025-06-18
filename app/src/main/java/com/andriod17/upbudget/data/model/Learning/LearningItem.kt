@@ -5,6 +5,6 @@ data class LearningItem(
     val title: String,
     val subtitle: String,
     val description: String,
-    val imageUrl: String
+    val imageUrl: Int
 )
 

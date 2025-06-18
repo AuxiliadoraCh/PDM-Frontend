@@ -11,6 +11,9 @@ import androidx.compose.material3.Text
 import androidx.compose.runtime.Composable
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.tooling.preview.Preview
+import com.andriod17.upbudget.ui.screens.Learning.LearningScreen
+import com.andriod17.upbudget.ui.screens.promotions.PromotionsScreen
+import com.andriod17.upbudget.ui.screens.settings.SettingsScreen
 import com.andriod17.upbudget.ui.theme.UpBudgetTheme
 
 class MainActivity : ComponentActivity() {
@@ -18,17 +21,11 @@ class MainActivity : ComponentActivity() {
         super.onCreate(savedInstanceState)
         enableEdgeToEdge()
         setContent {
-            UpBudgetTheme {
-                Scaffold(modifier = Modifier.fillMaxSize()) { innerPadding ->
-                    Greeting(
-                        name = "Android",
-                        modifier = Modifier.padding(innerPadding)
-                    )
-                }
+            PromotionsScreen()
             }
         }
-    }
 }
+
 
 @Composable
 fun Greeting(name: String, modifier: Modifier = Modifier) {

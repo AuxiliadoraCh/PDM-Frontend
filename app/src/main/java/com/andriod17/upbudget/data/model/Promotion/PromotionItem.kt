@@ -6,8 +6,11 @@ data class PromotionItem (
     val description: String,
     val imageResId:Int,
     val restaurantList: List<String> = emptyList(),
-    val couponCode: String = ""
+    val couponCode: String = "",
+    val isActive: Boolean = true
 )
+
+
 
 
 
