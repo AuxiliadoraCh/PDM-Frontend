@@ -4,14 +4,18 @@ import androidx.compose.foundation.Image
 import androidx.compose.foundation.layout.Arrangement
 import androidx.compose.foundation.layout.Column
 import androidx.compose.foundation.layout.PaddingValues
+import androidx.compose.foundation.layout.Row
+import androidx.compose.foundation.layout.Spacer
 import androidx.compose.foundation.layout.fillMaxSize
 import androidx.compose.foundation.layout.fillMaxWidth
 import androidx.compose.foundation.layout.height
 import androidx.compose.foundation.layout.padding
+import androidx.compose.foundation.layout.width
 import androidx.compose.foundation.rememberScrollState
 import androidx.compose.foundation.text.KeyboardOptions
 import androidx.compose.foundation.verticalScroll
 import androidx.compose.material3.OutlinedTextField
+import androidx.compose.material3.RadioButton
 import androidx.compose.material3.Text
 import androidx.compose.runtime.Composable
 import androidx.compose.runtime.collectAsState
@@ -37,7 +41,6 @@ import com.andriod17.upbudget.ui.components.OutlinedTextFieldWithDropdown
 import com.andriod17.upbudget.ui.components.SaveExpenseCheckbox
 import com.andriod17.upbudget.viewmodel.Expense.ExpenseScreenViewModel
 import com.andriod17.upbudget.viewmodel.Category.CategoryViewModel
-
 @Composable
 fun ExpenseScreen(
     expenseViewModel: ExpenseScreenViewModel = viewModel(),
@@ -45,6 +48,8 @@ fun ExpenseScreen(
 ) {
     val expenseUiState by expenseViewModel.uiState.collectAsState()
     val categoryUiState by categoryViewModel.uiState.collectAsState()
+
+    var isIncome by remember { mutableStateOf(false) }
 
     CustomScaffold(
         title = "New Expense",
@@ -58,8 +63,17 @@ fun ExpenseScreen(
             onPlaceChange = expenseViewModel::onPlaceChange,
             onDescriptionChange = expenseViewModel::onDescriptionChange,
             onSaveDetailsChange = expenseViewModel::onSaveDetailsChange,
-            onConfirmClick = expenseViewModel::saveExpense,
-            onCategoryChange = expenseViewModel::onCategoryChange
+            onConfirmClick = {
+                expenseViewModel.saveExpense(
+                    expenseUiState.amount,
+                    expenseUiState.category,
+                    expenseUiState.description,
+                    isIncome
+                )
+            },
+            onCategoryChange = expenseViewModel::onCategoryChange,
+            onIncomeChange = { isIncome = true },
+            onExpenseChange = { isIncome = false }
         )
     }
 }
@@ -75,7 +89,9 @@ fun ExpenseScreenContent(
     onDescriptionChange: (String) -> Unit,
     onSaveDetailsChange: (Boolean) -> Unit,
     onConfirmClick: () -> Unit,
-    onCategoryChange: (String) -> Unit
+    onCategoryChange: (String) -> Unit,
+    onIncomeChange: () -> Unit, // Acción de ingreso
+    onExpenseChange: () -> Unit // Acción de gasto
 ) {
     val paymentMethods = listOf("Cash", "Credit Card", "Bank Transfer")
     var expandedPaymentMethod by remember { mutableStateOf(false) }
@@ -104,6 +120,7 @@ fun ExpenseScreenContent(
             color = Color(0xFF35218A)
         )
 
+        // Amount input
         OutlinedTextField(
             value = expenseUiState.amount,
             onValueChange = onAmountChange,
@@ -112,6 +129,8 @@ fun ExpenseScreenContent(
             keyboardOptions = KeyboardOptions(keyboardType = KeyboardType.Number),
             modifier = Modifier.fillMaxWidth()
         )
+
+        // Payment method dropdown
         OutlinedTextFieldWithDropdown(
             value = expenseUiState.paymentMethod,
             onValueChange = {},
@@ -121,12 +140,16 @@ fun ExpenseScreenContent(
             onExpandedChange = { expandedPaymentMethod = it },
             onOptionSelected = onPaymentMethodChange
         )
+
+        // Place input
         OutlinedTextField(
             value = expenseUiState.place,
             onValueChange = onPlaceChange,
             label = { Text("Place") },
             modifier = Modifier.fillMaxWidth()
         )
+
+        // Category dropdown
         OutlinedTextFieldWithDropdown(
             value = expenseUiState.category,
             onValueChange = {},
@@ -136,19 +159,33 @@ fun ExpenseScreenContent(
             onExpandedChange = { expandedCategory = it },
             onOptionSelected = onCategoryChange
         )
+
+        // Description input
         OutlinedTextField(
             value = expenseUiState.description,
             onValueChange = onDescriptionChange,
             label = { Text("Description") },
             modifier = Modifier.fillMaxWidth()
         )
+
         SaveExpenseCheckbox(
             isChecked = expenseUiState.saveExpense,
             onCheckedChange = onSaveDetailsChange
         )
+
+        // Radio buttons to select Income or Expense
+        Row {
+            Text("Income")
+            RadioButton(selected = expenseUiState.isIncome, onClick = onIncomeChange)
+            Spacer(modifier = Modifier.width(16.dp))
+            Text("Expense")
+            RadioButton(selected = !expenseUiState.isIncome, onClick = onExpenseChange)
+        }
+
         ExpenseButton(isSaving = expenseUiState.isSaving, onClick = onConfirmClick)
     }
 }
+
 
 
 @Preview(showBackground = true, showSystemUi = true)
