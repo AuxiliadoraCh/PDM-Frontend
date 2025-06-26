@@ -32,7 +32,7 @@ fun CategoryBlocks(
             .clickable { onCategoryClick() },
         shape = MaterialTheme.shapes.medium,
         colors = CardDefaults.cardColors(
-            containerColor = Color(0xFFFFFEFE),
+            containerColor = Color(0xFFFEF7FF),
         ),
         elevation = CardDefaults.cardElevation(defaultElevation = 1.dp)
     ) {

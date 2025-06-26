@@ -10,7 +10,7 @@ data class ExpenseUi(
     val place: String = "",
     val category: String = "",
     val description: String = "",
-    val date: String = getCurrentDateCompat(),
+    val date: String = "",
     val saveExpense: Boolean = false,
     val isSaving: Boolean = false,
     val isIncome: Boolean = false 

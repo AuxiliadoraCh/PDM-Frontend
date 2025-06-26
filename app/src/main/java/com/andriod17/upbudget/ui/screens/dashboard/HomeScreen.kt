@@ -1,8 +1,10 @@
 package com.andriod17.upbudget.ui.screens.dashboard
 
 import androidx.compose.foundation.layout.Arrangement
+import androidx.compose.foundation.layout.Box
 import androidx.compose.foundation.layout.Column
 import androidx.compose.foundation.layout.Row
+import androidx.compose.foundation.layout.fillMaxSize
 import androidx.compose.foundation.layout.fillMaxWidth
 import androidx.compose.foundation.layout.padding
 import androidx.compose.foundation.rememberScrollState
@@ -54,7 +56,9 @@ fun HomeScreenContent(
         )
 
         Row(
-            modifier = Modifier.fillMaxWidth().padding(vertical = 24.dp),
+            modifier = Modifier
+                .fillMaxWidth()
+                .padding(vertical = 24.dp),
             horizontalArrangement = Arrangement.SpaceEvenly,
             verticalAlignment = Alignment.CenterVertically
         ) {
@@ -72,7 +76,6 @@ fun HomeScreenContent(
         CategoriesSection()
     }
 }
-
 @Composable
 fun HomeScreen(
     navController: NavHostController
@@ -80,26 +83,38 @@ fun HomeScreen(
     val viewModel: HomeScreenViewModel = viewModel()
     val state by viewModel.uiState.collectAsState()
 
+    // Usamos CustomScaffold solo con los parámetros necesarios
     CustomScaffold(
         title = "Dashboard",
-        useOptionsIcon = true,
-        floatingActionButton = {
-            FloatingActionButton(onClick = { /*TODO*/ }) {
-                Icon(Icons.Default.Add, contentDescription = "Add")
-            }
-        },
+        navController = navController,
         content = { innerPadding ->
-            HomeScreenContent(
-                state = state,
-                modifier = Modifier.padding(innerPadding)
-            )
-        },
-        navController = navController
+            Box(modifier = Modifier.padding(innerPadding)) {
+                HomeScreenContent(
+                    state = state,
+                    modifier = Modifier.fillMaxSize()
+                )
+
+                FloatingActionButton(
+                    onClick = { /* TODO: Agregar acción */ },
+                    modifier = Modifier
+                        .align(Alignment.BottomEnd)
+                        .padding(16.dp)
+                ) {
+                    Icon(Icons.Default.Add, contentDescription = "Add")
+                }
+            }
+        }
     )
 }
 
 
-//@Preview(showBackground = true, showSystemUi = true)
-//@Composable
-//fun HomeScreenPreview() {
-//    //HomeScreen()}
+
+
+
+
+@Preview(showBackground = true, showSystemUi = true)
+@Composable
+fun HomeScreenPreview() {
+HomeScreen(
+    navController = NavHostController(context = androidx.compose.ui.platform.LocalContext.current)
+)}

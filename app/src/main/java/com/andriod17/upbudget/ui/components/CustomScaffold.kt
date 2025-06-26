@@ -1,9 +1,12 @@
 package com.andriod17.upbudget.ui.components
 
+import androidx.compose.foundation.background
 import androidx.compose.foundation.layout.PaddingValues
 import androidx.compose.material3.Scaffold
 import androidx.compose.runtime.*
 import androidx.compose.runtime.saveable.rememberSaveable
+import androidx.compose.ui.Modifier
+import androidx.compose.ui.graphics.Color
 import androidx.compose.ui.tooling.preview.Preview
 import androidx.navigation.NavHostController
 import androidx.navigation.compose.rememberNavController
@@ -12,19 +15,11 @@ import com.andriod17.upbudget.ui.icons.IconHome
 import com.andriod17.upbudget.ui.icons.IconPromotions
 import com.andriod17.upbudget.ui.icons.IconSettings
 import com.andriod17.upbudget.ui.navigation.NavItem
-
 @Composable
 fun CustomScaffold(
     title: String = "UPBudget",
-    onBackPressed: () -> Unit = {},
-    onSettingsPressed: () -> Unit = {},
-    showBackButton: Boolean = true,
-    showSettingsIcon: Boolean = true,
-    useOptionsIcon: Boolean = false,
-    onOptionsClick: () -> Unit = {},
-    floatingActionButton: @Composable (() -> Unit)? = null,
-    content: @Composable (PaddingValues) -> Unit = {},
-    navController: NavHostController
+    navController: NavHostController,
+    content: @Composable (PaddingValues) -> Unit
 ) {
     var selectedItem by rememberSaveable { mutableStateOf("home") }
 
@@ -36,15 +31,17 @@ fun CustomScaffold(
     )
 
     Scaffold(
+        modifier = Modifier.background(Color.White), // Asegura que el fondo sea blanco
+        containerColor = Color.White,
         topBar = {
             TopBar(
                 title = title,
-                onBackPressed = onBackPressed,
-                onSettingsPressed = onSettingsPressed,
-                showBackButton = showBackButton,
-                showSettingsIcon = showSettingsIcon,
-                useOptionsIcon = useOptionsIcon,
-                onOptionsClick = onOptionsClick
+                onBackPressed = {},
+                onSettingsPressed = {},
+                showBackButton = true,
+                showSettingsIcon = true,
+                useOptionsIcon = false,
+                onOptionsClick = {}
             )
         },
         bottomBar = {
@@ -56,8 +53,7 @@ fun CustomScaffold(
                     navController.navigate(route)
                 }
             )
-        },
-        floatingActionButton = floatingActionButton ?: {}
+        }
     ) { innerPadding ->
         content(innerPadding)
     }
