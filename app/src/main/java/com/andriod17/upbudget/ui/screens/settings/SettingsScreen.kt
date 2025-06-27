@@ -15,6 +15,7 @@ import androidx.compose.runtime.Composable
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.tooling.preview.Preview
 import androidx.compose.ui.unit.dp
+import androidx.navigation.NavHostController
 import com.andriod17.upbudget.data.model.settings.SettingsOption
 import com.andriod17.upbudget.data.model.user.UserInfo
 import com.andriod17.upbudget.ui.components.CustomScaffold
@@ -22,7 +23,9 @@ import com.andriod17.upbudget.ui.components.SettingsSection
 import com.andriod17.upbudget.ui.components.UserProfileSection
 
 @Composable
-fun SettingsScreen() {
+fun SettingsScreen(
+    navController: NavHostController
+) {
     val accountOptions = listOf(
         SettingsOption(Icons.Filled.Person, "Edit profile") {},
         SettingsOption(Icons.Filled.Lock, "Security") {},
@@ -40,7 +43,8 @@ fun SettingsScreen() {
         SettingsOption(Icons.AutoMirrored.Filled.ExitToApp, "Log out") {}
     )
 
-    CustomScaffold { innerPadding ->
+    CustomScaffold (
+        content = { innerPadding ->
         Column(
             modifier = Modifier
                 .padding(innerPadding)
@@ -70,11 +74,13 @@ fun SettingsScreen() {
 
             Spacer(modifier = Modifier.height(32.dp))
         }
-    }
+    },
+    navController = navController
+    )
 }
 
 @Preview(showBackground = true)
 @Composable
 fun SettingsScreensPreview() {
-    SettingsScreen()
+    //SettingsScreen()
 }

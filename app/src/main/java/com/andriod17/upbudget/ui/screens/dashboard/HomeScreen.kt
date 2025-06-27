@@ -24,32 +24,12 @@ import androidx.compose.material3.FloatingActionButton
 import androidx.compose.material3.Icon
 import androidx.compose.ui.res.painterResource
 import androidx.compose.ui.unit.dp
+import androidx.navigation.NavHostController
 import com.andriod17.upbudget.R
 import com.andriod17.upbudget.data.model.Home.HomeUi
 import com.andriod17.upbudget.ui.components.CategoriesSection
 import com.andriod17.upbudget.ui.components.CustomScaffold
 import com.andriod17.upbudget.ui.components.DashboardActionButton
-
-@Composable
-fun HomeScreen() {
-    val viewModel: HomeScreenViewModel = viewModel()
-    val state by viewModel.uiState.collectAsState()
-
-    CustomScaffold(
-        title = "Dashboard",
-        useOptionsIcon = true,
-        floatingActionButton = {
-            FloatingActionButton(onClick = { /*TODO*/ }) {
-                Icon(Icons.Default.Add, contentDescription = "Add")
-            }
-        }
-    ) { innerPadding ->
-        HomeScreenContent(
-            state = state,
-            modifier = Modifier.padding(innerPadding)
-        )
-    }
-}
 
 @Composable
 fun HomeScreenContent(
@@ -93,7 +73,33 @@ fun HomeScreenContent(
     }
 }
 
-@Preview(showBackground = true, showSystemUi = true)
 @Composable
-fun HomeScreenPreview() {
-    HomeScreen()}
+fun HomeScreen(
+    navController: NavHostController
+) {
+    val viewModel: HomeScreenViewModel = viewModel()
+    val state by viewModel.uiState.collectAsState()
+
+    CustomScaffold(
+        title = "Dashboard",
+        useOptionsIcon = true,
+        floatingActionButton = {
+            FloatingActionButton(onClick = { /*TODO*/ }) {
+                Icon(Icons.Default.Add, contentDescription = "Add")
+            }
+        },
+        content = { innerPadding ->
+            HomeScreenContent(
+                state = state,
+                modifier = Modifier.padding(innerPadding)
+            )
+        },
+        navController = navController
+    )
+}
+
+
+//@Preview(showBackground = true, showSystemUi = true)
+//@Composable
+//fun HomeScreenPreview() {
+//    //HomeScreen()}

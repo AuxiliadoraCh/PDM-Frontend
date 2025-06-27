@@ -1,5 +1,6 @@
 package com.andriod17.upbudget
 
+import MainNavigation
 import android.os.Bundle
 import androidx.activity.ComponentActivity
 import androidx.activity.compose.setContent
@@ -11,6 +12,7 @@ import androidx.compose.material3.Text
 import androidx.compose.runtime.Composable
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.tooling.preview.Preview
+import androidx.navigation.compose.rememberNavController
 import com.andriod17.upbudget.ui.screens.Learning.LearningScreen
 import com.andriod17.upbudget.ui.screens.promotions.PromotionsScreen
 import com.andriod17.upbudget.ui.screens.settings.SettingsScreen
@@ -21,7 +23,8 @@ class MainActivity : ComponentActivity() {
         super.onCreate(savedInstanceState)
         enableEdgeToEdge()
         setContent {
-            PromotionsScreen()
+            val navController = rememberNavController()
+            MainNavigation(navController)
             }
         }
 }

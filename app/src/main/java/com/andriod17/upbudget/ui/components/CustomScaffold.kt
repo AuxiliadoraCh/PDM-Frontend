@@ -67,5 +67,6 @@ fun CustomScaffold(
 @Composable
 fun CustomScaffoldPreview() {
     CustomScaffold {
+        // Puedes poner un Text() o algo visual de prueba
     }
 }

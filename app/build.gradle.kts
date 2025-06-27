@@ -13,8 +13,8 @@ android {
         applicationId = "com.andriod17.upbudget"
         minSdk = 24
         targetSdk = 35
-        versionCode = 1
-        versionName = "1.0"
+        versionCode = 3
+        versionName = "1.2"
 
         testInstrumentationRunner = "androidx.test.runner.AndroidJUnitRunner"
     }
@@ -67,5 +67,9 @@ dependencies {
         implementation(libs.vico.core)
         implementation(libs.vico.compose)
         implementation(libs.vico.compose.m3)
+
+    implementation(libs.retrofit)
+    implementation(libs.converter.gson)
+    implementation(libs.logging.interceptor)
 
 }

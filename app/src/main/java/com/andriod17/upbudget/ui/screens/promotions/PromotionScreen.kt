@@ -11,6 +11,7 @@ import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.tooling.preview.Preview
 import androidx.compose.ui.unit.dp
+import androidx.navigation.NavHostController
 import com.andriod17.upbudget.R
 import com.andriod17.upbudget.data.model.Promotion.PromotionItem
 import com.andriod17.upbudget.ui.components.CouponCard
@@ -21,7 +22,9 @@ import kotlinx.coroutines.launch
 
 @OptIn(ExperimentalMaterial3Api::class)
 @Composable
-fun PromotionsScreen() {
+fun PromotionsScreen(
+    navController : NavHostController
+) {
     val coupons = listOf(
         PromotionItem(
             title = "Food Coupon",
@@ -61,7 +64,10 @@ fun PromotionsScreen() {
     val sheetState = rememberModalBottomSheetState()
     val scope = rememberCoroutineScope()
 
-    CustomScaffold { innerPadding ->
+    CustomScaffold (
+        navController = navController,
+        content =
+    { innerPadding ->
         Box(modifier = Modifier.padding(innerPadding)) {
             Column(modifier = Modifier.fillMaxSize()
 
@@ -140,11 +146,11 @@ fun PromotionsScreen() {
                 }
             }
         }
-    }
+    })
 }
 
 @Preview(showBackground = true)
 @Composable
 fun PromotionScreenPreview() {
-    PromotionsScreen()
+    //PromotionsScreen()
 }
