@@ -51,17 +51,13 @@ dependencies {
         implementation(libs.androidx.material3)
         implementation(libs.navigation.compose)
         implementation(libs.kotlinx.serialization.json)
-<<<<<<< HEAD
         implementation(libs.coil.compose)
         implementation(libs.coil.network.okhttp)
-        implementation(libs.compose)
         testImplementation(libs.junit)
-=======
     implementation(libs.coil.compose)
     implementation(libs.coil.network.okhttp)
-    implementation(libs.ads.mobile.sdk)
+    //implementation(libs.ads.mobile.sdk)
     testImplementation(libs.junit)
->>>>>>> 5144ea01664002d12552014faf2356919dc5edc5
         androidTestImplementation(libs.androidx.junit)
         androidTestImplementation(libs.androidx.espresso.core)
         androidTestImplementation(platform(libs.androidx.compose.bom))
