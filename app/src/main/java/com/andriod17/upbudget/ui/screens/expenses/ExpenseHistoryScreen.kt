@@ -38,8 +38,7 @@ fun ExpenseHistoryScreen(
             income = income,
             expense = expense,
             expenses = expenses
-        ) },
-        navController =
+        ) }, navController =
     )
 }
 

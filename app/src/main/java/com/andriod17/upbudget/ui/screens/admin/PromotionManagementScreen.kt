@@ -30,6 +30,7 @@ import androidx.compose.material3.Icon
 import androidx.compose.material3.OutlinedTextFieldDefaults
 import androidx.compose.runtime.*
 import androidx.compose.ui.tooling.preview.Preview
+import com.andriod17.upbudget.data.model.Promotion.Promotion
 import com.andriod17.upbudget.ui.components.AdminBottomBar
 
 
@@ -40,14 +41,14 @@ fun PromotionManagementScreen() {
     var couponList by remember {
         mutableStateOf(
             listOf(
-                PromotionItem(
+                Promotion(
                     title = "Food Coupon",
                     subtitle = "2x1 Mother’s Day breakfasts at select restaurants",
                     description = "",
                     imageResId = R.drawable.foodcupon,
                     isActive = true
                 ),
-                PromotionItem(
+                Promotion(
                     title = "Pharmacy Coupon",
                     subtitle = "Get a free supplement sample",
                     description = "",

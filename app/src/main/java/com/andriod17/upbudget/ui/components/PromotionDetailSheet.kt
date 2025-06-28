@@ -11,11 +11,11 @@ import androidx.compose.ui.res.painterResource
 import androidx.compose.ui.text.font.FontWeight
 import androidx.compose.ui.text.style.TextAlign
 import androidx.compose.ui.unit.dp
-import com.andriod17.upbudget.data.model.Promotion.PromotionItem
+import com.andriod17.upbudget.data.model.Promotion.Promotion
 import com.andriod17.upbudget.ui.theme.Purple40
 
 @Composable
-fun PromotionDetailSheet(promotion: PromotionItem, onClose: () -> Unit) {
+fun PromotionDetailSheet(promotion: Promotion, onClose: () -> Unit) {
     Column(
         modifier = Modifier
             .fillMaxWidth()

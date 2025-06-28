@@ -13,7 +13,7 @@ import androidx.compose.ui.tooling.preview.Preview
 import androidx.compose.ui.unit.dp
 import androidx.navigation.NavHostController
 import com.andriod17.upbudget.R
-import com.andriod17.upbudget.data.model.Promotion.PromotionItem
+import com.andriod17.upbudget.data.model.Promotion.Promotion
 import com.andriod17.upbudget.ui.components.CouponCard
 import com.andriod17.upbudget.ui.components.CustomScaffold
 import com.andriod17.upbudget.ui.components.PromotionDetailSheet
@@ -26,7 +26,7 @@ fun PromotionsScreen(
     navController : NavHostController
 ) {
     val coupons = listOf(
-        PromotionItem(
+        Promotion(
             title = "Food Coupon",
             subtitle = "5% off in eligible restaurants",
             description = "Only for selected restaurants",
@@ -34,7 +34,7 @@ fun PromotionsScreen(
             restaurantList = listOf("María's Food", "Eli's Pizzas", "Miss Rocío Restaurant", "Guillermo's Bar"),
             couponCode = "FOOD5"
         ),
-        PromotionItem(
+        Promotion(
             title = "Clothing Coupon",
             subtitle = "Free accessory at select stores",
             description = "With purchases over \$25",
@@ -42,7 +42,7 @@ fun PromotionsScreen(
             restaurantList = listOf("María's Food", "Eli's Pizzas", "Miss Rocío Restaurant", "Guillermo's Bar"),
             couponCode = "FOOD5"
         ),
-        PromotionItem(
+        Promotion(
             title = "Pharmacy Coupon",
             subtitle = "Get a free supplement sample",
             description = "On your next purchase",
@@ -50,7 +50,7 @@ fun PromotionsScreen(
             restaurantList = listOf("María's Food", "Eli's Pizzas", "Miss Rocío Restaurant", "Guillermo's Bar"),
             couponCode = "FOOD5"
         ),
-        PromotionItem(
+        Promotion(
             title = "Beauty Coupon",
             subtitle = "10% off in eligible brands",
             description = "Only this weekend",
@@ -60,7 +60,7 @@ fun PromotionsScreen(
         )
     )
 
-    var selectedCoupon by remember { mutableStateOf<PromotionItem?>(null) }
+    var selectedCoupon by remember { mutableStateOf<Promotion?>(null) }
     val sheetState = rememberModalBottomSheetState()
     val scope = rememberCoroutineScope()
 
