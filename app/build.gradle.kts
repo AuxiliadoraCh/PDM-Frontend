@@ -57,6 +57,8 @@ dependencies {
     implementation(libs.coil.compose)
     implementation(libs.coil.network.okhttp)
     implementation(libs.ads.mobile.sdk)
+    implementation(libs.material3)
+    implementation(libs.androidx.material.icons.extended)
     testImplementation(libs.junit)
         androidTestImplementation(libs.androidx.junit)
         androidTestImplementation(libs.androidx.espresso.core)

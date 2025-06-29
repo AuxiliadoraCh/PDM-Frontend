@@ -37,14 +37,14 @@ import com.andriod17.upbudget.viewmodel.Expense.ExpenseScreenViewModel
 fun ExpenseHistoryScreen(
     viewModel: ExpenseScreenViewModel
 ) {
-    var selectedPeriod by remember { mutableStateOf("Mes Actual") }
+    var selectedPeriod by remember { mutableStateOf("Current Month") }
 
     val allExpenses by viewModel.expenses.collectAsState()
     var filteredExpenses by remember { mutableStateOf(listOf<ExpenseUi>()) }
 
-    // Calcular ingresos, egresos y balance usando allExpenses, no filteredExpenses
-    val income = allExpenses.filter { it.isIncome }.sumOf { it.amount.toDoubleOrNull() ?: 0.0 }
-    val expense = allExpenses.filter { !it.isIncome }.sumOf { it.amount.toDoubleOrNull() ?: 0.0 }
+    // Calcular ingresos, egresos y balance usando filteredExpenses, no allExpenses
+    val income = filteredExpenses.filter { it.isIncome }.sumOf { it.amount.toDoubleOrNull() ?: 0.0 }
+    val expense = filteredExpenses.filter { !it.isIncome }.sumOf { it.amount.toDoubleOrNull() ?: 0.0 }
     val balance = income - expense
 
     val categoryViewModel: CategoryViewModel = viewModel()
@@ -144,9 +144,27 @@ fun ExpenseHistoryScreen(
                 }
             )
 
-            LazyColumn {
-                items(filteredExpenses) { expense ->
-                    ExpenseHistoryItem(expense = expense, categoryViewModel = categoryViewModel)
+            if (filteredExpenses.isEmpty()) {
+                Box(
+                    modifier = Modifier
+                        .fillMaxWidth()
+                        .padding(vertical = 32.dp),
+                    contentAlignment = Alignment.Center
+                ) {
+                    Text(
+                        text = "No transactions yet",
+                        style = TextStyle(
+                            fontSize = 18.sp,
+                            fontFamily = FontFamily(Font(R.font.nunito_semibold)),
+                            color = Color.Gray
+                        )
+                    )
+                }
+            } else {
+                LazyColumn {
+                    items(filteredExpenses) { expense ->
+                        ExpenseHistoryItem(expense = expense, categoryViewModel = categoryViewModel)
+                    }
                 }
             }
         }
@@ -158,16 +176,17 @@ fun PreviewExpenseHistoryScreenContent() {
     val viewModel = ExpenseScreenViewModel().apply {
         val exampleExpenses = listOf(
             ExpenseUi(amount = "50.00", paymentMethod = "Cash", category = "Food", description = "Lunch at restaurant", date = "2025-06-01", isIncome = false),
-            ExpenseUi(amount = "200.00", paymentMethod = "Bank Transfer", category = "Education", description = "April salary", date = "2025-06-01", isIncome = true),
-            ExpenseUi(amount = "15.00", paymentMethod = "Card", category = "Beauty", description = "Movie ticket", date = "2025-06-02", isIncome = false)
+            ExpenseUi(amount = "200.00", paymentMethod = "Bank Transfer", category = "Education", description = "April salary", date = "2025-06-03", isIncome = true),
+            ExpenseUi(amount = "15.00", paymentMethod = "Card", category = "Beauty", description = "Movie ticket", date = "2025-04-02", isIncome = false),
+            ExpenseUi(amount = "100.00", paymentMethod = "Cash", category = "Food", description = "Groceries", date = "2025-06-05", isIncome = false),
+            ExpenseUi(amount = "300.00", paymentMethod = "Bank Transfer", category = "Salary", description = "May salary", date = "2025-05-18", isIncome = true),
         )
 
         exampleExpenses.forEach { expense ->
             saveExpense(amount = expense.amount, category = expense.category, description = expense.description, isIncome = expense.isIncome, date = expense.date)
         }
 
-        filterExpensesByPeriod("Mes Actual")
-
+        filterExpensesByPeriod("June 2025")
     }
 
     ExpenseHistoryScreen(viewModel = viewModel)

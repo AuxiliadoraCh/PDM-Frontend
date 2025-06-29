@@ -11,7 +11,6 @@ data class ExpenseUi(
     val category: String = "",
     val description: String = "",
     val date: String = "",
-    val saveExpense: Boolean = false,
     val isSaving: Boolean = false,
     val isIncome: Boolean = false 
 )

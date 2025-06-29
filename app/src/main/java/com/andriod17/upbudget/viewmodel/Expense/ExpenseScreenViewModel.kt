@@ -47,8 +47,12 @@ class ExpenseScreenViewModel : ViewModel() {
         _uiState.value = _uiState.value.copy(description = description)
     }
 
-    fun onSaveDetailsChange(saveDetails: Boolean) {
-        _uiState.value = _uiState.value.copy(saveExpense = saveDetails)
+    fun onDateChange(date: String) {
+        _uiState.value = _uiState.value.copy(date = date)
+    }
+
+    fun onIncomeChange(isIncome: Boolean) {
+        _uiState.value = _uiState.value.copy(isIncome = isIncome)
     }
 
     fun saveExpense(amount: String, category: String, description: String, isIncome: Boolean, date: String? = null) {
@@ -98,6 +102,10 @@ class ExpenseScreenViewModel : ViewModel() {
         val calendar = Calendar.getInstance()
         calendar.time = date
         calendar.set(Calendar.DAY_OF_MONTH, 1)
+        calendar.set(Calendar.HOUR_OF_DAY, 0)
+        calendar.set(Calendar.MINUTE, 0)
+        calendar.set(Calendar.SECOND, 0)
+        calendar.set(Calendar.MILLISECOND, 0)
         return calendar.time
     }
 
@@ -105,9 +113,12 @@ class ExpenseScreenViewModel : ViewModel() {
         val calendar = Calendar.getInstance()
         calendar.time = date
         calendar.set(Calendar.DAY_OF_MONTH, calendar.getActualMaximum(Calendar.DAY_OF_MONTH))
+        calendar.set(Calendar.HOUR_OF_DAY, 23)
+        calendar.set(Calendar.MINUTE, 59)
+        calendar.set(Calendar.SECOND, 59)
+        calendar.set(Calendar.MILLISECOND, 999)
         return calendar.time
     }
-
     private fun getStartOfLastMonth(date: Date): Date {
         val calendar = Calendar.getInstance()
         calendar.time = date
@@ -129,7 +140,7 @@ class ExpenseScreenViewModel : ViewModel() {
         val dateFormatter = SimpleDateFormat("yyyy-MM-dd", Locale.getDefault())
 
         val filteredExpenses = when (period) {
-            "Semana Actual" -> {
+            "Current Week" -> {
                 val startOfWeek = getStartOfWeek(currentDate)
                 val endOfWeek = getEndOfWeek(currentDate)
                 _expenses.value.filter {
@@ -137,7 +148,7 @@ class ExpenseScreenViewModel : ViewModel() {
                     expenseDate != null && expenseDate in startOfWeek..endOfWeek
                 }
             }
-            "Mes Actual" -> {
+            "Current Month" -> {
                 val startOfMonth = getStartOfMonth(currentDate)
                 val endOfMonth = getEndOfMonth(currentDate)
                 _expenses.value.filter {
@@ -145,7 +156,7 @@ class ExpenseScreenViewModel : ViewModel() {
                     expenseDate != null && expenseDate in startOfMonth..endOfMonth
                 }
             }
-            "Mes Anterior" -> {
+            "Last Month" -> {
                 val startOfLastMonth = getStartOfLastMonth(currentDate)
                 val endOfLastMonth = getEndOfLastMonth(currentDate)
                 _expenses.value.filter {
@@ -153,7 +164,7 @@ class ExpenseScreenViewModel : ViewModel() {
                     expenseDate != null && expenseDate in startOfLastMonth..endOfLastMonth
                 }
             }
-            "Últimos 6 Meses" -> {
+            "Last 6 Months" -> {
                 val calendar = Calendar.getInstance()
                 calendar.add(Calendar.MONTH, -6)
                 val start6MonthsAgo = calendar.time
@@ -172,7 +183,6 @@ class ExpenseScreenViewModel : ViewModel() {
         Log.d("ExpenseScreen", "Expenses filtered by period: $filteredExpenses")
         _expenses.value = filteredExpenses
     }
-
     fun getFilteredExpensesByPeriod(period: String, expenses: List<ExpenseUi>): List<ExpenseUi> {
         val currentDate = Calendar.getInstance().time
         val dateFormatter = SimpleDateFormat("yyyy-MM-dd", Locale.getDefault())
@@ -205,36 +215,44 @@ class ExpenseScreenViewModel : ViewModel() {
                         cal.time = expenseDate
                         cal.get(Calendar.MONTH) == month && cal.get(Calendar.YEAR) == year
                     } else false
+                }.sortedByDescending {
+                    try { dateFormatter.parse(it.date) } catch (e: Exception) { null }
                 }
             }
         }
 
         return when (period) {
-            "Semana Actual" -> {
+            "Current Week" -> {
                 val startOfWeek = getStartOfWeek(currentDate)
                 val endOfWeek = getEndOfWeek(currentDate)
                 expenses.filter {
                     val expenseDate = try { dateFormatter.parse(it.date) } catch (e: Exception) { null }
                     expenseDate != null && !expenseDate.before(startOfWeek) && !expenseDate.after(endOfWeek)
+                }.sortedByDescending {
+                    try { dateFormatter.parse(it.date) } catch (e: Exception) { null }
                 }
             }
-            "Mes Actual" -> {
+            "Current Month" -> {
                 val startOfMonth = getStartOfMonth(currentDate)
                 val endOfMonth = getEndOfMonth(currentDate)
                 expenses.filter {
                     val expenseDate = try { dateFormatter.parse(it.date) } catch (e: Exception) { null }
                     expenseDate != null && !expenseDate.before(startOfMonth) && !expenseDate.after(endOfMonth)
+                }.sortedByDescending {
+                    try { dateFormatter.parse(it.date) } catch (e: Exception) { null }
                 }
             }
-            "Mes Anterior" -> {
+            "Last Month" -> {
                 val startOfLastMonth = getStartOfLastMonth(currentDate)
                 val endOfLastMonth = getEndOfLastMonth(currentDate)
                 expenses.filter {
                     val expenseDate = try { dateFormatter.parse(it.date) } catch (e: Exception) { null }
                     expenseDate != null && !expenseDate.before(startOfLastMonth) && !expenseDate.after(endOfLastMonth)
+                }.sortedByDescending {
+                    try { dateFormatter.parse(it.date) } catch (e: Exception) { null }
                 }
             }
-            "Últimos 6 Meses" -> {
+            "Last 6 Months" -> {
                 val calendar = Calendar.getInstance()
                 calendar.add(Calendar.MONTH, -6)
                 val start6MonthsAgo = calendar.time
@@ -246,9 +264,13 @@ class ExpenseScreenViewModel : ViewModel() {
                 expenses.filter {
                     val expenseDate = try { dateFormatter.parse(it.date) } catch (e: Exception) { null }
                     expenseDate != null && !expenseDate.before(start6MonthsAgo) && !expenseDate.after(endOfCurrentMonth)
+                }.sortedByDescending {
+                    try { dateFormatter.parse(it.date) } catch (e: Exception) { null }
                 }
             }
-            else -> expenses
+            else -> expenses.sortedByDescending {
+                try { dateFormatter.parse(it.date) } catch (e: Exception) { null }
+            }
         }
     }
 }

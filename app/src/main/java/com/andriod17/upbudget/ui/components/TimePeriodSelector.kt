@@ -25,7 +25,7 @@ fun TimePeriodSelector(
     var showAllMonths by rememberSaveable { mutableStateOf(false) }
     var currentState by remember { mutableStateOf(selectedPeriod) }
 
-    val timePeriods = listOf("Semana Actual", "Mes Actual", "Mes Anterior", "Últimos 6 Meses")
+    val timePeriods = listOf("Current Week", "Current Month", "Last Month", "Last 6 Months")
 
     val currentMonth = Calendar.getInstance().get(Calendar.MONTH) + 1
     val currentYear = Calendar.getInstance().get(Calendar.YEAR)
@@ -44,7 +44,7 @@ fun TimePeriodSelector(
             modifier = Modifier
                 .clickable {
                     expanded = !expanded
-                    if (currentState == "Últimos 6 Meses" && !showAllMonths) {
+                    if (currentState == "Last 6 Months" && !showAllMonths) {
                         showAllMonths = true
                     }
                 }
@@ -68,8 +68,12 @@ fun TimePeriodSelector(
                     onClick = {
                         currentState = period
                         onPeriodSelected(period)
-                        expanded = false
-                        if (period == "Últimos 6 Meses") showAllMonths = true else showAllMonths = false
+                        if (period == "Last 6 Months") {
+                            showAllMonths = true
+                        } else {
+                            expanded = false
+                            showAllMonths = false
+                        }
                     },
                     modifier = Modifier.padding(8.dp)
                 )
