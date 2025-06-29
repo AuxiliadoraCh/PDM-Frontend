@@ -3,6 +3,7 @@ plugins {
         alias(libs.plugins.kotlin.android)
         alias(libs.plugins.kotlin.compose)
         alias(libs.plugins.kotlin.serialization)
+        alias(libs.plugins.ksp)
 }
 
 android {
@@ -67,9 +68,12 @@ dependencies {
         implementation(libs.vico.core)
         implementation(libs.vico.compose)
         implementation(libs.vico.compose.m3)
+        implementation(libs.room.runtime)
+        implementation(libs.room.ktx)
 
     implementation(libs.retrofit)
     implementation(libs.converter.gson)
     implementation(libs.logging.interceptor)
+    ksp(libs.room.compiler)
 
 }
