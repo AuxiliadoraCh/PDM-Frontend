@@ -2,190 +2,207 @@ package com.andriod17.upbudget.viewmodel.Expense
 
 import android.util.Log
 import androidx.lifecycle.ViewModel
+import androidx.lifecycle.viewModelScope
 import com.andriod17.upbudget.data.model.Expense.ExpenseUi
-import com.andriod17.upbudget.data.model.Expense.getCurrentDateCompat
+import com.andriod17.upbudget.data.model.Expense.TransactionTab
 import kotlinx.coroutines.flow.MutableStateFlow
 import kotlinx.coroutines.flow.StateFlow
+import kotlinx.coroutines.flow.asStateFlow
+import kotlinx.coroutines.flow.combine
+import kotlinx.coroutines.flow.map
+import kotlinx.coroutines.flow.stateIn
+import kotlinx.coroutines.flow.update
 import java.text.SimpleDateFormat
 import java.util.Calendar
 import java.util.Date
 import java.util.Locale
+import java.util.TimeZone
 
-class ExpenseScreenViewModel : ViewModel() {
-    private val _uiState = MutableStateFlow(ExpenseUi())
-    val uiState: StateFlow<ExpenseUi> = _uiState
+class ExpenseScreenViewModel(initialTabIndex: Int = 0) : ViewModel() {
+    private val _incomeTabState = MutableStateFlow(ExpenseUi(selectedTabIndex = TransactionTab.Income.ordinal, isIncome = TransactionTab.Income.isIncome))
+    private val _expenseTabState = MutableStateFlow(ExpenseUi(selectedTabIndex = TransactionTab.Expense.ordinal, isIncome = TransactionTab.Expense.isIncome))
 
-    private val _expenses = MutableStateFlow<List<ExpenseUi>>(emptyList())
-    val expenses: StateFlow<List<ExpenseUi>> = _expenses
+    private val _uiState = MutableStateFlow(
+        if (initialTabIndex == TransactionTab.Income.ordinal) _incomeTabState.value else _expenseTabState.value
+    )
+    val uiState: StateFlow<ExpenseUi> = _uiState.asStateFlow()
 
-    val incomeTotal: Double
-        get() = _expenses.value.filter { it.isIncome }.sumOf { it.amount.toDoubleOrNull() ?: 0.0 }
+    private val _allExpenses = MutableStateFlow<List<ExpenseUi>>(emptyList())
+    val allExpenses: StateFlow<List<ExpenseUi>> = _allExpenses.asStateFlow()
 
-    val expenseTotal: Double
-        get() = _expenses.value.filter { !it.isIncome }.sumOf { it.amount.toDoubleOrNull() ?: 0.0 }
+    private val _selectedPeriod = MutableStateFlow("Current Month")
+    val selectedPeriod: StateFlow<String> = _selectedPeriod.asStateFlow()
 
-    val balance: Double
-        get() = incomeTotal - expenseTotal
+    val filteredExpenses: StateFlow<List<ExpenseUi>> =
+        combine(_allExpenses, _selectedPeriod) { allExpenses, period ->
+            getFilteredExpensesByPeriodLogic(period, allExpenses)
+        }.stateIn(
+            scope = viewModelScope,
+            started = kotlinx.coroutines.flow.SharingStarted.WhileSubscribed(5000),
+            initialValue = emptyList()
+        )
+
+    val incomeTotal: StateFlow<Double> = filteredExpenses.map { expenses ->
+        expenses.filter { it.isIncome }.sumOf { it.amount.toDoubleOrNull() ?: 0.0 }
+    }.stateIn(
+        scope = viewModelScope,
+        started = kotlinx.coroutines.flow.SharingStarted.WhileSubscribed(5000),
+        initialValue = 0.0
+    )
+
+    val expenseTotal: StateFlow<Double> = filteredExpenses.map { expenses ->
+        expenses.filter { !it.isIncome }.sumOf { it.amount.toDoubleOrNull() ?: 0.0 }
+    }.stateIn(
+        scope = viewModelScope,
+        started = kotlinx.coroutines.flow.SharingStarted.WhileSubscribed(5000),
+        initialValue = 0.0
+    )
+
+    val balance: StateFlow<Double> = combine(incomeTotal, expenseTotal) { income, expense ->
+        income - expense
+    }.stateIn(
+        scope = viewModelScope,
+        started = kotlinx.coroutines.flow.SharingStarted.WhileSubscribed(5000),
+        initialValue = 0.0
+    )
+
+    private fun updateActiveTabState(update: (ExpenseUi) -> ExpenseUi) {
+        val currentIsIncome = _uiState.value.isIncome
+        if (currentIsIncome) {
+            _incomeTabState.update(update)
+            _uiState.value = _incomeTabState.value
+        } else {
+            _expenseTabState.update(update)
+            _uiState.value = _expenseTabState.value
+        }
+    }
+
 
     fun onAmountChange(amount: String) {
-        _uiState.value = _uiState.value.copy(amount = amount)
+        updateActiveTabState { it.copy(amount = amount) }
     }
 
     fun onPaymentMethodChange(paymentMethod: String) {
-        _uiState.value = _uiState.value.copy(paymentMethod = paymentMethod)
+        updateActiveTabState { it.copy(paymentMethod = paymentMethod) }
     }
 
     fun onPlaceChange(place: String) {
-        _uiState.value = _uiState.value.copy(place = place)
+        updateActiveTabState { it.copy(place = place) }
     }
 
     fun onCategoryChange(category: String) {
-        _uiState.value = _uiState.value.copy(category = category)
+        updateActiveTabState { it.copy(category = category) }
     }
 
     fun onDescriptionChange(description: String) {
-        _uiState.value = _uiState.value.copy(description = description)
+        updateActiveTabState { it.copy(description = description) }
     }
 
-    fun onDateChange(date: String) {
-        _uiState.value = _uiState.value.copy(date = date)
+    fun showDatePicker() {
+        updateActiveTabState { it.copy(showDatePicker = true) }
     }
 
-    fun onIncomeChange(isIncome: Boolean) {
-        _uiState.value = _uiState.value.copy(isIncome = isIncome)
+    fun hideDatePicker() {
+        updateActiveTabState { it.copy(showDatePicker = false) }
     }
 
-    fun saveExpense(amount: String, category: String, description: String, isIncome: Boolean, date: String? = null) {
-        if (amount.isBlank() || category.isBlank()) return
+    fun onDateSelected(millis: Long?) {
+        updateActiveTabState {
+            val formattedDate = millis?.let { dateMillis ->
+                val utcCalendar = Calendar.getInstance(TimeZone.getTimeZone("UTC"))
+                utcCalendar.timeInMillis = dateMillis
+                val year = utcCalendar.get(Calendar.YEAR)
+                val month = utcCalendar.get(Calendar.MONTH)
+                val day = utcCalendar.get(Calendar.DAY_OF_MONTH)
+                val localCalendar = Calendar.getInstance()
+                localCalendar.set(Calendar.YEAR, year)
+                localCalendar.set(Calendar.MONTH, month)
+                localCalendar.set(Calendar.DAY_OF_MONTH, day)
+                localCalendar.set(Calendar.HOUR_OF_DAY, 0)
+                localCalendar.set(Calendar.MINUTE, 0)
+                localCalendar.set(Calendar.SECOND, 0)
+                localCalendar.set(Calendar.MILLISECOND, 0)
+                val formatter = SimpleDateFormat("yyyy-MM-dd", Locale.getDefault())
+                formatter.timeZone = TimeZone.getDefault()
+                formatter.format(localCalendar.time)
+            } ?: ""
+            it.copy(date = formattedDate, showDatePicker = false, selectedDateMillis = millis)
+        }
+    }
 
-        val dateFormatter = SimpleDateFormat("yyyy-MM-dd", Locale.getDefault())
-        val formattedDate = if (date != null) {
-            try {
-                dateFormatter.format(dateFormatter.parse(date) ?: Date())
-            } catch (e: Exception) {
-                dateFormatter.format(Date())
-            }
+    fun onTabSelected(newTabIndex: Int) {
+        val currentUiStateValue = _uiState.value
+
+        if (currentUiStateValue.isIncome) {
+            _incomeTabState.value = currentUiStateValue
         } else {
-            val currentDate = getCurrentDateCompat()
-            try {
-                dateFormatter.format(dateFormatter.parse(currentDate) ?: Date())
-            } catch (e: Exception) {
-                dateFormatter.format(Date())
-            }
+            _expenseTabState.value = currentUiStateValue
         }
-        val newExpense = ExpenseUi(
-            amount = amount,
-            category = category,
-            description = description,
-            isIncome = isIncome,
-            date = formattedDate
+
+        val newIsIncome = TransactionTab.entries[newTabIndex].isIncome
+        val targetTabState = if (newIsIncome) _incomeTabState.value else _expenseTabState.value
+
+        _uiState.value = targetTabState.copy(
+            selectedTabIndex = newTabIndex,
+            isIncome = newIsIncome,
+            showDatePicker = false
         )
-        _expenses.value += newExpense
     }
 
-    private fun getStartOfWeek(date: Date): Date {
-        val calendar = Calendar.getInstance()
-        calendar.time = date
-        calendar.set(Calendar.DAY_OF_WEEK, calendar.firstDayOfWeek)
-        return calendar.time
+
+    fun onPeriodSelected(period: String) {
+        _selectedPeriod.update { period }
     }
 
-    private fun getEndOfWeek(date: Date): Date {
-        val calendar = Calendar.getInstance()
-        calendar.time = date
-        calendar.set(Calendar.DAY_OF_WEEK, calendar.firstDayOfWeek)
-        calendar.add(Calendar.DAY_OF_WEEK, 6)
-        return calendar.time
-    }
+    fun saveExpense() {
+        val currentUiState = _uiState.value
 
-    private fun getStartOfMonth(date: Date): Date {
-        val calendar = Calendar.getInstance()
-        calendar.time = date
-        calendar.set(Calendar.DAY_OF_MONTH, 1)
-        calendar.set(Calendar.HOUR_OF_DAY, 0)
-        calendar.set(Calendar.MINUTE, 0)
-        calendar.set(Calendar.SECOND, 0)
-        calendar.set(Calendar.MILLISECOND, 0)
-        return calendar.time
-    }
-
-    private fun getEndOfMonth(date: Date): Date {
-        val calendar = Calendar.getInstance()
-        calendar.time = date
-        calendar.set(Calendar.DAY_OF_MONTH, calendar.getActualMaximum(Calendar.DAY_OF_MONTH))
-        calendar.set(Calendar.HOUR_OF_DAY, 23)
-        calendar.set(Calendar.MINUTE, 59)
-        calendar.set(Calendar.SECOND, 59)
-        calendar.set(Calendar.MILLISECOND, 999)
-        return calendar.time
-    }
-    private fun getStartOfLastMonth(date: Date): Date {
-        val calendar = Calendar.getInstance()
-        calendar.time = date
-        calendar.add(Calendar.MONTH, -1)
-        calendar.set(Calendar.DAY_OF_MONTH, 1)
-        return calendar.time
-    }
-
-    private fun getEndOfLastMonth(date: Date): Date {
-        val calendar = Calendar.getInstance()
-        calendar.time = date
-        calendar.add(Calendar.MONTH, -1)
-        calendar.set(Calendar.DAY_OF_MONTH, calendar.getActualMaximum(Calendar.DAY_OF_MONTH))
-        return calendar.time
-    }
-
-    fun filterExpensesByPeriod(period: String) {
-        val currentDate = Calendar.getInstance().time
-        val dateFormatter = SimpleDateFormat("yyyy-MM-dd", Locale.getDefault())
-
-        val filteredExpenses = when (period) {
-            "Current Week" -> {
-                val startOfWeek = getStartOfWeek(currentDate)
-                val endOfWeek = getEndOfWeek(currentDate)
-                _expenses.value.filter {
-                    val expenseDate = try { dateFormatter.parse(it.date) } catch (e: Exception) { null }
-                    expenseDate != null && expenseDate in startOfWeek..endOfWeek
-                }
-            }
-            "Current Month" -> {
-                val startOfMonth = getStartOfMonth(currentDate)
-                val endOfMonth = getEndOfMonth(currentDate)
-                _expenses.value.filter {
-                    val expenseDate = try { dateFormatter.parse(it.date) } catch (e: Exception) { null }
-                    expenseDate != null && expenseDate in startOfMonth..endOfMonth
-                }
-            }
-            "Last Month" -> {
-                val startOfLastMonth = getStartOfLastMonth(currentDate)
-                val endOfLastMonth = getEndOfLastMonth(currentDate)
-                _expenses.value.filter {
-                    val expenseDate = try { dateFormatter.parse(it.date) } catch (e: Exception) { null }
-                    expenseDate != null && expenseDate in startOfLastMonth..endOfLastMonth
-                }
-            }
-            "Last 6 Months" -> {
-                val calendar = Calendar.getInstance()
-                calendar.add(Calendar.MONTH, -6)
-                val start6MonthsAgo = calendar.time
-
-                val endCalendar = Calendar.getInstance()
-                endCalendar.set(Calendar.DAY_OF_MONTH, endCalendar.getActualMaximum(Calendar.DAY_OF_MONTH))
-                val endOfCurrentMonth = endCalendar.time
-
-                _expenses.value.filter {
-                    val expenseDate = try { dateFormatter.parse(it.date) } catch (e: Exception) { null }
-                    expenseDate != null && !expenseDate.before(start6MonthsAgo) && !expenseDate.after(endOfCurrentMonth)
-                }
-            }
-            else -> _expenses.value
+        if (currentUiState.amount.isBlank() || currentUiState.category.isBlank() || currentUiState.date.isBlank()) {
+            Log.e("ExpenseScreenViewModel", "Cannot save expense: Amount, category, or date is blank.")
+            return
         }
-        Log.d("ExpenseScreen", "Expenses filtered by period: $filteredExpenses")
-        _expenses.value = filteredExpenses
+
+        val newExpense = ExpenseUi(
+            amount = currentUiState.amount,
+            category = currentUiState.category,
+            description = currentUiState.description,
+            isIncome = currentUiState.isIncome,
+            date = currentUiState.date,
+            paymentMethod = currentUiState.paymentMethod,
+            place = currentUiState.place,
+            selectedDateMillis = currentUiState.selectedDateMillis
+        )
+
+        _allExpenses.update { it + newExpense }
+
+        _incomeTabState.value = ExpenseUi(
+            selectedTabIndex = TransactionTab.Income.ordinal,
+            isIncome = TransactionTab.Income.isIncome
+        )
+        _expenseTabState.value = ExpenseUi(
+            selectedTabIndex = TransactionTab.Expense.ordinal,
+            isIncome = TransactionTab.Expense.isIncome
+        )
+
+        _uiState.value = if (currentUiState.isIncome) _incomeTabState.value else _expenseTabState.value
     }
-    fun getFilteredExpensesByPeriod(period: String, expenses: List<ExpenseUi>): List<ExpenseUi> {
+
+    internal fun setExpensesForPreview(expenses: List<ExpenseUi>) {
+        _allExpenses.value = expenses
+    }
+
+    fun clearStates() {
+        _incomeTabState.value = ExpenseUi(selectedTabIndex = TransactionTab.Income.ordinal, isIncome = TransactionTab.Income.isIncome)
+        _expenseTabState.value = ExpenseUi(selectedTabIndex = TransactionTab.Expense.ordinal, isIncome = TransactionTab.Expense.isIncome)
+
+        val currentActiveTabWasIncome = _uiState.value.isIncome
+        _uiState.value = if (currentActiveTabWasIncome) _incomeTabState.value else _expenseTabState.value
+    }
+
+    private fun getFilteredExpensesByPeriodLogic(period: String, expenses: List<ExpenseUi>): List<ExpenseUi> {
         val currentDate = Calendar.getInstance().time
         val dateFormatter = SimpleDateFormat("yyyy-MM-dd", Locale.getDefault())
+        dateFormatter.timeZone = TimeZone.getDefault()
 
         val monthYearRegex = Regex("^(January|February|March|April|May|June|July|August|September|October|November|December) \\d{4}")
         if (monthYearRegex.matches(period)) {
@@ -272,5 +289,73 @@ class ExpenseScreenViewModel : ViewModel() {
                 try { dateFormatter.parse(it.date) } catch (e: Exception) { null }
             }
         }
+    }
+
+    private fun getStartOfWeek(date: Date): Date {
+        val calendar = Calendar.getInstance()
+        calendar.time = date
+        calendar.set(Calendar.DAY_OF_WEEK, calendar.firstDayOfWeek)
+        calendar.set(Calendar.HOUR_OF_DAY, 0)
+        calendar.set(Calendar.MINUTE, 0)
+        calendar.set(Calendar.SECOND, 0)
+        calendar.set(Calendar.MILLISECOND, 0)
+        return calendar.time
+    }
+
+    private fun getEndOfWeek(date: Date): Date {
+        val calendar = Calendar.getInstance()
+        calendar.time = date
+        calendar.set(Calendar.DAY_OF_WEEK, calendar.firstDayOfWeek)
+        calendar.add(Calendar.DAY_OF_WEEK, 6)
+        calendar.set(Calendar.HOUR_OF_DAY, 23)
+        calendar.set(Calendar.MINUTE, 59)
+        calendar.set(Calendar.SECOND, 59)
+        calendar.set(Calendar.MILLISECOND, 999)
+        return calendar.time
+    }
+
+    private fun getStartOfMonth(date: Date): Date {
+        val calendar = Calendar.getInstance()
+        calendar.time = date
+        calendar.set(Calendar.DAY_OF_MONTH, 1)
+        calendar.set(Calendar.HOUR_OF_DAY, 0)
+        calendar.set(Calendar.MINUTE, 0)
+        calendar.set(Calendar.SECOND, 0)
+        calendar.set(Calendar.MILLISECOND, 0)
+        return calendar.time
+    }
+
+    private fun getEndOfMonth(date: Date): Date {
+        val calendar = Calendar.getInstance()
+        calendar.time = date
+        calendar.set(Calendar.DAY_OF_MONTH, calendar.getActualMaximum(Calendar.DAY_OF_MONTH))
+        calendar.set(Calendar.HOUR_OF_DAY, 23)
+        calendar.set(Calendar.MINUTE, 59)
+        calendar.set(Calendar.SECOND, 59)
+        calendar.set(Calendar.MILLISECOND, 999)
+        return calendar.time
+    }
+    private fun getStartOfLastMonth(date: Date): Date {
+        val calendar = Calendar.getInstance()
+        calendar.time = date
+        calendar.add(Calendar.MONTH, -1)
+        calendar.set(Calendar.DAY_OF_MONTH, 1)
+        calendar.set(Calendar.HOUR_OF_DAY, 0)
+        calendar.set(Calendar.MINUTE, 0)
+        calendar.set(Calendar.SECOND, 0)
+        calendar.set(Calendar.MILLISECOND, 0)
+        return calendar.time
+    }
+
+    private fun getEndOfLastMonth(date: Date): Date {
+        val calendar = Calendar.getInstance()
+        calendar.time = date
+        calendar.add(Calendar.MONTH, -1)
+        calendar.set(Calendar.DAY_OF_MONTH, calendar.getActualMaximum(Calendar.DAY_OF_MONTH))
+        calendar.set(Calendar.HOUR_OF_DAY, 23)
+        calendar.set(Calendar.MINUTE, 59)
+        calendar.set(Calendar.SECOND, 59)
+        calendar.set(Calendar.MILLISECOND, 999)
+        return calendar.time
     }
 }

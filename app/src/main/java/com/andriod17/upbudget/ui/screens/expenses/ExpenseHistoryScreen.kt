@@ -10,9 +10,6 @@ import androidx.compose.runtime.Composable
 import androidx.compose.runtime.LaunchedEffect
 import androidx.compose.runtime.collectAsState
 import androidx.compose.runtime.getValue
-import androidx.compose.runtime.mutableStateOf
-import androidx.compose.runtime.remember
-import androidx.compose.runtime.setValue
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.graphics.Color
@@ -35,24 +32,16 @@ import com.andriod17.upbudget.viewmodel.Expense.ExpenseScreenViewModel
 
 @Composable
 fun ExpenseHistoryScreen(
-    viewModel: ExpenseScreenViewModel
+    viewModel: ExpenseScreenViewModel = viewModel() // Asegúrate de que el ViewModel se inicie aquí
 ) {
-    var selectedPeriod by remember { mutableStateOf("Current Month") }
-
-    val allExpenses by viewModel.expenses.collectAsState()
-    var filteredExpenses by remember { mutableStateOf(listOf<ExpenseUi>()) }
-
-    // Calcular ingresos, egresos y balance usando filteredExpenses, no allExpenses
-    val income = filteredExpenses.filter { it.isIncome }.sumOf { it.amount.toDoubleOrNull() ?: 0.0 }
-    val expense = filteredExpenses.filter { !it.isIncome }.sumOf { it.amount.toDoubleOrNull() ?: 0.0 }
-    val balance = income - expense
+    val selectedPeriod by viewModel.selectedPeriod.collectAsState()
+    val filteredExpenses by viewModel.filteredExpenses.collectAsState()
+    val income by viewModel.incomeTotal.collectAsState()
+    val expense by viewModel.expenseTotal.collectAsState()
+    val balance by viewModel.balance.collectAsState()
 
     val categoryViewModel: CategoryViewModel = viewModel()
     val navController = rememberNavController()
-
-    LaunchedEffect(selectedPeriod, allExpenses) {
-        filteredExpenses = viewModel.getFilteredExpensesByPeriod(selectedPeriod, allExpenses)
-    }
 
     CustomScaffold(title = "Expense History", navController = navController) { innerPadding ->
         Column(
@@ -140,7 +129,7 @@ fun ExpenseHistoryScreen(
             TimePeriodSelector(
                 selectedPeriod = selectedPeriod,
                 onPeriodSelected = { period ->
-                    selectedPeriod = period
+                    viewModel.onPeriodSelected(period)
                 }
             )
 
@@ -170,6 +159,7 @@ fun ExpenseHistoryScreen(
         }
     }
 }
+
 @SuppressLint("ViewModelConstructorInComposable")
 @Composable
 fun PreviewExpenseHistoryScreenContent() {
@@ -180,15 +170,15 @@ fun PreviewExpenseHistoryScreenContent() {
             ExpenseUi(amount = "15.00", paymentMethod = "Card", category = "Beauty", description = "Movie ticket", date = "2025-04-02", isIncome = false),
             ExpenseUi(amount = "100.00", paymentMethod = "Cash", category = "Food", description = "Groceries", date = "2025-06-05", isIncome = false),
             ExpenseUi(amount = "300.00", paymentMethod = "Bank Transfer", category = "Salary", description = "May salary", date = "2025-05-18", isIncome = true),
+            ExpenseUi(amount = "75.00", paymentMethod = "Credit Card", category = "Transportation", description = "Gas", date = "2025-06-07", isIncome = false),
+            ExpenseUi(amount = "120.00", paymentMethod = "Cash", category = "Entertainment", description = "Concert tickets", date = "2025-06-08", isIncome = false),
+            ExpenseUi(amount = "500.00", paymentMethod = "Bank Transfer", category = "Investment", description = "Investment gain", date = "2025-06-10", isIncome = true),
         )
 
-        exampleExpenses.forEach { expense ->
-            saveExpense(amount = expense.amount, category = expense.category, description = expense.description, isIncome = expense.isIncome, date = expense.date)
-        }
+        setExpensesForPreview(exampleExpenses)
 
-        filterExpensesByPeriod("June 2025")
+        onPeriodSelected("Current Month")
     }
-
     ExpenseHistoryScreen(viewModel = viewModel)
 }
 

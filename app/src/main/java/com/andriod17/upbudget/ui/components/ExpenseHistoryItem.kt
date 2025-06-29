@@ -139,27 +139,28 @@ fun ExpenseHistoryItem(expense: ExpenseUi, categoryViewModel: CategoryViewModel)
 
 @Composable
 fun PreviewExpenseHistoryItem() {
-    // Datos de ejemplo de ExpenseUi
     val exampleExpense = ExpenseUi(
-        amount = "50.00",
+        amount = "100.00",
         paymentMethod = "Cash",
-        category = "Food", // Nombre de la categoría
-        description = "Lunch at restaurant",
-        date = "2024-04-01",
-        isIncome = false // Gasto
+        place = "Supermarket",
+        category = "Food",
+        description = "Groceries",
+        date = "2025-06-28",
+        isSaving = false,
+        isIncome = false, // Gasto
+        showDatePicker = false,
+        selectedTabIndex = 0,
+        selectedDateMillis = null
     )
 
-    // Usamos el ViewModel de categorías
     val categoryViewModel: CategoryViewModel = viewModel()
 
-    // Mostrar el ExpenseHistoryItem con los datos de ejemplo
     ExpenseHistoryItem(expense = exampleExpense, categoryViewModel = categoryViewModel)
 }
 
 @Preview(showBackground = true)
 @Composable
 fun PreviewExpenseHistoryScreen() {
-    // Mostrar los ítems de ejemplo en un LazyColumn para visualizar el historial completo
     LazyColumn {
         items(1) { // Solo una entrada de ejemplo
             PreviewExpenseHistoryItem()

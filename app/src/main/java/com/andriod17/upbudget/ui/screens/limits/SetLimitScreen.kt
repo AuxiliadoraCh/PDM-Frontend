@@ -1,5 +1,6 @@
 package com.andriod17.upbudget.ui.screens.limits
 
+import android.annotation.SuppressLint
 import android.os.Build
 import androidx.compose.foundation.layout.*
 import androidx.compose.foundation.lazy.LazyColumn
@@ -17,6 +18,7 @@ import androidx.compose.ui.platform.LocalDensity
 import androidx.lifecycle.viewmodel.compose.viewModel
 import androidx.navigation.compose.rememberNavController
 import com.andriod17.upbudget.data.model.Category.CategoryUi
+import com.andriod17.upbudget.data.model.Expense.ExpenseUi
 import com.andriod17.upbudget.ui.components.CategoryBlocks
 import com.andriod17.upbudget.ui.components.CustomScaffold
 import com.andriod17.upbudget.viewmodel.Category.CategoryViewModel
@@ -29,9 +31,9 @@ fun SetLimitScreen(
     onCategoryClick: (String) -> Unit
 ) {
     val categoryState by categoryViewModel.uiState.collectAsState()
-    val expenses by expenseViewModel.expenses.collectAsState()
+    val allExpenses by expenseViewModel.allExpenses.collectAsState()
 
-    val spentByCategory = categoryViewModel.calculateSpentByCategory(expenses)
+    val spentByCategory = categoryViewModel.calculateSpentByCategory(allExpenses)
     val navController = rememberNavController()
 
     CustomScaffold(title = "Monthly Spending Limit", navController = navController) { innerPadding ->
@@ -67,7 +69,6 @@ fun SetLimitScreenContent(
                 categoryName = category.name,
                 categoryIcon = category.iconResId,
                 currentLimit = if (category.limit != null) {
-                    val limit = spentByCategory[category.name] ?: 0.0
                     "$${"%.2f".format(category.limit)}"
                 } else {
                     "Not set"
@@ -80,10 +81,22 @@ fun SetLimitScreenContent(
 }
 
 
+@SuppressLint("ViewModelConstructorInComposable")
 @Preview(showBackground = true, showSystemUi = true     )
 @Composable
 fun PreviewSetLimitScreen() {
+    val expenseViewModel = ExpenseScreenViewModel().apply {
+        setExpensesForPreview(listOf(
+            ExpenseUi(amount = "50.00", category = "Food", isIncome = false, date = "2025-06-28"),
+            ExpenseUi(amount = "25.00", category = "Food", isIncome = false, date = "2025-06-27"),
+            ExpenseUi(amount = "10.00", category = "Health", isIncome = false, date = "2025-06-26"),
+            ExpenseUi(amount = "120.00", category = "Travel", isIncome = false, date = "2025-06-25"),
+            ExpenseUi(amount = "80.00", category = "Food", isIncome = false, date = "2025-05-15") // Gasto de otro mes
+        ))
+    }
+
     SetLimitScreen(
+        expenseViewModel = expenseViewModel, // Pasa el ViewModel con los datos de prueba
         onCategoryClick = { category -> println("Category clicked: $category") }
     )
 }
