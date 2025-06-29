@@ -21,13 +21,17 @@ import com.andriod17.upbudget.data.model.user.UserInfo
 import com.andriod17.upbudget.ui.components.CustomScaffold
 import com.andriod17.upbudget.ui.components.SettingsSection
 import com.andriod17.upbudget.ui.components.UserProfileSection
+import com.andriod17.upbudget.ui.navigation.EditProfileNavigation
+import com.andriod17.upbudget.ui.navigation.HomeNavigation
 
 @Composable
 fun SettingsScreen(
-    navController: NavHostController
+    navController: NavHostController,
 ) {
     val accountOptions = listOf(
-        SettingsOption(Icons.Filled.Person, "Edit profile") {},
+        SettingsOption(Icons.Filled.Person, "Edit profile") {
+            navController.navigate(EditProfileNavigation)
+        },
         SettingsOption(Icons.Filled.Lock, "Security") {},
         SettingsOption(Icons.Filled.Notifications, "Notifications") {},
     )
@@ -75,7 +79,10 @@ fun SettingsScreen(
             Spacer(modifier = Modifier.height(32.dp))
         }
     },
-    navController = navController
+        navController = navController,
+        onBackPressed = {
+            navController.navigate(HomeNavigation)
+        }
     )
 }
 

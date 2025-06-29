@@ -24,6 +24,7 @@ import com.andriod17.upbudget.viewmodel.Learning.LearningViewModel
 import androidx.lifecycle.viewmodel.compose.viewModel
 import androidx.navigation.NavHostController
 import com.andriod17.upbudget.R
+import com.andriod17.upbudget.ui.navigation.HomeNavigation
 import com.andriod17.upbudget.viewmodel.Learning.LearningViewModelFactory
 
 @Composable
@@ -67,7 +68,11 @@ fun LearningScreen(
                 }
             }
         },
-        navController = navController
+        navController = navController,
+        onBackPressed = {
+            navController.navigate(HomeNavigation)
+        }
+
     )
 }
 
