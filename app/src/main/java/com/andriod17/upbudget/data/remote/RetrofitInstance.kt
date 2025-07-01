@@ -1,5 +1,6 @@
 package com.andriod17.upbudget.data.remote
 
+import com.andriod17.upbudget.data.remote.used_coupon.UsedCouponService
 import okhttp3.OkHttpClient
 import okhttp3.logging.HttpLoggingInterceptor
 import retrofit2.Retrofit
@@ -19,4 +20,8 @@ object RetrofitInstance {
         .client(client)
         .addConverterFactory(GsonConverterFactory.create())
         .build()
+
+    val usedCouponService : UsedCouponService by lazy {
+        retrofit.create(UsedCouponService::class.java)
+    }
 }

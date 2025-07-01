@@ -3,9 +3,10 @@ import android.content.Context
 import androidx.room.Database
 import androidx.room.Room
 import androidx.room.RoomDatabase
+import com.andriod17.upbudget.data.database.entities.UsedCouponEntity
 
 @Database(
-    entities = [],
+    entities = [UsedCouponEntity::class],
     version = 1,
     exportSchema = false
 )
