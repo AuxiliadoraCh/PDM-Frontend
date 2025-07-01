@@ -5,6 +5,7 @@ import com.andriod17.upbudget.data.database.dao.PromotionDao
 import com.andriod17.upbudget.data.model.Promotion.PromotionItem
 import com.andriod17.upbudget.data.remote.promotion.PromotionService
 import com.andriod17.upbudget.data.remote.responses.toEntity
+import com.andriod17.upbudget.data.remote.responses.toDomain
 import com.andriod17.upbudget.helpers.Resource
 import kotlinx.coroutines.Dispatchers
 import kotlinx.coroutines.flow.Flow
@@ -13,6 +14,7 @@ import kotlinx.coroutines.flow.flow
 import kotlinx.coroutines.flow.flowOn
 import com.andriod17.upbudget.data.database.entitites.toDomain
 import com.andriod17.upbudget.data.database.entitites.toEntity
+import com.andriod17.upbudget.data.model.Promotion.Request.PromotionStatus
 import kotlinx.coroutines.flow.distinctUntilChanged
 import kotlinx.coroutines.flow.map
 import kotlinx.coroutines.withContext
@@ -149,6 +151,31 @@ class PromotionRepositoryImpl(
                     Resource.Error("Failed to delete promotion: ${localError.message}")
                 }
             }
+        }
+
+    }
+
+    override suspend fun updatePromotionStatus(promotionId: Int, isActive: Boolean): Resource<PromotionItem> {
+        return try {
+            val request = PromotionStatus(active = isActive)
+            val response = promotionService.updatePromotionStatus(promotionId, request)
+
+            if (response.isSuccessful && response.body() != null){
+                val promotionResponse = response.body()!!
+                val promotion = promotionResponse.toDomain()
+
+                promotionDao.updatePromotionStatus(promotionResponse.id, promotionResponse.active)
+                Resource.Success(promotion)
+            } else {
+                val errorBody = response.errorBody()?.string()
+                Log.d("PromotionRepositoryImpl", "Error al actualizar estado: ${response.code()} - $errorBody")
+                Resource.Error(errorBody?: "Error al actualizar estado")
+            }
+
+
+        } catch(e: Exception){
+            Log.d("PromotionRepositoryImpl", "Exception updating state: ${e.message}")
+            Resource.Error(e.message ?: "Error de conexion")
         }
     }
 }

@@ -13,4 +13,5 @@ interface PromotionRepository {
     fun getActivePromotionsCount(): Flow<Resource<Int>>
     //fun getCurrentPromotions(currentDate: Long): Flow<Resource<List<PromotionItem>>>
     suspend fun deletePromotion(promotion: PromotionItem): Resource<Unit>
+    suspend fun updatePromotionStatus(promotionId: Int, isActive: Boolean): Resource<PromotionItem>
 }
