@@ -30,11 +30,14 @@ import com.andriod17.upbudget.data.model.Home.HomeUi
 import com.andriod17.upbudget.ui.components.CategoriesSection
 import com.andriod17.upbudget.ui.components.CustomScaffold
 import com.andriod17.upbudget.ui.components.DashboardActionButton
+import com.andriod17.upbudget.ui.navigation.PromotionsNavigation
 
 @Composable
 fun HomeScreenContent(
     state: HomeUi,
-    modifier: Modifier = Modifier
+    modifier: Modifier = Modifier,
+    navController: NavHostController,
+
 ) {
     Column(
         modifier = modifier
@@ -61,7 +64,9 @@ fun HomeScreenContent(
             DashboardActionButton(
                 iconPainter = painterResource(R.drawable.promotions),
                 label = "Promotions",
-                onClick = { /* TODO */ }
+                onClick = {
+                    navController.navigate(PromotionsNavigation)
+                }
             )
             DashboardActionButton(
                 iconVector = Icons.Default.Info,
@@ -81,7 +86,6 @@ fun HomeScreen(
     val state by viewModel.uiState.collectAsState()
 
     CustomScaffold(
-        title = "Dashboard",
         useOptionsIcon = true,
         floatingActionButton = {
             FloatingActionButton(onClick = { /*TODO*/ }) {
@@ -91,7 +95,8 @@ fun HomeScreen(
         content = { innerPadding ->
             HomeScreenContent(
                 state = state,
-                modifier = Modifier.padding(innerPadding)
+                modifier = Modifier.padding(innerPadding),
+                navController = navController
             )
         },
         navController = navController
@@ -99,7 +104,3 @@ fun HomeScreen(
 }
 
 
-//@Preview(showBackground = true, showSystemUi = true)
-//@Composable
-//fun HomeScreenPreview() {
-//    //HomeScreen()}

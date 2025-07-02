@@ -27,14 +27,20 @@ import androidx.compose.foundation.lazy.items
 import androidx.compose.material.icons.Icons
 import androidx.compose.material.icons.filled.Search
 import androidx.compose.material3.Icon
+import androidx.compose.material3.MaterialTheme
 import androidx.compose.material3.OutlinedTextFieldDefaults
 import androidx.compose.runtime.*
 import androidx.compose.ui.tooling.preview.Preview
+import androidx.navigation.NavHostController
 import com.andriod17.upbudget.ui.components.AdminBottomBar
+import com.andriod17.upbudget.ui.components.CustomAdminScaffold
+import com.andriod17.upbudget.ui.navigation.AdminHomeNavigation
 
 
 @Composable
-fun PromotionManagementScreen() {
+fun PromotionManagementScreen(
+    navHostController: NavHostController
+) {
     var searchQuery by remember { mutableStateOf(TextFieldValue("")) }
     var selectedItem by remember { mutableStateOf("admin_home") }
     var couponList by remember {
@@ -58,55 +64,70 @@ fun PromotionManagementScreen() {
         )
     }
 
-    Column(modifier = Modifier.fillMaxSize()) {
-        TopBar(
-            title = "Promotions management",
-            onBackPressed = {},
-            onSettingsPressed = {}
-        )
-
-        OutlinedTextField(
-            value = searchQuery,
-            onValueChange = { searchQuery = it },
-            placeholder = { Text("Find promotion") },
-            modifier = Modifier
-                .fillMaxWidth()
-                .padding(16.dp),
-            leadingIcon = {
-                Icon(
-                    imageVector = Icons.Filled.Search,
-                    contentDescription = null
+    CustomAdminScaffold(
+        navController = navHostController,
+        onBackPressed = {
+            navHostController.navigate(AdminHomeNavigation)
+        },
+        showBackButton = true,
+        showSettingsIcon = false,
+        content = { innerPadding ->
+            Column(
+                modifier = Modifier
+                    .padding(innerPadding)
+                    .padding(bottom = 64.dp)
+                    .fillMaxSize()
+            ) {
+                Text(
+                    text = "Promotions Management",
+                    style = MaterialTheme.typography.headlineSmall,
+                    modifier = Modifier.padding(horizontal = 16.dp, vertical = 12.dp)
                 )
-            }
-        )
 
-        LazyColumn(modifier = Modifier
-            .weight(1f) // 👈 Deja espacio para el BottomBar
-            .padding(horizontal = 8.dp)) {
-            items(couponList) { coupon ->
-                AdminCouponCard(
-                    title = coupon.title,
-                    subtitle = coupon.subtitle,
-                    imageResId = coupon.imageResId,
-                    isActive = coupon.isActive,
-                    onToggleActive = { newValue ->
-                        couponList = couponList.map {
-                            if (it.title == coupon.title) it.copy(isActive = newValue) else it
-                        }
+                OutlinedTextField(
+                    value = searchQuery,
+                    onValueChange = { searchQuery = it },
+                    placeholder = { Text("Find promotion") },
+                    modifier = Modifier
+                        .fillMaxWidth()
+                        .padding(horizontal = 16.dp),
+                    leadingIcon = {
+                        Icon(
+                            imageVector = Icons.Filled.Search,
+                            contentDescription = null
+                        )
                     }
                 )
+
+                LazyColumn(
+                    modifier = Modifier
+                        .weight(1f)
+                        .padding(8.dp)
+                ) {
+                    items(couponList.filter {
+                        it.title.contains(searchQuery.text, ignoreCase = true) ||
+                                it.subtitle.contains(searchQuery.text, ignoreCase = true)
+                    }) { coupon ->
+                        AdminCouponCard(
+                            title = coupon.title,
+                            subtitle = coupon.subtitle,
+                            imageResId = coupon.imageResId,
+                            isActive = coupon.isActive,
+                            onToggleActive = { newValue ->
+                                couponList = couponList.map {
+                                    if (it.title == coupon.title) it.copy(isActive = newValue) else it
+                                }
+                            }
+                        )
+                    }
+                }
             }
         }
-
-        AdminBottomBar(
-            selectedItem = selectedItem,
-            onItemSelected = { selectedItem = it }
-        )
-    }
+    )
 }
 
 @Preview(showBackground = true)
 @Composable
 fun PromotionManagementPreview(){
-    PromotionManagementScreen()
+    //PromotionManagementScreen()
 }

@@ -8,7 +8,6 @@ import androidx.compose.runtime.saveable.rememberSaveable
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.tooling.preview.Preview
 import androidx.navigation.NavHostController
-import androidx.navigation.compose.currentBackStackEntryAsState
 import androidx.navigation.compose.rememberNavController
 import com.andriod17.upbudget.ui.icons.IconContent
 import com.andriod17.upbudget.ui.icons.IconHome
@@ -18,8 +17,7 @@ import com.andriod17.upbudget.ui.navigation.*
 
 
 @Composable
-fun CustomScaffold(
-    navController: NavHostController,
+fun CustomAdminScaffold(
     onBackPressed: () -> Unit = {},
     onSettingsPressed: () -> Unit = {},
     showBackButton: Boolean = true,
@@ -27,42 +25,33 @@ fun CustomScaffold(
     useOptionsIcon: Boolean = false,
     onOptionsClick: () -> Unit = {},
     floatingActionButton: @Composable (() -> Unit)? = null,
-    content: @Composable (PaddingValues) -> Unit = {}
+    content: @Composable (PaddingValues) -> Unit = {},
+    navController: NavHostController
 ) {
     var title by rememberSaveable { mutableStateOf("Inicio") }
-    var selectedItem by rememberSaveable { mutableStateOf("home") }
+    var selectedItem by rememberSaveable { mutableStateOf("admin_home") }
 
 
     val navItems = listOf(
-        NavItem("Inicio", IconHome, "home"),
-        NavItem("Promociones", IconPromotions, "promotions"),
-        NavItem("Consejos", IconContent, "financial_tips"),
-        NavItem("Configuración", IconSettings, "settings")
+        NavItem("Inicio", IconHome, "admin_home"),
+        NavItem("Configuración", IconSettings, "admin_settings")
     )
-
-    fun updateTitle(route: String) {
-        title = when (route) {
-            "home" -> "Inicio"
-            "promotions" -> "Promociones"
-            "financial_tips" -> "Consejos financieros"
-            "settings" -> "Configuración"
-            else -> "UPBudget"
-        }
-    }
-
 
     fun onItemSelected(currentItem: String) {
         selectedItem = currentItem
-        updateTitle(currentItem)
+        title = when (currentItem) {
+            "admin_home" -> "Inicio Administrador"
+            "admin_settings" -> "Configuración Administrador"
+            else -> "UPBudget"
+        }
 
         when (currentItem) {
-            "promotions" -> navController.navigate(PromotionsNavigation)
-            "settings" -> navController.navigate(SettingsNavigation)
-            "financial_tips" -> navController.navigate(LearningNavigation)
-            "home" -> navController.navigate(HomeNavigation)
+            "admin_home" -> navController.navigate(AdminHomeNavigation)
+            "admin_settings" -> navController.navigate(AdminSettingsNavigation)
             else -> navController.navigate(currentItem)
         }
     }
+
 
     Scaffold(
         topBar = {
@@ -91,7 +80,7 @@ fun CustomScaffold(
 
 @Preview(showBackground = true)
 @Composable
-fun CustomScaffoldPreview() {
+fun CustomAdminScaffoldPreview() {
     val navController = rememberNavController()
     CustomScaffold(navController = navController)
 }
