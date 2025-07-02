@@ -7,32 +7,26 @@ import androidx.compose.foundation.layout.padding
 import androidx.compose.foundation.lazy.LazyColumn
 import androidx.compose.material3.OutlinedTextField
 import androidx.compose.material3.Text
-import androidx.compose.material3.TextFieldDefaults
 import androidx.compose.runtime.Composable
 import androidx.compose.runtime.getValue
 import androidx.compose.runtime.mutableStateOf
 import androidx.compose.runtime.remember
 import androidx.compose.runtime.setValue
 import androidx.compose.ui.Modifier
-import androidx.compose.ui.graphics.Color
-import androidx.compose.ui.res.painterResource
 import androidx.compose.ui.text.input.TextFieldValue
 import androidx.compose.ui.unit.dp
 import com.andriod17.upbudget.data.model.Promotion.PromotionItem
 import com.andriod17.upbudget.R
 import com.andriod17.upbudget.ui.components.AdminCouponCard
-import com.andriod17.upbudget.ui.components.TopBar
 import androidx.compose.foundation.layout.*
 import androidx.compose.foundation.lazy.items
 import androidx.compose.material.icons.Icons
 import androidx.compose.material.icons.filled.Search
 import androidx.compose.material3.Icon
 import androidx.compose.material3.MaterialTheme
-import androidx.compose.material3.OutlinedTextFieldDefaults
 import androidx.compose.runtime.*
 import androidx.compose.ui.tooling.preview.Preview
 import androidx.navigation.NavHostController
-import com.andriod17.upbudget.ui.components.AdminBottomBar
 import com.andriod17.upbudget.ui.components.CustomAdminScaffold
 import com.andriod17.upbudget.ui.navigation.AdminHomeNavigation
 
@@ -50,14 +44,14 @@ fun PromotionManagementScreen(
                     title = "Food Coupon",
                     subtitle = "2x1 Mother’s Day breakfasts at select restaurants",
                     description = "",
-                    imageResId = R.drawable.foodcupon,
+                    imageResId = "https://via.placeholder.com/300x150.png?text=No+Image",
                     isActive = true
                 ),
                 PromotionItem(
                     title = "Pharmacy Coupon",
                     subtitle = "Get a free supplement sample",
                     description = "",
-                    imageResId = R.drawable.pharmacycupon,
+                    imageResId = "https://via.placeholder.com/300x150.png?text=No+Image",
                     isActive = true
                 )
             )
