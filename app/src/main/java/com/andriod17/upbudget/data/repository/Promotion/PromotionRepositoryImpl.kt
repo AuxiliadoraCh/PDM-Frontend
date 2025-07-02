@@ -12,8 +12,8 @@ import kotlinx.coroutines.flow.Flow
 import kotlinx.coroutines.flow.emitAll
 import kotlinx.coroutines.flow.flow
 import kotlinx.coroutines.flow.flowOn
-import com.andriod17.upbudget.data.database.entitites.toDomain
-import com.andriod17.upbudget.data.database.entitites.toEntity
+import com.andriod17.upbudget.data.database.entities.toDomain
+import com.andriod17.upbudget.data.database.entities.toEntity
 import com.andriod17.upbudget.data.model.Promotion.Request.PromotionStatus
 import kotlinx.coroutines.flow.distinctUntilChanged
 import kotlinx.coroutines.flow.map

@@ -1,6 +1,6 @@
 package com.andriod17.upbudget.data.remote.responses
 
-import com.andriod17.upbudget.data.database.entitites.PromotionEntity
+import com.andriod17.upbudget.data.database.entities.PromotionEntity
 import com.andriod17.upbudget.data.model.Promotion.Promotion
 import java.text.SimpleDateFormat
 import java.util.Date

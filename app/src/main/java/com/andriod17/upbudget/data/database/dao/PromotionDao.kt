@@ -4,7 +4,7 @@ import androidx.room.Dao
 import androidx.room.Delete
 import androidx.room.OnConflictStrategy
 import androidx.room.Query
-import com.andriod17.upbudget.data.database.entitites.PromotionEntity
+import com.andriod17.upbudget.data.database.entities.PromotionEntity
 import kotlinx.coroutines.flow.Flow
 import androidx.room.Insert
 

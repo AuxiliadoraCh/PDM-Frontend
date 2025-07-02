@@ -6,12 +6,13 @@ import androidx.room.Room
 import androidx.room.RoomDatabase
 import androidx.room.TypeConverters
 import com.andriod17.upbudget.data.database.dao.PromotionDao
-import com.andriod17.upbudget.data.database.entitites.Converters
-import com.andriod17.upbudget.data.database.entitites.PromotionEntity
+import com.andriod17.upbudget.data.database.entities.UsedCouponEntity
+import com.andriod17.upbudget.data.database.entities.Converters
+import com.andriod17.upbudget.data.database.entities.PromotionEntity
 
 
 @Database(
-    entities = [PromotionEntity::class],
+    entities = [PromotionEntity::class, UsedCouponEntity::class],
     version = 1,
     exportSchema = false
 )
