@@ -1,6 +1,5 @@
 package com.andriod17.upbudget.data.remote.promotion
 
-import com.andriod17.upbudget.data.model.Promotion.PromotionItem
 import com.andriod17.upbudget.data.model.Promotion.Request.PromotionStatus
 import com.andriod17.upbudget.data.remote.responses.PromotionResponse
 import retrofit2.Response

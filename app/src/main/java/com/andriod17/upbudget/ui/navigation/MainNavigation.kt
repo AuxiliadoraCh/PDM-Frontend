@@ -21,7 +21,7 @@ import com.andriod17.upbudget.ui.screens.settings.EditProfileScreen
 fun MainNavigation(navController: NavHostController) {
     NavHost(
         navController = navController,
-        startDestination = AdminHomeNavigation,
+        startDestination = HomeNavigation,
     ) {
         composable<HomeNavigation>{
             HomeScreen(navController = navController)

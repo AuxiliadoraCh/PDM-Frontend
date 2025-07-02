@@ -1,10 +1,8 @@
 package com.andriod17.upbudget.data.database.entitites
 import androidx.room.Entity
-import androidx.room.Ignore
 import androidx.room.PrimaryKey
 import androidx.room.TypeConverter
-import androidx.room.TypeConverters
-import com.andriod17.upbudget.data.model.Promotion.PromotionItem
+import com.andriod17.upbudget.data.model.Promotion.Promotion
 import com.google.gson.Gson
 import com.google.gson.reflect.TypeToken
 import java.util.Date
@@ -41,8 +39,8 @@ class Converters {
     fun toDate(timestamp: Long?): Date? = timestamp?.let { Date(it) }
 }
 
-fun PromotionEntity.toDomain(): PromotionItem {
-    return PromotionItem(
+fun PromotionEntity.toDomain(): Promotion {
+    return Promotion(
         id = id,
         title = title,
         description = description,
@@ -54,7 +52,7 @@ fun PromotionEntity.toDomain(): PromotionItem {
     )
 }
 
-fun PromotionItem.toEntity(): PromotionEntity {
+fun Promotion.toEntity(): PromotionEntity {
     return PromotionEntity(
         id = id,
         title = title,

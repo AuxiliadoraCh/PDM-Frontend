@@ -19,7 +19,7 @@ interface PromotionDao {
     fun getPromotionById(id: Int): Flow<PromotionEntity?>
 
     @Query("UPDATE promotions SET active = :isActive WHERE id = :promotionId")
-    suspend fun updatePromotionStatus(promotionId: Int, isActive: Boolean): PromotionEntity
+    suspend fun updatePromotionStatus(promotionId: Int, isActive: Boolean): Int
 
     @Query("SELECT * FROM promotions WHERE active = 1")
     fun getActivePromotions(): Flow<List<PromotionEntity>>

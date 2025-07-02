@@ -20,6 +20,7 @@ import androidx.compose.ui.Alignment
 import androidx.compose.ui.layout.ContentScale
 import androidx.compose.ui.res.painterResource
 import androidx.compose.ui.text.font.FontWeight
+import coil3.compose.AsyncImage
 import com.andriod17.upbudget.R
 import com.andriod17.upbudget.ui.theme.Purple40
 import com.andriod17.upbudget.ui.theme.Purple80
@@ -29,7 +30,7 @@ fun CouponCard(
     title: String,
     subtitle:String,
     description: String,
-    imageResId: Int,
+    imageResId: String?,
     onViewMoreClicked:()  -> Unit
 ){
     Card(
@@ -41,8 +42,8 @@ fun CouponCard(
 
     ) {
         Column(modifier = Modifier.fillMaxWidth()) {
-            Image(
-                painter = painterResource(id = imageResId),
+            AsyncImage(
+                model = imageResId ?: "https://via.placeholder.com/300x150.png?text=No+Image",
                 contentDescription = null,
                 contentScale = ContentScale.Crop,
                 modifier = Modifier
@@ -93,7 +94,7 @@ fun PromotionCardPreview(){
         title = "Food Coupon",
         subtitle = "5% off in eligible restaurants",
         description = "Only for selected restaurants",
-        imageResId = R.drawable.foodcupon,
+        imageResId = null,
         onViewMoreClicked = {}
     )
 }

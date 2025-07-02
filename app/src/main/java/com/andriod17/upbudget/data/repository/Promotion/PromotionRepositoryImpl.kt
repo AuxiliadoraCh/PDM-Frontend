@@ -2,7 +2,7 @@ package com.andriod17.upbudget.data.repository.Promotion
 
 import android.util.Log
 import com.andriod17.upbudget.data.database.dao.PromotionDao
-import com.andriod17.upbudget.data.model.Promotion.PromotionItem
+import com.andriod17.upbudget.data.model.Promotion.Promotion
 import com.andriod17.upbudget.data.remote.promotion.PromotionService
 import com.andriod17.upbudget.data.remote.responses.toEntity
 import com.andriod17.upbudget.data.remote.responses.toDomain
@@ -24,7 +24,7 @@ class PromotionRepositoryImpl(
     private val promotionDao: PromotionDao
 ): PromotionRepository {
 
-    override suspend fun getPromotions(): Flow<Resource<List<PromotionItem>>> = flow {
+    override suspend fun getPromotions(): Flow<Resource<List<Promotion>>> = flow {
         emit(Resource.Loading)
         try {
             val remotePromotions = promotionService.getPromotions()
@@ -51,7 +51,7 @@ class PromotionRepositoryImpl(
             emitAll(localPromotions)
     }.flowOn(Dispatchers.IO)
 
-    override fun getPromotionById(id: Int): Flow<Resource<PromotionItem?>> = flow {
+    override fun getPromotionById(id: Int): Flow<Resource<Promotion?>> = flow {
         emit(Resource.Loading)
 
         try {
@@ -76,7 +76,7 @@ class PromotionRepositoryImpl(
         emitAll(localData)
     }.flowOn(Dispatchers.IO)
 
-    override fun getActivePromotions(): Flow<Resource<List<PromotionItem>>> = flow {
+    override fun getActivePromotions(): Flow<Resource<List<Promotion>>> = flow {
         emit(Resource.Loading)
 
         try {
@@ -128,7 +128,7 @@ class PromotionRepositoryImpl(
         emitAll(localData)
     }.flowOn(Dispatchers.IO)
 
-    override suspend fun deletePromotion(promotion: PromotionItem): Resource<Unit> {
+    override suspend fun deletePromotion(promotion: Promotion): Resource<Unit> {
         return withContext(Dispatchers.IO) {
             try {
                 val response = promotionService.deletePromotion(promotion.id)
@@ -155,7 +155,7 @@ class PromotionRepositoryImpl(
 
     }
 
-    override suspend fun updatePromotionStatus(promotionId: Int, isActive: Boolean): Resource<PromotionItem> {
+    override suspend fun updatePromotionStatus(promotionId: Int, isActive: Boolean): Resource<Promotion> {
         return try {
             val request = PromotionStatus(active = isActive)
             val response = promotionService.updatePromotionStatus(promotionId, request)

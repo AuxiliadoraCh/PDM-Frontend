@@ -1,21 +1,12 @@
 package com.andriod17.upbudget.data.model.Promotion
 
-import java.util.Date
-
-    data class PromotionItem (
-        val id: Int = 0,
-        val title:String,
-        val description: String,
-        val active: Boolean,
-        val start_date: Date,
-        val end_date: Date,
-        val images: List<String>,
-        val restaurants: List<String>
-    )
-
-
-
-
-
-
+data class PromotionItem(
+    val title:String,
+    val subtitle: String,
+    val description: String,
+    val imageResId:String?,
+    val restaurantList: List<String> = emptyList(),
+    val couponCode: String = "",
+    val isActive: Boolean = true
+)
 
