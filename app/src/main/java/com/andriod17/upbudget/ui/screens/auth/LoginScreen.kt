@@ -19,6 +19,7 @@ import androidx.compose.ui.tooling.preview.Preview
 import androidx.navigation.NavController
 import com.andriod17.upbudget.R
 import com.andriod17.upbudget.ui.components.*
+import com.andriod17.upbudget.ui.navigation.HomeNavigation
 import com.andriod17.upbudget.viewmodel.Auth.Login.LoginViewModel
 
 @Composable
@@ -27,7 +28,6 @@ fun LoginScreen(
     onForgotPasswordClick: () -> Unit = {},
 ) {
     val viewModel: LoginViewModel = viewModel()
-    val state by viewModel.loginState.collectAsState()
 
     var email by remember { mutableStateOf("") }
     var password by remember { mutableStateOf("") }
@@ -76,10 +76,9 @@ fun LoginScreen(
                     )
                 )
 
-                // Usamos el texto del botón y el estado de habilitación desde el ViewModel
                 PrimaryActionButton(
                     text = "Sign in",
-                    onClick = { viewModel.handleLoginButtonClick(email, password) },
+                    onClick = { viewModel.login(email, password, {navController.navigate(HomeNavigation)}) },
                 )
 
                 Text(
