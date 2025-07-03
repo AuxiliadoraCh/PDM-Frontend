@@ -1,5 +1,6 @@
 package com.andriod17.upbudget.ui.screens.onboarding
 
+import android.content.Context
 import androidx.compose.foundation.Image
 import androidx.compose.foundation.background
 import androidx.compose.foundation.layout.Arrangement
@@ -42,6 +43,8 @@ import androidx.compose.foundation.layout.size
 import androidx.lifecycle.viewmodel.compose.viewModel
 import androidx.navigation.NavController
 import androidx.compose.runtime.LaunchedEffect
+import androidx.compose.ui.platform.LocalContext
+import com.andriod17.upbudget.data.local.preferences.Preferences
 import com.andriod17.upbudget.ui.navigation.OnboardingInfoNavigation
 import com.andriod17.upbudget.ui.navigation.RegisterNavigation
 import com.andriod17.upbudget.viewmodel.Onboarding.OnboardingInfoViewModel
@@ -49,8 +52,9 @@ import com.andriod17.upbudget.viewmodel.Onboarding.OnboardingInfoViewModel
 @Composable
 fun OnboardingInfoScreen(
     navController: NavController,
-    viewModel: OnboardingInfoViewModel = viewModel()
+    viewModel: OnboardingInfoViewModel = viewModel(),
 ) {
+    val context = LocalContext.current
     val currentPage by viewModel.currentPage.collectAsState()
     val onboardingData = viewModel.onboardingData
     val page = onboardingData[currentPage]
@@ -69,6 +73,7 @@ fun OnboardingInfoScreen(
                 .height(95.dp),
             contentScale = ContentScale.FillBounds
         )
+
         Column(
             modifier = Modifier.fillMaxSize(),
             horizontalAlignment = Alignment.CenterHorizontally,
@@ -132,7 +137,16 @@ fun OnboardingInfoScreen(
                 horizontalAlignment = Alignment.CenterHorizontally,
             ) {
                 Button(
-                    onClick = { viewModel.nextPage() },
+                    onClick = {
+                        if (currentPage == onboardingData.size - 1) {
+                            Preferences.setFirstTime(context, false)
+                            navController.navigate(RegisterNavigation) {
+                                popUpTo(OnboardingInfoNavigation) { inclusive = true }
+                            }
+                        } else {
+                            viewModel.nextPage()
+                        }
+                    },
                     colors = ButtonDefaults.buttonColors(containerColor = Color(0xFF216B8A)),
                     shape = RoundedCornerShape(20.dp),
                     modifier = Modifier
@@ -143,7 +157,7 @@ fun OnboardingInfoScreen(
                         verticalAlignment = Alignment.CenterVertically
                     ) {
                         Text(
-                            text = "Next",
+                            text = if (currentPage == onboardingData.size - 1) "Finish" else "Next",
                             style = TextStyle(
                                 fontSize = 20.sp,
                                 fontFamily = FontFamily(Font(R.font.nunito_light)),
@@ -159,7 +173,15 @@ fun OnboardingInfoScreen(
                         )
                     }
                 }
-                TextButton(onClick = { viewModel.skip(navController) }) {
+
+                TextButton(
+                    onClick = {
+                        Preferences.setFirstTime(context, false)
+                        navController.navigate(RegisterNavigation) {
+                            popUpTo(OnboardingInfoNavigation) { inclusive = true }
+                        }
+                    }
+                ) {
                     Text(
                         text = "Skip",
                         style = TextStyle(
@@ -174,6 +196,7 @@ fun OnboardingInfoScreen(
             }
             Spacer(modifier = Modifier.height(20.dp))
         }
+
         Image(
             painter = painterResource(id = R.drawable.vector_wave_bottom),
             contentDescription = "Bottom Wave",
