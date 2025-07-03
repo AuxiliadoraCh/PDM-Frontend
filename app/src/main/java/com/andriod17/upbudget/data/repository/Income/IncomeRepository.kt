@@ -19,3 +19,4 @@ interface IncomeRepository {
         year:String
     ): Flow<Resource<Double>>
 }
+

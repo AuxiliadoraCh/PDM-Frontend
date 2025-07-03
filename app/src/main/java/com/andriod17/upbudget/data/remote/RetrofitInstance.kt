@@ -1,5 +1,6 @@
 package com.andriod17.upbudget.data.remote
 
+import com.andriod17.upbudget.data.remote.category.CategoryService
 import com.andriod17.upbudget.data.remote.income.IncomeService
 import okhttp3.OkHttpClient
 import okhttp3.logging.HttpLoggingInterceptor
@@ -23,5 +24,8 @@ object RetrofitInstance {
 
     val incomeService: IncomeService by lazy {
         retrofit.create(IncomeService::class.java)
+    }
+    val categoryService: CategoryService by lazy{
+        retrofit.create(CategoryService::class.java)
     }
 }
