@@ -18,16 +18,22 @@ import androidx.lifecycle.viewmodel.compose.viewModel
 import androidx.compose.ui.tooling.preview.Preview
 import androidx.navigation.NavController
 import com.andriod17.upbudget.R
+import com.andriod17.upbudget.data.repository.Auth.AuthRepositoryImpl
 import com.andriod17.upbudget.ui.components.*
 import com.andriod17.upbudget.ui.navigation.HomeNavigation
 import com.andriod17.upbudget.viewmodel.Auth.Login.LoginViewModel
+import com.andriod17.upbudget.viewmodel.Auth.Login.LoginViewModelFactory
+import com.andriod17.upbudget.data.remote.RetrofitInstance
+import com.andriod17.upbudget.data.remote.services.AuthService
 
 @Composable
 fun LoginScreen(
     navController: NavController,
     onForgotPasswordClick: () -> Unit = {},
 ) {
-    val viewModel: LoginViewModel = viewModel()
+    val authService: AuthService = remember { RetrofitInstance.authService }
+    val authRepository = remember { AuthRepositoryImpl(authService) }
+    val viewModel: LoginViewModel = viewModel(factory = LoginViewModelFactory(authRepository))
 
     var email by remember { mutableStateOf("") }
     var password by remember { mutableStateOf("") }

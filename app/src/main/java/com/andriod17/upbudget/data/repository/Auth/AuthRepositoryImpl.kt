@@ -6,7 +6,6 @@ import com.andriod17.upbudget.data.remote.services.AuthService
 import com.andriod17.upbudget.helpers.Resource
 import kotlinx.coroutines.flow.Flow
 import kotlinx.coroutines.flow.flow
-import retrofit2.Response
 
 class AuthRepositoryImpl(private val api: AuthService) : AuthRepository {
     // Implementación del login usando Flow
