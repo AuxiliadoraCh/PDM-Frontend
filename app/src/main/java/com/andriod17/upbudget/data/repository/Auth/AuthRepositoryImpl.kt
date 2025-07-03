@@ -12,10 +12,8 @@ class AuthRepositoryImpl(private val api: AuthService) : AuthRepository {
     override fun login(email: String, password: String): Flow<Resource<AuthResponse>> = flow {
         // Emitimos el estado de carga
         emit(Resource.Loading)
-
         try {
             val response = api.login(AuthRequest(email, password))
-
             if (response.isSuccessful) {
                 // Emitimos el éxito con los datos de la respuesta
                 response.body()?.let {

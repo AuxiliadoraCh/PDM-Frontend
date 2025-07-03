@@ -2,12 +2,10 @@ package com.andriod17.upbudget.viewmodel.Onboarding
 
 import androidx.lifecycle.ViewModel
 import androidx.navigation.NavController
-import kotlinx.coroutines.channels.Channel
-import kotlinx.coroutines.flow.MutableStateFlow
-import kotlinx.coroutines.flow.StateFlow
-import kotlinx.coroutines.flow.receiveAsFlow
 import com.andriod17.upbudget.R
 import com.andriod17.upbudget.ui.navigation.RegisterNavigation
+import kotlinx.coroutines.flow.MutableStateFlow
+import kotlinx.coroutines.flow.StateFlow
 
 data class OnboardingContent(
     val image: Int,

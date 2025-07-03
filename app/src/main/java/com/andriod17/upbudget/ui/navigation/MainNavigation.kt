@@ -7,10 +7,10 @@ import androidx.navigation.compose.composable
 import com.andriod17.upbudget.ui.screens.Learning.LearningScreen
 import com.andriod17.upbudget.ui.screens.auth.LoginScreen
 import com.andriod17.upbudget.ui.screens.auth.RegisterScreen
-import com.andriod17.upbudget.ui.screens.settings.SettingsScreen
 import com.andriod17.upbudget.ui.screens.dashboard.HomeScreen
 import com.andriod17.upbudget.ui.screens.onboarding.OnboardingInfoScreen
 import com.andriod17.upbudget.ui.screens.promotions.PromotionsScreen
+import com.andriod17.upbudget.ui.screens.settings.SettingsScreen
 
 @Composable
 fun MainNavigation(navController: NavHostController) {

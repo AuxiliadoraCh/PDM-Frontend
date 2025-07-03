@@ -9,8 +9,13 @@ import androidx.compose.foundation.rememberScrollState
 import androidx.compose.foundation.verticalScroll
 import androidx.compose.material.icons.Icons
 import androidx.compose.material.icons.automirrored.filled.ExitToApp
+import androidx.compose.material.icons.filled.CheckCircle
+import androidx.compose.material.icons.filled.Face
+import androidx.compose.material.icons.filled.Lock
+import androidx.compose.material.icons.filled.Notifications
 import androidx.compose.material.icons.filled.Person
-import androidx.compose.material.icons.filled.*
+import androidx.compose.material.icons.filled.Star
+import androidx.compose.material.icons.filled.Warning
 import androidx.compose.runtime.Composable
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.tooling.preview.Preview

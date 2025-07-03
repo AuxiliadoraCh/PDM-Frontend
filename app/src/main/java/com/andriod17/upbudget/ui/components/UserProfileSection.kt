@@ -17,7 +17,6 @@ import androidx.compose.ui.tooling.preview.Preview
 import androidx.compose.ui.unit.dp
 import coil3.compose.AsyncImage
 import com.andriod17.upbudget.data.model.user.UserInfo
-import java.nio.file.WatchEvent
 
 @Composable
 fun UserProfileSection(user: UserInfo){

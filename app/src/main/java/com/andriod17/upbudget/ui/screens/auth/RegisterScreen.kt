@@ -1,6 +1,11 @@
 package com.andriod17.upbudget.ui.screens.auth
 
-import androidx.compose.foundation.layout.*
+import androidx.compose.foundation.layout.Arrangement
+import androidx.compose.foundation.layout.Column
+import androidx.compose.foundation.layout.Spacer
+import androidx.compose.foundation.layout.fillMaxSize
+import androidx.compose.foundation.layout.height
+import androidx.compose.foundation.layout.padding
 import androidx.compose.material3.Text
 import androidx.compose.runtime.Composable
 import androidx.compose.runtime.collectAsState
@@ -26,6 +31,7 @@ import com.andriod17.upbudget.ui.components.GoogleSignInButton
 import com.andriod17.upbudget.ui.components.PrimaryActionButton
 import com.andriod17.upbudget.ui.components.SignInPrompt
 import com.andriod17.upbudget.viewmodel.Auth.Register.RegisterViewModel
+
 //import com.andriod17.upbudget.viewmodel.Register.RegisterViewModelFactory
 
 @Composable

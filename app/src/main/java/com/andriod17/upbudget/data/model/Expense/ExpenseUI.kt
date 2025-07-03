@@ -1,7 +1,8 @@
 package com.andriod17.upbudget.data.model.Expense
 
 import java.text.SimpleDateFormat
-import java.util.*
+import java.util.Calendar
+import java.util.Locale
 
 data class ExpenseUi(
     val amount: String = "",

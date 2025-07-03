@@ -1,40 +1,54 @@
 package com.andriod17.upbudget.ui.screens.auth
 
 import androidx.compose.foundation.clickable
-import androidx.compose.foundation.layout.*
-import androidx.compose.material3.Text
-import androidx.compose.material3.OutlinedTextField
-import androidx.compose.material3.Button
+import androidx.compose.foundation.layout.Arrangement
+import androidx.compose.foundation.layout.Column
+import androidx.compose.foundation.layout.Spacer
+import androidx.compose.foundation.layout.fillMaxSize
+import androidx.compose.foundation.layout.height
+import androidx.compose.foundation.layout.padding
 import androidx.compose.material3.Scaffold
-import androidx.compose.runtime.*
+import androidx.compose.material3.Text
+import androidx.compose.runtime.Composable
+import androidx.compose.runtime.getValue
+import androidx.compose.runtime.mutableStateOf
+import androidx.compose.runtime.remember
+import androidx.compose.runtime.setValue
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
+import androidx.compose.ui.graphics.Color
+import androidx.compose.ui.platform.LocalContext
+import androidx.compose.ui.text.TextStyle
 import androidx.compose.ui.unit.dp
 import androidx.compose.ui.unit.sp
-import androidx.compose.material3.TextButton
-import androidx.compose.ui.graphics.Color
-import androidx.compose.ui.text.TextStyle
 import androidx.lifecycle.viewmodel.compose.viewModel
-import androidx.compose.ui.tooling.preview.Preview
 import androidx.navigation.NavController
 import com.andriod17.upbudget.R
+import com.andriod17.upbudget.data.local.SessionManager
+import com.andriod17.upbudget.data.remote.RetrofitInstance
+import com.andriod17.upbudget.data.remote.services.AuthService
 import com.andriod17.upbudget.data.repository.Auth.AuthRepositoryImpl
-import com.andriod17.upbudget.ui.components.*
+import com.andriod17.upbudget.ui.components.AuthTopSection
+import com.andriod17.upbudget.ui.components.CustomTextField
+import com.andriod17.upbudget.ui.components.GoogleSignInButton
+import com.andriod17.upbudget.ui.components.PrimaryActionButton
+import com.andriod17.upbudget.ui.components.SignInPrompt
 import com.andriod17.upbudget.ui.navigation.HomeNavigation
 import com.andriod17.upbudget.viewmodel.Auth.Login.LoginViewModel
 import com.andriod17.upbudget.viewmodel.Auth.Login.LoginViewModelFactory
-import com.andriod17.upbudget.data.remote.RetrofitInstance
-import com.andriod17.upbudget.data.remote.services.AuthService
 
 @Composable
 fun LoginScreen(
     navController: NavController,
     onForgotPasswordClick: () -> Unit = {},
 ) {
+    val context = LocalContext.current
+
     val authService: AuthService = remember { RetrofitInstance.authService }
     val authRepository = remember { AuthRepositoryImpl(authService) }
-    val viewModel: LoginViewModel = viewModel(factory = LoginViewModelFactory(authRepository))
-
+    val viewModel: LoginViewModel = viewModel(
+        factory = LoginViewModelFactory( authRepository = authRepository, sessionManager = SessionManager(context))
+    )
     var email by remember { mutableStateOf("") }
     var password by remember { mutableStateOf("") }
 
@@ -60,14 +74,14 @@ fun LoginScreen(
                 CustomTextField(
                     label = "Email",
                     value = email,
-                    onValueChange = {{ email = it } }
+                    onValueChange = { email = it }
                 )
 
                 CustomTextField(
                     label = "Password",
                     value = password,
                     isPassword = true,
-                    onValueChange = { { password = it } }
+                    onValueChange = { password = it }
                 )
 
                 Text(
@@ -84,7 +98,7 @@ fun LoginScreen(
 
                 PrimaryActionButton(
                     text = "Sign in",
-                    onClick = { viewModel.login(email, password, {navController.navigate(HomeNavigation)}) },
+                    onClick = { viewModel.login(email, password, { navController.navigate(HomeNavigation) }) },
                 )
 
                 Text(
