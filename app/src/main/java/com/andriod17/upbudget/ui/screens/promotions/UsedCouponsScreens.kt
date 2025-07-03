@@ -13,6 +13,7 @@ import androidx.compose.ui.Modifier
 import androidx.compose.ui.text.font.FontWeight
 import androidx.compose.ui.tooling.preview.Preview
 import androidx.compose.ui.unit.dp
+import androidx.lifecycle.viewmodel.compose.viewModel
 import androidx.navigation.NavHostController
 import com.andriod17.upbudget.R
 import com.andriod17.upbudget.data.model.Promotion.PromotionItem
@@ -23,40 +24,13 @@ import com.andriod17.upbudget.ui.theme.Purple80
 
 @Composable
 fun UsedCouponsScreen(navController: NavHostController) {
-    val allCoupons = listOf(
-        PromotionItem(
-            title = "Food Coupon",
-            subtitle = "2x1 Mother's Day breakfasts at select restaurants",
-            description = "Used",
-            imageResId = "https://via.placeholder.com/300x150.png?text=No+Image",
-            couponCode = "USED",
-            isActive = false
-        ),
-        PromotionItem(
-            title = "Technology Coupon",
-            subtitle = "50% off in phones at select stores",
-            description = "Used",
-            imageResId = "https://via.placeholder.com/300x150.png?text=No+Image",
-            couponCode = "USED",
-            isActive = false
-        ),
-        PromotionItem(
-            title = "Transport Coupon",
-            subtitle = "Get a free ride on private transport",
-            description = "Used",
-            imageResId = "https://via.placeholder.com/300x150.png?text=No+Image",
-            couponCode = "USED",
-            isActive = false
-        ),
-        PromotionItem(
-            title = "Travel Coupon",
-            subtitle = "10% off in travel agencies",
-            description = "Used",
-            imageResId = "https://via.placeholder.com/300x150.png?text=No+Image",
-            couponCode = "USED",
-            isActive = false
-        )
-    )
+    val viewModel: UsedCouponsViewModel = viewModel (factory = UsedCouponsViewModel.Factory )
+    val usedCoupons by viewModel.usedCoupons.collectAsState()
+    val isLoading by viewModel.loading.collectAsState()
+
+    LaunchedEffect(Unit) {
+        viewModel.loadUsedCoupons("user_123")
+    }
 
     var selectedFilter by remember { mutableStateOf("Recent") }
 
@@ -106,18 +80,23 @@ fun UsedCouponsScreen(navController: NavHostController) {
 
                 Spacer(modifier = Modifier.height(16.dp))
 
-                LazyColumn(
-                    verticalArrangement = Arrangement.spacedBy(12.dp),
-                    contentPadding = PaddingValues(horizontal = 20.dp, vertical = 8.dp)
-                ) {
-                    items(allCoupons) { coupon ->
+                if (isLoading){
+                    CircularProgressIndicator(modifier = Modifier.align(Alignment.CenterHorizontally))
+                } else {
+                    LazyColumn(
+                        verticalArrangement = Arrangement.spacedBy(12.dp),
+                        contentPadding = PaddingValues(vertical = 8.dp)
+                    ){
+                        items(usedCoupons) {item ->
                         UsedCouponCard(
-                            title = coupon.title,
-                            subtitle = coupon.subtitle,
-                            imageResId = coupon.imageResId,
-                            usedDate = "10/05/25"
+                            title = item.promotion.title,
+                            subtitle = item.promotion.description,
+                            imageResId = item.promotion.images.firstOrNull(),
+                            usedDate = item.usedAt
                         )
+                        }
                     }
+
                 }
             }
         }

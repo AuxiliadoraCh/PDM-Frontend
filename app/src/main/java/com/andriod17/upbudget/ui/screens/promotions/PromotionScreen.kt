@@ -6,6 +6,7 @@ import androidx.compose.foundation.lazy.LazyColumn
 import androidx.compose.foundation.lazy.items
 import androidx.compose.foundation.shape.RoundedCornerShape
 import androidx.compose.material3.*
+import androidx.compose.material3.CircularProgressIndicator
 import androidx.compose.runtime.*
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
@@ -114,22 +115,26 @@ fun PromotionsScreen(
 
                     Spacer(modifier = Modifier.height(12.dp))
 
-                    LazyColumn(
-                        contentPadding = PaddingValues(horizontal = 16.dp, vertical = 8.dp),
-                        verticalArrangement = Arrangement.spacedBy(12.dp),
-                        modifier = Modifier.fillMaxSize()
-                    ) {
-                        items(coupons) { coupon ->
-                            CouponCard(
-                                title = coupon.title,
-                                subtitle = coupon.subtitle,
-                                description = coupon.description,
-                                imageResId = coupon.imageResId,
-                                onViewMoreClicked = {
-                                    selectedCoupon = coupon
-                                    scope.launch { sheetState.show() }
-                                }
-                            )
+                    if (isLoading){
+                        CircularProgressIndicator(modifier = Modifier.align(Alignment.CenterHorizontally))
+                    }else {
+                        LazyColumn(
+                            contentPadding = PaddingValues(horizontal = 16.dp, vertical = 8.dp),
+                            verticalArrangement = Arrangement.spacedBy(12.dp),
+                            modifier = Modifier.fillMaxSize()
+                        ) {
+                            items(coupons) { coupon ->
+                                CouponCard(
+                                    title = coupon.title,
+                                    subtitle = coupon.subtitle,
+                                    description = coupon.description,
+                                    imageResId = coupon.imageResId,
+                                    onViewMoreClicked = {
+                                        selectedCoupon = coupon
+                                        scope.launch { sheetState.show() }
+                                    }
+                                )
+                            }
                         }
                     }
                 }
