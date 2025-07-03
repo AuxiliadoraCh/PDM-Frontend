@@ -1,15 +1,18 @@
-package com.andriod17.upbudget.viewmodel.Register
+package com.andriod17.upbudget.viewmodel.Auth.Register
 
 import androidx.lifecycle.ViewModel
 import androidx.lifecycle.viewModelScope
+import androidx.navigation.NavController
 import com.andriod17.upbudget.data.model.Register.RegisterUiState
+import com.andriod17.upbudget.ui.navigation.LoginNavigation
 import kotlinx.coroutines.delay
 import kotlinx.coroutines.flow.MutableStateFlow
 import kotlinx.coroutines.flow.StateFlow
 import kotlinx.coroutines.flow.update
 import kotlinx.coroutines.launch
 
-class RegisterViewModel( // private val userRepository: UserRepository //
+class RegisterViewModel(
+// private val userRepository: UserRepository //
 ) : ViewModel() {
 
 
@@ -69,10 +72,8 @@ class RegisterViewModel( // private val userRepository: UserRepository //
         }
     }
 
-    fun onSignInPromptClick() {
-        _uiState.update {
-            it.copy(errorMessage = "Navegando a pantalla de inicio de sesión...")
-        }
+    fun onSignInPromptClick(navController: NavController) {
+        navController.navigate(LoginNavigation)
     }
 
     fun clearErrorMessage() {

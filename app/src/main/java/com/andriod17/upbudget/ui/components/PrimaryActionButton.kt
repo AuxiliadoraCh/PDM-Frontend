@@ -20,7 +20,7 @@ import com.andriod17.upbudget.R
 @Composable
 fun PrimaryActionButton(text: String, onClick: () -> Unit, modifier: Modifier = Modifier) {
     Button(
-        onClick = {},
+        onClick = onClick,
         modifier = Modifier
             .fillMaxWidth()
             .padding(14.dp).height(56.dp),
