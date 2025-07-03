@@ -2,16 +2,23 @@ package com.andriod17.upbudget.data.remote.educationalContent
 
 import com.andriod17.upbudget.data.model.EducationalContent.Request.EducationalContentRequest
 import com.andriod17.upbudget.data.remote.responses.EducationalContentResponse
+import retrofit2.Response
 import retrofit2.http.*
 
 interface EducationalContentService {
 
-    @GET("educational_content")
-    suspend fun getEducationalContents(): List<EducationalContentResponse> // Devolvemos directamente la lista
+    @GET("/")
+    suspend fun getEducationalContents(): Response<List<EducationalContentResponse>>
 
-    @POST("educational_content")
-    suspend fun createEducationalContent(@Body request: EducationalContentRequest): EducationalContentResponse
+    @POST("/")
+    suspend fun createEducationalContent(@Body request: EducationalContentRequest): Response<EducationalContentResponse>
 
-    @DELETE("educational_content/{id}")
-    suspend fun deleteEducationalContent(@Path("id") id: Long): Unit // No necesitas envolver la respuesta en `Response<Unit>`
+    @GET("/{id}")
+    suspend fun getSingleEducationalContent(@Path("id") id: Long): Response<EducationalContentResponse>
+
+    @PUT("/{id}")
+    suspend fun updateEducationalContent(@Path("id") id: Long, @Body request: EducationalContentRequest): Response<EducationalContentResponse>
+
+    @DELETE("/{id}")
+    suspend fun deleteEducationalContent(@Path("id") id: Long): Response<Unit>
 }
