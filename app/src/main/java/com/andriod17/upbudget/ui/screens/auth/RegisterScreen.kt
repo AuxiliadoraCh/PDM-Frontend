@@ -18,22 +18,22 @@ import androidx.compose.ui.tooling.preview.Preview
 import androidx.compose.ui.unit.dp
 import androidx.compose.ui.unit.sp
 import androidx.lifecycle.viewmodel.compose.viewModel
+import androidx.navigation.NavController
 import com.andriod17.upbudget.R
 import com.andriod17.upbudget.ui.components.AuthTopSection
 import com.andriod17.upbudget.ui.components.CustomTextField
 import com.andriod17.upbudget.ui.components.GoogleSignInButton
 import com.andriod17.upbudget.ui.components.PrimaryActionButton
 import com.andriod17.upbudget.ui.components.SignInPrompt
-import com.andriod17.upbudget.viewmodel.Register.RegisterViewModel
+import com.andriod17.upbudget.viewmodel.Auth.Register.RegisterViewModel
 //import com.andriod17.upbudget.viewmodel.Register.RegisterViewModelFactory
-
 
 @Composable
 fun RegisterScreen(
+    navController: NavController,
     viewModel: RegisterViewModel = viewModel(),
     onSignUpClick: () -> Unit = {},
     onGoogleSignInClick: () -> Unit = {},
-    onSignInClick: () -> Unit = {}
 ) {
     val context = LocalContext.current
     //val userRepository = UserRepository(AppDatabase.getInstance(context).userDao())
@@ -84,7 +84,7 @@ fun RegisterScreen(
             SignInPrompt(
                 promptText = "Already have an account?",
                 actionText = "Sign in",
-                onActionClick = onSignInClick
+                onActionClick = { viewModel.onSignInPromptClick(navController) }
             )
         }
     }
@@ -94,5 +94,5 @@ fun RegisterScreen(
 @Preview(showBackground = true, showSystemUi = true)
 @Composable
 fun RegisterScreenPreview() {
-    RegisterScreen()
+    //RegisterScreen()
 }

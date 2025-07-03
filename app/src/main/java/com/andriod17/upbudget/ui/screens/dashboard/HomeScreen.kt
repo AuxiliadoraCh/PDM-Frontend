@@ -30,16 +30,20 @@ import com.andriod17.upbudget.data.model.Home.HomeUi
 import com.andriod17.upbudget.ui.components.CategoriesSection
 import com.andriod17.upbudget.ui.components.CustomScaffold
 import com.andriod17.upbudget.ui.components.DashboardActionButton
+import com.andriod17.upbudget.ui.navigation.PromotionsNavigation
+import com.andriod17.upbudget.ui.navigation.ContentNavigation
 
 @Composable
 fun HomeScreenContent(
-    state: HomeUi,
-    modifier: Modifier = Modifier
+    viewModel: HomeScreenViewModel,
+    navController: NavHostController,
+    modifier: Modifier
 ) {
+    val state by viewModel.uiState.collectAsState()
+
     Column(
         modifier = modifier
             .verticalScroll(rememberScrollState())
-            .padding(horizontal = 16.dp)
     ) {
         IncomeSummarySection(
             incomeAmount = "$${state.income}",
@@ -61,12 +65,12 @@ fun HomeScreenContent(
             DashboardActionButton(
                 iconPainter = painterResource(R.drawable.promotions),
                 label = "Promotions",
-                onClick = { /* TODO */ }
+                onClick = { navController.navigate(PromotionsNavigation) }
             )
             DashboardActionButton(
                 iconVector = Icons.Default.Info,
                 label = "Information",
-                onClick = { /* TODO */ }
+                onClick = { navController.navigate(ContentNavigation) }
             )
         }
         CategoriesSection()
@@ -78,7 +82,6 @@ fun HomeScreen(
     navController: NavHostController
 ) {
     val viewModel: HomeScreenViewModel = viewModel()
-    val state by viewModel.uiState.collectAsState()
 
     CustomScaffold(
         title = "Dashboard",
@@ -90,7 +93,8 @@ fun HomeScreen(
         },
         content = { innerPadding ->
             HomeScreenContent(
-                state = state,
+                viewModel = viewModel,
+                navController = navController,
                 modifier = Modifier.padding(innerPadding)
             )
         },
