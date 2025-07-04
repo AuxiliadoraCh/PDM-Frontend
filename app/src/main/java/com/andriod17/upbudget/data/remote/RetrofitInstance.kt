@@ -1,5 +1,8 @@
 package com.andriod17.upbudget.data.database
 
+import com.andriod17.upbudget.data.remote.category.CategoryService
+import com.andriod17.upbudget.data.remote.income.IncomeService
+import com.andriod17.upbudget.data.remote.payment.PaymentMethodService
 import com.andriod17.upbudget.data.remote.educationalContent.EducationalContentService
 import com.andriod17.upbudget.data.remote.budgets.BudgetsService
 import com.andriod17.upbudget.data.remote.expense.ExpenseService
@@ -14,18 +17,29 @@ import retrofit2.converter.gson.GsonConverterFactory
 object RetrofitInstance {
     private const val BASE_URL = "https://upbudget-6le4.onrender.com/api/"
 
-    val client = OkHttpClient.Builder()
-        .addInterceptor(HttpLoggingInterceptor().apply {
-            level = HttpLoggingInterceptor.Level.BODY
-        })
-        .build()
+    val client = OkHttpClient.Builder().addInterceptor(HttpLoggingInterceptor().apply {
+        level = HttpLoggingInterceptor.Level.BODY
+    }).build()
 
-    private val retrofit: Retrofit = Retrofit.Builder()
-        .baseUrl(BASE_URL)
-        .client(client)
-        .addConverterFactory(GsonConverterFactory.create())
-        .build()
+    private val retrofit: Retrofit = Retrofit.Builder().baseUrl(BASE_URL).client(client)
+        .addConverterFactory(GsonConverterFactory.create()).build()
 
+    val incomeService: IncomeService by lazy {
+        retrofit.create(IncomeService::class.java)
+    }
+
+    val expenseService: ExpenseService by lazy {
+        retrofit.create(ExpenseService::class.java)
+    }
+    
+    val categoryService: CategoryService by lazy {
+        retrofit.create(CategoryService::class.java)
+    }
+    
+    val paymentMethodService: PaymentMethodService by lazy {
+        retrofit.create(PaymentMethodService::class.java)
+    }
+    
     val budgetsService: BudgetsService by lazy {
         retrofit.create(BudgetsService::class.java)
     }
@@ -37,13 +51,11 @@ object RetrofitInstance {
     val usedcouponService: UsedCouponService by lazy {
         retrofit.create(UsedCouponService::class.java)
     }
-
-    val expenseService: ExpenseService by lazy {
-        retrofit.create(ExpenseService::class.java)
-    }
+    
     val authService: AuthService by lazy {
         retrofit.create(AuthService::class.java)
     }
+    
     val educationalContentService: EducationalContentService by lazy {
         retrofit.create(EducationalContentService::class.java)
     }

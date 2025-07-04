@@ -23,6 +23,7 @@ fun MainNavigation(navController: NavHostController) {
     NavHost(
         navController = navController,
         startDestination = OnboardingInfoNavigation,
+
     ) {
         composable<HomeNavigation>{
             HomeScreen(navController = navController)

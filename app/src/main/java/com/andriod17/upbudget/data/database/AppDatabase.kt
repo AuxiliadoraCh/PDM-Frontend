@@ -4,6 +4,11 @@ import android.content.Context
 import androidx.room.Database
 import androidx.room.Room
 import androidx.room.RoomDatabase
+import com.andriod17.upbudget.data.database.dao.CategoryDao
+import com.andriod17.upbudget.data.database.dao.PaymentMethodDao
+import com.andriod17.upbudget.data.database.entities.CategoryEntity
+import com.andriod17.upbudget.data.database.entities.IncomeEntity
+import com.andriod17.upbudget.data.database.entities.PaymentMethodEntity
 import androidx.room.TypeConverters
 import com.andriod17.upbudget.data.database.dao.EducationalContentDao
 import com.andriod17.upbudget.data.database.dao.ExpenseDao
@@ -15,17 +20,18 @@ import com.andriod17.upbudget.data.database.entities.EducationalContentEntity
 import com.andriod17.upbudget.data.database.entities.ExpenseEntity
 import com.andriod17.upbudget.data.database.entities.PromotionEntity
 import com.andriod17.upbudget.data.database.entities.UsedCouponEntity
-import com.andriod17.upbudget.data.database.entities.ExpenseEntity
-
 
 @Database(
     entities = [PromotionEntity::class,
         UsedCouponEntity::class,
         BudgetsEntity::class,
         ExpenseEntity::class,
-        EducationalContentEntity::class] ],
-version = 1,
-exportSchema = false
+        EducationalContentEntity::class,
+        IncomeEntity::class,
+        CategoryEntity::class,
+        PaymentMethodEntity::class],
+    version = 1,
+    exportSchema = false
 )
 
 @TypeConverters(Converters::class)
@@ -34,6 +40,8 @@ abstract class AppDatabase : RoomDatabase() {
     abstract fun usedCouponDao(): UsedCouponDao
     abstract fun ExpenseDao(): ExpenseDao
     abstract fun educationalContentDao(): EducationalContentDao
+    abstract fun categoryDao(): CategoryDao
+    abstract fun paymentMethodDao(): PaymentMethodDao
 
     companion object {
         @Volatile
@@ -55,4 +63,5 @@ abstract class AppDatabase : RoomDatabase() {
             }
         }
     }
+}
 }
