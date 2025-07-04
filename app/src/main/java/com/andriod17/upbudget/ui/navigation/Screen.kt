@@ -45,3 +45,6 @@ object PromotionManagementNavigation
 
 @Serializable
 object EditProfileNavigation
+
+@Serializable
+object NewExpenseNavigation

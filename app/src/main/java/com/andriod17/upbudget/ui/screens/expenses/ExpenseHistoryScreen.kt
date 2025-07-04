@@ -46,12 +46,6 @@ fun ExpenseHistoryScreen(
 
 
     CustomScaffold(navController = navController) { innerPadding ->
-        Box(
-            modifier = Modifier
-                .fillMaxSize()
-                .background(Color.White)
-                .padding(innerPadding)
-        ) {
             Column(
                 modifier = Modifier
                     .fillMaxSize()
@@ -166,34 +160,33 @@ fun ExpenseHistoryScreen(
             }
         }
     }
+
+@SuppressLint("ViewModelConstructorInComposable")
+@Composable
+fun PreviewExpenseHistoryScreenContent() {
+    val navController = rememberNavController()
+    val viewModel = ExpenseScreenViewModel().apply {
+        val exampleExpenses = listOf(
+            ExpenseUi(amount = "50.00", paymentMethod = "Cash", category = "Food", description = "Lunch at restaurant", date = "2025-06-01", isIncome = false),
+            ExpenseUi(amount = "200.00", paymentMethod = "Bank Transfer", category = "Education", description = "April salary", date = "2025-06-03", isIncome = true),
+            ExpenseUi(amount = "15.00", paymentMethod = "Card", category = "Beauty", description = "Movie ticket", date = "2025-04-02", isIncome = false),
+            ExpenseUi(amount = "100.00", paymentMethod = "Cash", category = "Food", description = "Groceries", date = "2025-06-05", isIncome = false),
+            ExpenseUi(amount = "300.00", paymentMethod = "Bank Transfer", category = "Salary", description = "May salary", date = "2025-05-18", isIncome = true),
+            ExpenseUi(amount = "75.00", paymentMethod = "Credit Card", category = "Transportation", description = "Gas", date = "2025-06-07", isIncome = false),
+            ExpenseUi(amount = "120.00", paymentMethod = "Cash", category = "Entertainment", description = "Concert tickets", date = "2025-06-08", isIncome = false),
+            ExpenseUi(amount = "500.00", paymentMethod = "Bank Transfer", category = "Investment", description = "Investment gain", date = "2025-06-10", isIncome = true),
+        )
+
+        setExpensesForPreview(exampleExpenses)
+
+        onPeriodSelected("Current Month")
+    }
+    ExpenseHistoryScreen(viewModel = viewModel, navController = navController)
 }
-//
-//@SuppressLint("ViewModelConstructorInComposable")
-//@Composable
-//fun PreviewExpenseHistoryScreenContent() {
-//    val navController = rememberNavController()
-//    val viewModel = ExpenseScreenViewModel().apply {
-//        val exampleExpenses = listOf(
-//            ExpenseUi(amount = "50.00", paymentMethod = "Cash", category = "Food", description = "Lunch at restaurant", date = "2025-06-01", isIncome = false),
-//            ExpenseUi(amount = "200.00", paymentMethod = "Bank Transfer", category = "Education", description = "April salary", date = "2025-06-03", isIncome = true),
-//            ExpenseUi(amount = "15.00", paymentMethod = "Card", category = "Beauty", description = "Movie ticket", date = "2025-04-02", isIncome = false),
-//            ExpenseUi(amount = "100.00", paymentMethod = "Cash", category = "Food", description = "Groceries", date = "2025-06-05", isIncome = false),
-//            ExpenseUi(amount = "300.00", paymentMethod = "Bank Transfer", category = "Salary", description = "May salary", date = "2025-05-18", isIncome = true),
-//            ExpenseUi(amount = "75.00", paymentMethod = "Credit Card", category = "Transportation", description = "Gas", date = "2025-06-07", isIncome = false),
-//            ExpenseUi(amount = "120.00", paymentMethod = "Cash", category = "Entertainment", description = "Concert tickets", date = "2025-06-08", isIncome = false),
-//            ExpenseUi(amount = "500.00", paymentMethod = "Bank Transfer", category = "Investment", description = "Investment gain", date = "2025-06-10", isIncome = true),
-//        )
-//
-//        setExpensesForPreview(exampleExpenses)
-//
-//        onPeriodSelected("Current Month")
-//    }
-//    ExpenseHistoryScreen(viewModel = viewModel, navController = navController)
-//}
-//
-//
-//@Preview(showBackground = true)
-//@Composable
-//fun PreviewExpenseHistoryScreen() {
-//    PreviewExpenseHistoryScreenContent()
-//}
+
+
+@Preview(showBackground = true)
+@Composable
+fun PreviewExpenseHistoryScreen() {
+    PreviewExpenseHistoryScreenContent()
+}

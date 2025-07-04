@@ -33,6 +33,7 @@ import com.andriod17.upbudget.ui.components.CategoriesSection
 import com.andriod17.upbudget.ui.components.CustomScaffold
 import com.andriod17.upbudget.ui.components.DashboardActionButton
 import com.andriod17.upbudget.ui.navigation.ExpenseHistoryNavigation
+import com.andriod17.upbudget.ui.navigation.NewExpenseNavigation
 
 @Composable
 fun HomeScreenContent(
@@ -92,7 +93,7 @@ fun HomeScreen(
     CustomScaffold(
         useOptionsIcon = true,
         floatingActionButton = {
-            FloatingActionButton(onClick = { /*TODO*/ }) {
+            FloatingActionButton(onClick = { navController.navigate(NewExpenseNavigation) }) {
                 Icon(Icons.Default.Add, contentDescription = "Add")
             }
         },

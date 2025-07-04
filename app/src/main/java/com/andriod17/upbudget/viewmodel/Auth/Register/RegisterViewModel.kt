@@ -1,88 +1,51 @@
 package com.andriod17.upbudget.viewmodel.Auth.Register
 
+import android.util.Log
 import androidx.lifecycle.ViewModel
 import androidx.lifecycle.viewModelScope
 import androidx.navigation.NavController
-import com.andriod17.upbudget.data.model.Register.RegisterUiState
+import com.andriod17.upbudget.data.local.SessionManager
+import com.andriod17.upbudget.data.repository.Auth.AuthRepository
+import com.andriod17.upbudget.helpers.Resource
 import com.andriod17.upbudget.ui.navigation.LoginNavigation
+import com.andriod17.upbudget.ui.navigation.RegisterNavigation
 import kotlinx.coroutines.delay
 import kotlinx.coroutines.flow.MutableStateFlow
 import kotlinx.coroutines.flow.StateFlow
+import kotlinx.coroutines.flow.collectLatest
 import kotlinx.coroutines.flow.update
 import kotlinx.coroutines.launch
 
 class RegisterViewModel(
-// private val userRepository: UserRepository //
+    private val authRepository: AuthRepository,
+    private val sessionManager: SessionManager
 ) : ViewModel() {
+    private val _loading = MutableStateFlow<Boolean>(false)
+    val loading : StateFlow<Boolean> = _loading
 
-
-    private val _uiState = MutableStateFlow(RegisterUiState())
-    val uiState: StateFlow<RegisterUiState> = _uiState
-
-    fun onUsernameChange(newUsername: String) {
-        _uiState.update { it.copy(username = newUsername) }
-    }
-
-    fun onEmailChange(newEmail: String) {
-        _uiState.update { it.copy(email = newEmail) }
-    }
-
-    fun onPasswordChange(newPassword: String) {
-        _uiState.update { it.copy(password = newPassword) }
-    }
-
-    fun registerUser() {
-        _uiState.update {
-            it.copy(isLoading = true, errorMessage = null, registrationSuccess = false)
-        }
-
+    fun registerUser(email : String,password : String, onRegistrationSuccess: () -> Unit) =
         viewModelScope.launch {
-            delay(2000)
+            authRepository.register(email = email, password = password).collectLatest { result ->
+                when (result) {
+                    is Resource.Loading -> {
+                        _loading.value = true
+                    }
 
-            try {
-                val username = _uiState.value.username
-                val email = _uiState.value.email
-                val password = _uiState.value.password
+                    is Resource.Success -> {
+                        _loading.value = false
+                        sessionManager.saveAuthToken(result.data?.user?.access_token ?: "")
+                        sessionManager.saveUserId(result.data?.user?.user?.id ?: "")
+                        onRegistrationSuccess()
+                    }
 
-                if (username.isBlank() || email.isBlank() || password.isBlank()) {
-                    throw IllegalArgumentException("Todos los campos son obligatorios.")
-                }
-                if (!email.contains("@")) {
-                    throw IllegalArgumentException("Formato de correo inválido.")
-                }
-                if (password.length < 6) {
-                    throw IllegalArgumentException("La contraseña debe tener al menos 6 caracteres.")
-                }
-
-                // userRepository.register(username, email, password)
-
-                _uiState.update { it.copy(isLoading = false, registrationSuccess = true) }
-
-            } catch (e: Exception) {
-                _uiState.update {
-                    it.copy(isLoading = false, errorMessage = e.message ?: "Error en el registro.")
+                    is Resource.Error -> {
+                        _loading.value = false
+                        // Handle error (e.g., show a message)
+                    }
                 }
             }
         }
-    }
-
-    fun signInWithGoogle() {
-        _uiState.update {
-            it.copy(errorMessage = "Google Sign-In aún no implementado.")
-        }
-    }
-
-    fun onSignInPromptClick(navController: NavController) {
+    fun onSingInPromptClick(navController: NavController) {
         navController.navigate(LoginNavigation)
-    }
-
-    fun clearErrorMessage() {
-        _uiState.update {
-            it.copy(errorMessage = null)
-        }
-    }
-
-    fun resetState() {
-        _uiState.value = RegisterUiState()
     }
 }

@@ -13,6 +13,7 @@ import com.andriod17.upbudget.ui.navigation.ExpenseHistoryNavigation
 import com.andriod17.upbudget.ui.navigation.HomeNavigation
 import com.andriod17.upbudget.ui.navigation.LearningNavigation
 import com.andriod17.upbudget.ui.navigation.LoginNavigation
+import com.andriod17.upbudget.ui.navigation.NewExpenseNavigation
 import com.andriod17.upbudget.ui.navigation.OnboardingInfoNavigation
 import com.andriod17.upbudget.ui.navigation.PromotionManagementNavigation
 import com.andriod17.upbudget.ui.navigation.PromotionsNavigation
@@ -31,6 +32,8 @@ import com.andriod17.upbudget.ui.screens.auth.RegisterScreen
 import com.andriod17.upbudget.ui.screens.settings.SettingsScreen
 import com.andriod17.upbudget.ui.screens.dashboard.HomeScreen
 import com.andriod17.upbudget.ui.screens.expenses.ExpenseHistoryScreen
+import com.andriod17.upbudget.ui.screens.expenses.ExpenseScreen
+import com.andriod17.upbudget.ui.screens.expenses.PreviewExpenseHistoryScreenContent
 import com.andriod17.upbudget.ui.screens.onboarding.OnboardingInfoScreen
 import com.andriod17.upbudget.ui.screens.promotions.PromotionsScreen
 import com.andriod17.upbudget.ui.screens.promotions.UsedCouponsScreen
@@ -112,6 +115,12 @@ fun MainNavigation(navController: NavHostController, startDestination: Any = Onb
                 onSave = {},
                 navController = navController
             )
+        }
+        composable<ExpenseHistoryNavigation> {
+            PreviewExpenseHistoryScreenContent()
+        }
+        composable<NewExpenseNavigation> {
+            ExpenseScreen()
         }
     }
 }
