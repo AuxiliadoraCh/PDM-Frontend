@@ -16,7 +16,11 @@ import com.andriod17.upbudget.ui.icons.IconContent
 import com.andriod17.upbudget.ui.icons.IconHome
 import com.andriod17.upbudget.ui.icons.IconPromotions
 import com.andriod17.upbudget.ui.icons.IconSettings
+import com.andriod17.upbudget.ui.navigation.HomeNavigation
+import com.andriod17.upbudget.ui.navigation.LearningNavigation
 import com.andriod17.upbudget.ui.navigation.NavItem
+import com.andriod17.upbudget.ui.navigation.PromotionsNavigation
+import com.andriod17.upbudget.ui.navigation.SettingsNavigation
 
 @Composable
 fun CustomScaffold(
@@ -45,10 +49,10 @@ fun CustomScaffold(
         selectedItem = currentItem
 
         when (currentItem) {
-            //"promotions" -> navController.navigate(PromotionsNavigation)
-            //"settings" -> navController.navigate(SettingsNavigation)
-            //"financial_tips" -> navController.navigate(LearningNavigation)
-            //"home" -> navController.navigate(HomeNavigation)
+            "promotions" -> navController.navigate(PromotionsNavigation)
+            "settings" -> navController.navigate(SettingsNavigation)
+            "financial_tips" -> navController.navigate(LearningNavigation)
+            "home" -> navController.navigate(HomeNavigation)
             else -> navController.navigate(currentItem)
         }
     }

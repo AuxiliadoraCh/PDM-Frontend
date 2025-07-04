@@ -1,5 +1,6 @@
 package com.andriod17.upbudget
 
+import MainNavigation
 import android.os.Bundle
 import androidx.activity.ComponentActivity
 import androidx.activity.compose.setContent
@@ -8,7 +9,6 @@ import androidx.compose.runtime.remember
 import androidx.compose.ui.platform.LocalContext
 import androidx.navigation.compose.rememberNavController
 import com.andriod17.upbudget.data.local.preferences.Preferences
-import com.andriod17.upbudget.ui.navigation.MainNavigation
 
 class MainActivity : ComponentActivity() {
     override fun onCreate(savedInstanceState: Bundle?) {
