@@ -32,12 +32,15 @@ import com.andriod17.upbudget.data.model.Home.HomeUi
 import com.andriod17.upbudget.ui.components.CategoriesSection
 import com.andriod17.upbudget.ui.components.CustomScaffold
 import com.andriod17.upbudget.ui.components.DashboardActionButton
+import com.andriod17.upbudget.ui.navigation.ExpenseHistoryNavigation
 
 @Composable
 fun HomeScreenContent(
     state: HomeUi,
-    modifier: Modifier = Modifier
-) {
+    modifier: Modifier = Modifier,
+    navController: NavHostController,
+
+    ) {
     Column(
         modifier = modifier
             .verticalScroll(rememberScrollState())
@@ -56,26 +59,29 @@ fun HomeScreenContent(
         )
 
         Row(
-            modifier = Modifier
-                .fillMaxWidth()
-                .padding(vertical = 24.dp),
+            modifier = Modifier.fillMaxWidth().padding(vertical = 24.dp),
             horizontalArrangement = Arrangement.SpaceEvenly,
             verticalAlignment = Alignment.CenterVertically
         ) {
             DashboardActionButton(
                 iconPainter = painterResource(R.drawable.promotions),
                 label = "Promotions",
-                onClick = { /* TODO */ }
+                onClick = {
+                    //navController.navigate(PromotionsNavigation)
+                }
             )
             DashboardActionButton(
                 iconVector = Icons.Default.Info,
                 label = "Information",
-                onClick = { /* TODO */ }
+                onClick = {
+                    navController.navigate(ExpenseHistoryNavigation)
+                }
             )
         }
         CategoriesSection()
     }
 }
+
 @Composable
 fun HomeScreen(
     navController: NavHostController
@@ -83,27 +89,21 @@ fun HomeScreen(
     val viewModel: HomeScreenViewModel = viewModel()
     val state by viewModel.uiState.collectAsState()
 
-    // Usamos CustomScaffold solo con los parámetros necesarios
     CustomScaffold(
-        title = "Dashboard",
-        navController = navController,
-        content = { innerPadding ->
-            Box(modifier = Modifier.padding(innerPadding)) {
-                HomeScreenContent(
-                    state = state,
-                    modifier = Modifier.fillMaxSize()
-                )
-
-                FloatingActionButton(
-                    onClick = { /* TODO: Agregar acción */ },
-                    modifier = Modifier
-                        .align(Alignment.BottomEnd)
-                        .padding(16.dp)
-                ) {
-                    Icon(Icons.Default.Add, contentDescription = "Add")
-                }
+        useOptionsIcon = true,
+        floatingActionButton = {
+            FloatingActionButton(onClick = { /*TODO*/ }) {
+                Icon(Icons.Default.Add, contentDescription = "Add")
             }
-        }
+        },
+        content = { innerPadding ->
+            HomeScreenContent(
+                state = state,
+                modifier = Modifier.padding(innerPadding),
+                navController = navController
+            )
+        },
+        navController = navController
     )
 }
 

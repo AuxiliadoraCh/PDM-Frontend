@@ -20,6 +20,7 @@ import androidx.compose.ui.tooling.preview.Preview
 import androidx.compose.ui.unit.dp
 import androidx.compose.ui.unit.sp
 import androidx.lifecycle.viewmodel.compose.viewModel
+import androidx.navigation.NavHostController
 import androidx.navigation.compose.rememberNavController
 import com.andriod17.upbudget.R
 import com.andriod17.upbudget.data.model.Expense.ExpenseUi
@@ -32,7 +33,8 @@ import com.andriod17.upbudget.viewmodel.Expense.ExpenseScreenViewModel
 
 @Composable
 fun ExpenseHistoryScreen(
-    viewModel: ExpenseScreenViewModel = viewModel() // Asegúrate de que el ViewModel se inicie aquí
+    viewModel: ExpenseScreenViewModel = viewModel(),
+    navController: NavHostController
 ) {
     val selectedPeriod by viewModel.selectedPeriod.collectAsState()
     val filteredExpenses by viewModel.filteredExpenses.collectAsState()
@@ -41,9 +43,10 @@ fun ExpenseHistoryScreen(
     val balance by viewModel.balance.collectAsState()
 
     val categoryViewModel: CategoryViewModel = viewModel()
-    val navController = rememberNavController()
 
-    CustomScaffold(title = "Expense History", navController = navController) { innerPadding ->
+
+    CustomScaffold(navController = navController) { innerPadding ->
+
         Column(
             modifier = Modifier
                 .padding(innerPadding)
@@ -73,16 +76,13 @@ fun ExpenseHistoryScreen(
                     horizontalArrangement = Arrangement.SpaceBetween,
                     verticalAlignment = Alignment.CenterVertically
                 ) {
-                    Column(
-                        horizontalAlignment = Alignment.CenterHorizontally,
-                        verticalArrangement = Arrangement.Center
-                    ) {
+                    Column(horizontalAlignment = Alignment.CenterHorizontally) {
                         Text(
                             text = "Income",
                             color = Color(0xFF4D9955),
                             style = TextStyle(
                                 fontSize = 18.sp,
-                                fontFamily = FontFamily(Font(R.font.nunito_regular)),
+                                fontFamily = FontFamily(Font(R.font.nunito_regular))
                             )
                         )
                         Text(
@@ -90,7 +90,7 @@ fun ExpenseHistoryScreen(
                             color = Color.Black,
                             style = TextStyle(
                                 fontSize = 14.sp,
-                                fontFamily = FontFamily(Font(R.font.nunito_regular)),
+                                fontFamily = FontFamily(Font(R.font.nunito_regular))
                             )
                         )
                     }
@@ -102,16 +102,14 @@ fun ExpenseHistoryScreen(
                             .fillMaxHeight()
                             .width(1.dp)
                     )
-                    Column(
-                        horizontalAlignment = Alignment.CenterHorizontally,
-                        verticalArrangement = Arrangement.Center
-                    ) {
+
+                    Column(horizontalAlignment = Alignment.CenterHorizontally) {
                         Text(
                             text = "Expense",
                             color = Color(0xFFBA1A1A),
                             style = TextStyle(
                                 fontSize = 18.sp,
-                                fontFamily = FontFamily(Font(R.font.nunito_regular)),
+                                fontFamily = FontFamily(Font(R.font.nunito_regular))
                             )
                         )
                         Text(
@@ -119,7 +117,7 @@ fun ExpenseHistoryScreen(
                             color = Color.Black,
                             style = TextStyle(
                                 fontSize = 14.sp,
-                                fontFamily = FontFamily(Font(R.font.nunito_regular)),
+                                fontFamily = FontFamily(Font(R.font.nunito_regular))
                             )
                         )
                     }
@@ -163,6 +161,7 @@ fun ExpenseHistoryScreen(
 @SuppressLint("ViewModelConstructorInComposable")
 @Composable
 fun PreviewExpenseHistoryScreenContent() {
+    val navController = rememberNavController()
     val viewModel = ExpenseScreenViewModel().apply {
         val exampleExpenses = listOf(
             ExpenseUi(amount = "50.00", paymentMethod = "Cash", category = "Food", description = "Lunch at restaurant", date = "2025-06-01", isIncome = false),
@@ -179,7 +178,7 @@ fun PreviewExpenseHistoryScreenContent() {
 
         onPeriodSelected("Current Month")
     }
-    ExpenseHistoryScreen(viewModel = viewModel)
+    ExpenseHistoryScreen(viewModel = viewModel, navController = navController)
 }
 
 
@@ -188,3 +187,5 @@ fun PreviewExpenseHistoryScreenContent() {
 fun PreviewExpenseHistoryScreen() {
     PreviewExpenseHistoryScreenContent()
 }
+
+

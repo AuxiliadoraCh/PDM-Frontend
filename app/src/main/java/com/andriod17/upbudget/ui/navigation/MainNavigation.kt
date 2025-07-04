@@ -1,11 +1,16 @@
 import androidx.compose.runtime.Composable
+import androidx.lifecycle.viewmodel.compose.viewModel
 import androidx.navigation.NavHostController
 import androidx.navigation.compose.NavHost
 import androidx.navigation.compose.composable
+import com.andriod17.upbudget.data.model.Expense.ExpenseUi
+import com.andriod17.upbudget.ui.navigation.ExpenseHistoryNavigation
 import com.andriod17.upbudget.ui.screens.Learning.LearningScreen
 import com.andriod17.upbudget.ui.screens.settings.SettingsScreen
 import com.andriod17.upbudget.ui.screens.dashboard.HomeScreen
+import com.andriod17.upbudget.ui.screens.expenses.ExpenseHistoryScreen
 import com.andriod17.upbudget.ui.screens.promotions.PromotionsScreen
+import com.andriod17.upbudget.viewmodel.Expense.ExpenseScreenViewModel
 
 @Composable
 fun MainNavigation(navController: NavHostController) {
@@ -25,5 +30,9 @@ fun MainNavigation(navController: NavHostController) {
         composable("settings"){
             SettingsScreen(navController = navController)
         }
+//        composable<ExpenseHistoryNavigation> {
+//            //Probar el view model pero me da error
+////            ExpenseHistoryScreen(viewModel = viewModel, navController = navController)
+//        }
     }
 }

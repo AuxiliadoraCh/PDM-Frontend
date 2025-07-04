@@ -12,3 +12,6 @@ object ContentNavigation
 
 @Serializable
 object SettingsNavigation
+
+@Serializable
+object ExpenseHistoryNavigation
