@@ -44,7 +44,7 @@ fun TermsContent(modifier: Modifier) {
             .padding(38.dp)
     ) {
         Text(
-            text = "Aceptance of Terms and Conditions",
+            text = "Acceptance of Terms and Conditions",
             fontFamily = FontFamily(Font(R.font.nunito_bold)),
             fontSize = 25.sp,
             modifier = Modifier.padding(bottom = 12.dp)
