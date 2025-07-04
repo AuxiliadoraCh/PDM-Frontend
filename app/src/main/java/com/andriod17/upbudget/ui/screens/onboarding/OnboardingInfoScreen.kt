@@ -208,9 +208,3 @@ fun OnboardingInfoScreen(
         )
     }
 }
-
-@Preview(showBackground = true, showSystemUi = true)
-@Composable
-fun OnboardingInfoScreenPreview() {
-    //OnboardingInfoScreen()
-}

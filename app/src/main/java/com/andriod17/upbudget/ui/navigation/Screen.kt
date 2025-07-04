@@ -18,6 +18,9 @@ object SettingsNavigation
 object OnboardingInfoNavigation
 
 @Serializable
+object EditProfileNavigation
+
+@Serializable
 object RegisterNavigation
 
 @Serializable
@@ -40,6 +43,3 @@ object AdminSettingsNavigation
 
 @Serializable
 object PromotionManagementNavigation
-
-@Serializable
-object EditProfileNavigation

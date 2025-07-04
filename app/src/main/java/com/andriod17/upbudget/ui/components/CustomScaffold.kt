@@ -1,25 +1,25 @@
 package com.andriod17.upbudget.ui.components
 
 import androidx.compose.foundation.layout.PaddingValues
-import androidx.compose.foundation.layout.fillMaxSize
 import androidx.compose.material3.Scaffold
 import androidx.compose.runtime.*
 import androidx.compose.runtime.saveable.rememberSaveable
-import androidx.compose.ui.Modifier
 import androidx.compose.ui.tooling.preview.Preview
 import androidx.navigation.NavHostController
-import androidx.navigation.compose.currentBackStackEntryAsState
 import androidx.navigation.compose.rememberNavController
 import com.andriod17.upbudget.ui.icons.IconContent
 import com.andriod17.upbudget.ui.icons.IconHome
 import com.andriod17.upbudget.ui.icons.IconPromotions
 import com.andriod17.upbudget.ui.icons.IconSettings
-import com.andriod17.upbudget.ui.navigation.*
-
+import com.andriod17.upbudget.ui.navigation.ContentNavigation
+import com.andriod17.upbudget.ui.navigation.HomeNavigation
+import com.andriod17.upbudget.ui.navigation.NavItem
+import com.andriod17.upbudget.ui.navigation.PromotionsNavigation
+import com.andriod17.upbudget.ui.navigation.SettingsNavigation
 
 @Composable
 fun CustomScaffold(
-    navController: NavHostController,
+    title: String = "UPBudget",
     onBackPressed: () -> Unit = {},
     onSettingsPressed: () -> Unit = {},
     showBackButton: Boolean = true,
@@ -27,42 +27,17 @@ fun CustomScaffold(
     useOptionsIcon: Boolean = false,
     onOptionsClick: () -> Unit = {},
     floatingActionButton: @Composable (() -> Unit)? = null,
-    content: @Composable (PaddingValues) -> Unit = {}
+    content: @Composable (PaddingValues) -> Unit = {},
+    navController: NavHostController
 ) {
-    var title by rememberSaveable { mutableStateOf("Inicio") }
     var selectedItem by rememberSaveable { mutableStateOf("home") }
 
-
     val navItems = listOf(
-        NavItem("Inicio", IconHome, "home"),
-        NavItem("Promociones", IconPromotions, "promotions"),
-        NavItem("Consejos", IconContent, "financial_tips"),
-        NavItem("Configuración", IconSettings, "settings")
+        NavItem("Home", IconHome, HomeNavigation.toString()),
+        NavItem("Promotions", IconPromotions, PromotionsNavigation.toString()),
+        NavItem("Content", IconContent, ContentNavigation.toString()),
+        NavItem("Settings", IconSettings, SettingsNavigation.toString())
     )
-
-    fun updateTitle(route: String) {
-        title = when (route) {
-            "home" -> "Inicio"
-            "promotions" -> "Promociones"
-            "financial_tips" -> "Consejos financieros"
-            "settings" -> "Configuración"
-            else -> "UPBudget"
-        }
-    }
-
-
-    fun onItemSelected(currentItem: String) {
-        selectedItem = currentItem
-        updateTitle(currentItem)
-
-        when (currentItem) {
-            "promotions" -> navController.navigate(PromotionsNavigation)
-            "settings" -> navController.navigate(SettingsNavigation)
-            "financial_tips" -> navController.navigate(LearningNavigation)
-            "home" -> navController.navigate(HomeNavigation)
-            else -> navController.navigate(currentItem)
-        }
-    }
 
     Scaffold(
         topBar = {
@@ -80,7 +55,10 @@ fun CustomScaffold(
             NavigationBarComponent(
                 navItems = navItems,
                 selectedItem = selectedItem,
-                onItemSelected = { onItemSelected(it) }
+                onItemSelected = { route ->
+                    selectedItem = route
+                    navController.navigate(route)
+                }
             )
         },
         floatingActionButton = floatingActionButton ?: {}
@@ -89,9 +67,9 @@ fun CustomScaffold(
     }
 }
 
+
 @Preview(showBackground = true)
 @Composable
 fun CustomScaffoldPreview() {
-    val navController = rememberNavController()
-    CustomScaffold(navController = navController)
+    //CustomScaffold()
 }

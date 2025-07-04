@@ -6,7 +6,6 @@ import androidx.navigation.compose.NavHost
 import androidx.navigation.compose.composable
 import com.andriod17.upbudget.data.model.user.UserInfo
 import com.andriod17.upbudget.ui.screens.Learning.LearningScreen
-import com.andriod17.upbudget.ui.screens.admin.AdminDashboardScreen
 import com.andriod17.upbudget.ui.screens.admin.PromotionManagementScreen
 import com.andriod17.upbudget.ui.screens.admin.UserDetailScreen
 import com.andriod17.upbudget.ui.screens.admin.UserManagementScreen
@@ -31,7 +30,7 @@ fun MainNavigation(navController: NavHostController,startDestination: Any = Onbo
         composable<PromotionsNavigation>{
             PromotionsScreen(navController = navController)
         }
-        composable<LearningNavigation>{
+        composable<ContentNavigation>{
             LearningScreen(navController = navController)
         }
         composable<SettingsNavigation>{
@@ -76,6 +75,15 @@ fun MainNavigation(navController: NavHostController,startDestination: Any = Onbo
         }
         composable<UsedCouponsNavigation>{
             UsedCouponsScreen(navController = navController)
+        }
+        composable<UserManagementNavigation>{
+            UserManagementScreen(navController = navController)
+        }
+        composable<AdminHomeNavigation>{
+            //AdminDashboardScreen(navController = navController)
+        }
+        composable<AdminSettingsNavigation>{
+            UserManagementScreen(navController = navController)
         }
         composable<EditProfileNavigation>{
             EditProfileScreen(
