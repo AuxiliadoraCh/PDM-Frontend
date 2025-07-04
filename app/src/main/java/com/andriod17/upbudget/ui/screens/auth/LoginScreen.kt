@@ -10,6 +10,7 @@ import androidx.compose.foundation.layout.padding
 import androidx.compose.material3.Scaffold
 import androidx.compose.material3.Text
 import androidx.compose.runtime.Composable
+import androidx.compose.runtime.collectAsState
 import androidx.compose.runtime.getValue
 import androidx.compose.runtime.mutableStateOf
 import androidx.compose.runtime.remember
@@ -25,6 +26,7 @@ import androidx.lifecycle.viewmodel.compose.viewModel
 import androidx.navigation.NavController
 import com.andriod17.upbudget.R
 import com.andriod17.upbudget.data.local.SessionManager
+import com.andriod17.upbudget.data.local.preferences.Preferences
 import com.andriod17.upbudget.data.remote.RetrofitInstance
 import com.andriod17.upbudget.data.remote.services.AuthService
 import com.andriod17.upbudget.data.repository.Auth.AuthRepositoryImpl
@@ -34,6 +36,7 @@ import com.andriod17.upbudget.ui.components.GoogleSignInButton
 import com.andriod17.upbudget.ui.components.PrimaryActionButton
 import com.andriod17.upbudget.ui.components.SignInPrompt
 import com.andriod17.upbudget.ui.navigation.HomeNavigation
+import com.andriod17.upbudget.ui.navigation.LoginNavigation
 import com.andriod17.upbudget.viewmodel.Auth.Login.LoginViewModel
 import com.andriod17.upbudget.viewmodel.Auth.Login.LoginViewModelFactory
 
@@ -51,6 +54,7 @@ fun LoginScreen(
     )
     var email by remember { mutableStateOf("") }
     var password by remember { mutableStateOf("") }
+    val loading by viewModel.loading.collectAsState()
 
     Scaffold { innerPadding ->
         Column(
@@ -97,8 +101,19 @@ fun LoginScreen(
                 )
 
                 PrimaryActionButton(
-                    text = "Sign in",
-                    onClick = { viewModel.login(email, password, { navController.navigate(HomeNavigation) }) },
+                    text = if (loading) "Signing in..." else "Sign in",
+                    onClick = {
+                        viewModel.login(
+                            email = email,
+                            password = password,
+                            onLoginSuccess = {
+                                Preferences.setUserLoggedIn(context, true)
+                                navController.navigate(HomeNavigation) {
+                                    popUpTo(LoginNavigation) { inclusive = true }
+                                }
+                            }
+                        )
+                    },
                 )
 
                 Text(

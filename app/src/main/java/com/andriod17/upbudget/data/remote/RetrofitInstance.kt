@@ -1,10 +1,12 @@
 package com.andriod17.upbudget.data.remote
 
 import android.content.Context
-import com.andriod17.upbudget.MyApplication
+import com.andriod17.upbudget.UpBudgetApp
 import com.andriod17.upbudget.data.remote.services.AuthService
 import com.andriod17.upbudget.data.local.SessionManager
 import com.andriod17.upbudget.data.remote.interceptors.AuthInterceptor
+import com.andriod17.upbudget.data.remote.promotion.PromotionService
+import com.andriod17.upbudget.data.remote.used_coupon.UsedCouponService
 import okhttp3.OkHttpClient
 import okhttp3.logging.HttpLoggingInterceptor
 import retrofit2.Retrofit
@@ -24,6 +26,7 @@ object RetrofitInstance {
             .build()
     }
 
+
     private fun createRetrofit(sessionManager: SessionManager): Retrofit {
         return Retrofit.Builder()
             .baseUrl(BASE_URL)
@@ -32,11 +35,26 @@ object RetrofitInstance {
             .build()
     }
 
-    // Crear una instancia del servicio AuthService
     val authService: AuthService by lazy {
-        val application = MyApplication.getInstance()
+        val application = UpBudgetApp.getInstance()
         val context: Context =  application.applicationContext
         val sessionManager = SessionManager.getInstance(context)
         createRetrofit(sessionManager).create(AuthService::class.java)
     }
+
+    val promotionService: PromotionService by lazy {
+        val application = UpBudgetApp.getInstance()
+        val context: Context = application.applicationContext
+        val sessionManager = SessionManager.getInstance(context)
+        createRetrofit(sessionManager).create(PromotionService::class.java)
+    }
+
+    val usedcouponService: UsedCouponService by lazy {
+        val application = UpBudgetApp.getInstance()
+        val context: Context = application.applicationContext
+        val sessionManager = SessionManager.getInstance(context)
+        createRetrofit(sessionManager).create(UsedCouponService::class.java)
+    }
 }
+
+

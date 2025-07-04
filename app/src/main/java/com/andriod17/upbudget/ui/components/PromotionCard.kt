@@ -1,28 +1,26 @@
 package com.andriod17.upbudget.ui.components
 
-import androidx.compose.foundation.Image
-import androidx.compose.foundation.layout.Arrangement
 import androidx.compose.foundation.layout.Column
-import androidx.compose.foundation.layout.Row
-import androidx.compose.foundation.layout.Spacer
 import androidx.compose.foundation.layout.fillMaxWidth
-import androidx.compose.foundation.layout.height
 import androidx.compose.foundation.layout.padding
 import androidx.compose.foundation.shape.RoundedCornerShape
-import androidx.compose.material3.ButtonDefaults
 import androidx.compose.material3.Card
 import androidx.compose.material3.CardDefaults
+import androidx.compose.runtime.Composable
+import androidx.compose.ui.Modifier
+import androidx.compose.ui.tooling.preview.Preview
+import androidx.compose.ui.unit.dp
+import androidx.compose.foundation.Image
+import androidx.compose.foundation.layout.*
 import androidx.compose.material3.MaterialTheme
 import androidx.compose.material3.OutlinedButton
 import androidx.compose.material3.Text
-import androidx.compose.runtime.Composable
+import androidx.compose.material3.ButtonDefaults
 import androidx.compose.ui.Alignment
-import androidx.compose.ui.Modifier
 import androidx.compose.ui.layout.ContentScale
 import androidx.compose.ui.res.painterResource
 import androidx.compose.ui.text.font.FontWeight
-import androidx.compose.ui.tooling.preview.Preview
-import androidx.compose.ui.unit.dp
+import coil3.compose.AsyncImage
 import com.andriod17.upbudget.R
 import com.andriod17.upbudget.ui.theme.Purple40
 import com.andriod17.upbudget.ui.theme.Purple80
@@ -32,7 +30,7 @@ fun CouponCard(
     title: String,
     subtitle:String,
     description: String,
-    imageResId: Int,
+    imageResId: String?,
     onViewMoreClicked:()  -> Unit
 ){
     Card(
@@ -42,10 +40,10 @@ fun CouponCard(
         elevation = CardDefaults.cardElevation(defaultElevation = 6.dp),
         shape = RoundedCornerShape(16.dp),
 
-    ) {
+        ) {
         Column(modifier = Modifier.fillMaxWidth()) {
-            Image(
-                painter = painterResource(id = imageResId),
+            AsyncImage(
+                model = imageResId ?: "https://via.placeholder.com/300x150.png?text=No+Image",
                 contentDescription = null,
                 contentScale = ContentScale.Crop,
                 modifier = Modifier
@@ -96,7 +94,7 @@ fun PromotionCardPreview(){
         title = "Food Coupon",
         subtitle = "5% off in eligible restaurants",
         description = "Only for selected restaurants",
-        imageResId = R.drawable.foodcupon,
+        imageResId = null,
         onViewMoreClicked = {}
     )
 }

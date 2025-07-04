@@ -15,12 +15,14 @@ class MainActivity : ComponentActivity() {
         super.onCreate(savedInstanceState)
         enableEdgeToEdge()
         setContent {
-            val navCon = rememberNavController()
+            val navController = rememberNavController()
             val context = LocalContext.current
+
             val startDestination = remember {
                 Preferences.getStartDestination(context)
             }
-            MainNavigation(navCon,startDestination)
+
+            MainNavigation(navController, startDestination)
         }
     }
 }
