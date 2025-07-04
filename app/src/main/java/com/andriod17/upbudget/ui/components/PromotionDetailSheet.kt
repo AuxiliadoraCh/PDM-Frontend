@@ -16,10 +16,12 @@ import androidx.compose.material3.Text
 import androidx.compose.runtime.Composable
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
+import androidx.compose.ui.layout.ContentScale
 import androidx.compose.ui.res.painterResource
 import androidx.compose.ui.text.font.FontWeight
 import androidx.compose.ui.text.style.TextAlign
 import androidx.compose.ui.unit.dp
+import coil3.compose.AsyncImage
 import com.andriod17.upbudget.data.model.Promotion.PromotionItem
 import com.andriod17.upbudget.ui.theme.Purple40
 
@@ -40,15 +42,17 @@ fun PromotionDetailSheet(promotion: PromotionItem, onClose: () -> Unit) {
                 .padding(bottom = 16.dp)
         )
 
-
-        Image(
-            painter = painterResource(id = promotion.imageResId),
+        AsyncImage(
+            model = promotion.imageResId ?: "https://via.placeholder.com/300x150.png?text=No+Image",
             contentDescription = null,
+            contentScale = ContentScale.Crop,
             modifier = Modifier
                 .fillMaxWidth()
-                .height(100.dp)
-                .padding(bottom = 24.dp)
+                .height(90.dp)
         )
+
+
+
 
 
         Text(

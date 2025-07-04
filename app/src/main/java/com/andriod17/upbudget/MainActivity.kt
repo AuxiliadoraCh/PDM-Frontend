@@ -4,7 +4,10 @@ import android.os.Bundle
 import androidx.activity.ComponentActivity
 import androidx.activity.compose.setContent
 import androidx.activity.enableEdgeToEdge
+import androidx.compose.runtime.remember
+import androidx.compose.ui.platform.LocalContext
 import androidx.navigation.compose.rememberNavController
+import com.andriod17.upbudget.data.local.preferences.Preferences
 import com.andriod17.upbudget.ui.navigation.MainNavigation
 
 class MainActivity : ComponentActivity() {
@@ -13,7 +16,11 @@ class MainActivity : ComponentActivity() {
         enableEdgeToEdge()
         setContent {
             val navCon = rememberNavController()
-            MainNavigation(navCon)
+            val context = LocalContext.current
+            val startDestination = remember {
+                Preferences.getStartDestination(context)
+            }
+            MainNavigation(navCon,startDestination)
         }
     }
 }
