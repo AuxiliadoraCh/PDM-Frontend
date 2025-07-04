@@ -28,7 +28,6 @@ class PromotionListViewModel(
     private val _isRefreshing = MutableStateFlow(false)
     val isRefreshing: StateFlow<Boolean> = _isRefreshing
 
-
     fun loadPromotions(isRefreshing: Boolean = false) {
         viewModelScope.launch {
             promotionRepository.getActivePromotions().collect { resource ->
@@ -55,8 +54,6 @@ class PromotionListViewModel(
             }
         }
     }
-
-
 
     companion object {
         val Factory: ViewModelProvider.Factory = viewModelFactory {

@@ -108,5 +108,3 @@ fun UsedCouponsScreen(navController: NavHostController) {
 fun UsedScreenPreview(){
     //UsedCouponsScreen()
 }
-
-
