@@ -3,3 +3,6 @@ import kotlinx.serialization.Serializable
 
 @Serializable
 object ExpenseHistoryNavigation
+
+@Serializable
+object NewExpenseNavigation
