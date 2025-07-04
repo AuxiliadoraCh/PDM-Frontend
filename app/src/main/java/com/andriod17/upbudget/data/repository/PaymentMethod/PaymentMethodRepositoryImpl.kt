@@ -68,9 +68,8 @@ class PaymentMethodRepositoryImpl(
         return try {
             val response = paymentService.deletePaymentMethod(id)
             if (response.isSuccessful) {
-                paymentDao.getPaymentMethodById(id).collect { method ->
-                    method?.let { paymentDao.deletePaymentMethod(it) }
-                }
+                val method = paymentDao.getPaymentMethodById(id).first()
+                method?.let { paymentDao.deletePaymentMethod(it) }
                 Resource.Success(Unit)
             } else {
                 Resource.Error("Error al eliminar: ${response.message()}")
