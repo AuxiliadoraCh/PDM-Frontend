@@ -7,9 +7,11 @@ import androidx.room.RoomDatabase
 import com.andriod17.upbudget.data.database.entities.BudgetsEntity
 import androidx.room.TypeConverters
 import com.andriod17.upbudget.data.database.dao.PromotionDao
+import com.andriod17.upbudget.data.database.dao.UsedCouponDao
 import com.andriod17.upbudget.data.database.entities.UsedCouponEntity
 import com.andriod17.upbudget.data.database.entities.Converters
 import com.andriod17.upbudget.data.database.entities.PromotionEntity
+import com.andriod17.upbudget.data.model.Used_Coupons.UsedCoupon
 
 
 @Database(
@@ -21,6 +23,7 @@ import com.andriod17.upbudget.data.database.entities.PromotionEntity
 @TypeConverters(Converters::class)
 abstract class AppDatabase: RoomDatabase() {
     abstract fun promotionDao(): PromotionDao
+    abstract fun usedCouponDao(): UsedCouponDao
 
     companion object {
         @Volatile
