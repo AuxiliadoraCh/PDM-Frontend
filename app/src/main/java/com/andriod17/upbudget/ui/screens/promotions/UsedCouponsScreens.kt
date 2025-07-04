@@ -28,7 +28,7 @@ fun UsedCouponsScreen(navController: NavHostController) {
             title = "Food Coupon",
             subtitle = "2x1 Mother's Day breakfasts at select restaurants",
             description = "Used",
-            imageResId = R.drawable.foodcupon,
+            imageResId = "https://via.placeholder.com/300x150.png?text=No+Image",
             couponCode = "USED",
             isActive = false
         ),
@@ -36,7 +36,7 @@ fun UsedCouponsScreen(navController: NavHostController) {
             title = "Technology Coupon",
             subtitle = "50% off in phones at select stores",
             description = "Used",
-            imageResId = R.drawable.foodcupon,
+            imageResId = "https://via.placeholder.com/300x150.png?text=No+Image",
             couponCode = "USED",
             isActive = false
         ),
@@ -44,7 +44,7 @@ fun UsedCouponsScreen(navController: NavHostController) {
             title = "Transport Coupon",
             subtitle = "Get a free ride on private transport",
             description = "Used",
-            imageResId = R.drawable.foodcupon,
+            imageResId = "https://via.placeholder.com/300x150.png?text=No+Image",
             couponCode = "USED",
             isActive = false
         ),
@@ -52,7 +52,7 @@ fun UsedCouponsScreen(navController: NavHostController) {
             title = "Travel Coupon",
             subtitle = "10% off in travel agencies",
             description = "Used",
-            imageResId = R.drawable.foodcupon,
+            imageResId = "https://via.placeholder.com/300x150.png?text=No+Image",
             couponCode = "USED",
             isActive = false
         )

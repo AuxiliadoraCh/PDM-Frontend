@@ -16,9 +16,11 @@ import androidx.compose.material3.Text
 import androidx.compose.runtime.Composable
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
+import androidx.compose.ui.layout.ContentScale
 import androidx.compose.ui.res.painterResource
 import androidx.compose.ui.text.font.FontWeight
 import androidx.compose.ui.unit.dp
+import coil3.compose.AsyncImage
 import com.andriod17.upbudget.ui.theme.Purple40
 import com.andriod17.upbudget.ui.theme.Purple80
 
@@ -26,7 +28,7 @@ import com.andriod17.upbudget.ui.theme.Purple80
 fun UsedCouponCard(
     title: String,
     subtitle: String,
-    imageResId: Int,
+    imageResId: String?,
     usedDate: String
 ) {
     Card(
@@ -36,13 +38,13 @@ fun UsedCouponCard(
         modifier = Modifier.fillMaxWidth()
     ) {
         Column {
-            Image(
-                painter = painterResource(id = imageResId),
+            AsyncImage(
+                model = imageResId ?: "https://via.placeholder.com/300x150.png?text=No+Image",
                 contentDescription = null,
+                contentScale = ContentScale.Crop,
                 modifier = Modifier
                     .fillMaxWidth()
                     .height(90.dp)
-                    .padding(4.dp)
             )
 
             Row(
