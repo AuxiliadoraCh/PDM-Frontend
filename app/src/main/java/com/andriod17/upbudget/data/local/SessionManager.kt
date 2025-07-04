@@ -6,7 +6,9 @@ import androidx.datastore.preferences.core.edit
 import androidx.datastore.preferences.core.stringPreferencesKey
 import androidx.datastore.preferences.preferencesDataStore
 import kotlinx.coroutines.flow.Flow
+import kotlinx.coroutines.flow.first
 import kotlinx.coroutines.flow.map
+import kotlinx.coroutines.runBlocking
 
 val Context.dataStore by preferencesDataStore(name = "user_session")
 
@@ -53,5 +55,21 @@ class SessionManager(private val context: Context) {
 
     suspend fun clearSession() {
         context.dataStore.edit { it.clear() }
+    }
+
+    fun getAuthTokenSync(): String {
+        return runBlocking {
+            context.dataStore.data.map { preferences ->
+                preferences[USER_TOKEN] ?: ""
+            }.first()
+        }
+    }
+
+    fun getUserIdSync(): String {
+        return runBlocking {
+            context.dataStore.data.map { preferences ->
+                preferences[USER_ID] ?: ""
+            }.first()
+        }
     }
 }

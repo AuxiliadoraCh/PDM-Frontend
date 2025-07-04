@@ -41,6 +41,7 @@ fun PromotionManagementScreen(
         mutableStateOf(
             listOf(
                 PromotionItem(
+                    id = 1,
                     title = "Food Coupon",
                     subtitle = "2x1 Mother’s Day breakfasts at select restaurants",
                     description = "",
@@ -48,6 +49,7 @@ fun PromotionManagementScreen(
                     isActive = true
                 ),
                 PromotionItem(
+                    id = 1,
                     title = "Pharmacy Coupon",
                     subtitle = "Get a free supplement sample",
                     description = "",

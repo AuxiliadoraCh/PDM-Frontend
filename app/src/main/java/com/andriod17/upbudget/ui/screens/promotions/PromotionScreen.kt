@@ -56,6 +56,7 @@ fun PromotionsScreen(
     val viewModel: PromotionListViewModel = viewModel(factory = PromotionListViewModel.Factory)
     val promotions by viewModel.promotions.collectAsState()
     val isLoading by viewModel.loading.collectAsState()
+    val usedCouponsViewModel: UsedCouponsViewModel = viewModel(factory = UsedCouponsViewModel.Factory)
 
     LaunchedEffect(Unit) {
         viewModel.loadPromotions()
@@ -165,7 +166,8 @@ fun PromotionsScreen(
                         PromotionDetailSheet(promotion = coupon, onClose = {
                             scope.launch { sheetState.hide() }
                             selectedCoupon = null
-                        })
+                        },
+                            usedCouponsViewModel = usedCouponsViewModel)
                     }
                 }
             }

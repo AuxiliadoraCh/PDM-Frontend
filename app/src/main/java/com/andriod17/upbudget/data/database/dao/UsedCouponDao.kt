@@ -24,4 +24,10 @@ interface UsedCouponDao {
 
     @Query("DELETE FROM used_coupons WHERE user_id = :user_id AND promotion_id = :promotion_id")
     suspend fun deleteUsedCoupon(user_id: String, promotion_id: Int)
+
+    @Query("DELETE FROM used_coupons WHERE user_id = :userId")
+    suspend fun deleteUserCoupons(userId: String)
+
+    @Query("SELECT * FROM used_coupons WHERE user_id = :userId ORDER BY used_at DESC")
+    suspend fun getUsedCouponsOnce(userId: String): List<UsedCouponEntity>
 }

@@ -16,6 +16,7 @@ import java.util.Date
 
 fun Promotion.toPromotionItem(): PromotionItem {
     return PromotionItem(
+        id = id,
         title = title,
         subtitle = if (active) "Available Now" else "Expired",
         description = description,

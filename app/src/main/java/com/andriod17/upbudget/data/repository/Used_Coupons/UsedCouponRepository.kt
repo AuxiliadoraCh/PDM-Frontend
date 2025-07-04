@@ -5,7 +5,7 @@ import com.andriod17.upbudget.helpers.Resource
 import kotlinx.coroutines.flow.Flow
 
 interface UsedCouponRepository {
-    fun getUsedCoupons(user_id: String): Flow<Resource<List<UsedCoupon>>>
-    suspend fun registerCouponUsage(user_id: String, promotion_id: Int): Resource<UsedCoupon>
+    fun getUsedCoupons(): Flow<Resource<List<UsedCoupon>>>
+    suspend fun registerCouponUsage(promotion_id: Int): Resource<UsedCoupon>
 
 }

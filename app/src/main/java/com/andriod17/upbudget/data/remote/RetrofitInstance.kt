@@ -30,7 +30,7 @@ object RetrofitInstance {
     private fun createRetrofit(sessionManager: SessionManager): Retrofit {
         return Retrofit.Builder()
             .baseUrl(BASE_URL)
-            .client(createClient(sessionManager))  // Usar el cliente con el AuthInterceptor
+            .client(createClient(sessionManager))
             .addConverterFactory(GsonConverterFactory.create())
             .build()
     }
