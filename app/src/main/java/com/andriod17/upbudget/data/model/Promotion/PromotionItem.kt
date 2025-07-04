@@ -9,4 +9,3 @@ data class PromotionItem(
     val couponCode: String = "",
     val isActive: Boolean = true
 )
-
