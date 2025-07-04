@@ -37,7 +37,6 @@ fun HomeScreenContent(
     state: HomeUi,
     modifier: Modifier = Modifier,
     navController: NavHostController,
-
 ) {
     Column(
         modifier = modifier
@@ -86,6 +85,7 @@ fun HomeScreen(
     val state by viewModel.uiState.collectAsState()
 
     CustomScaffold(
+        title = "Dashboard",
         useOptionsIcon = true,
         floatingActionButton = {
             FloatingActionButton(onClick = { /*TODO*/ }) {
@@ -102,5 +102,3 @@ fun HomeScreen(
         navController = navController
     )
 }
-
-

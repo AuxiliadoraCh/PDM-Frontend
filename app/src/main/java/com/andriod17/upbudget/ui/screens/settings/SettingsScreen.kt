@@ -48,6 +48,7 @@ fun SettingsScreen(
     )
 
     CustomScaffold (
+        title = "Settings",
         content = { innerPadding ->
         Column(
             modifier = Modifier

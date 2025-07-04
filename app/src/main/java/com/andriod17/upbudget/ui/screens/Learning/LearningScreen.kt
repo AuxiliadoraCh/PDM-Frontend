@@ -47,6 +47,7 @@ fun LearningScreen(
     )
 
     CustomScaffold(
+        title = "Educational Content",
         content = { innerPadding ->
             Box(
                 modifier = Modifier

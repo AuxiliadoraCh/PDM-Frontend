@@ -27,9 +27,10 @@ fun CustomScaffold(
     useOptionsIcon: Boolean = false,
     onOptionsClick: () -> Unit = {},
     floatingActionButton: @Composable (() -> Unit)? = null,
-    content: @Composable (PaddingValues) -> Unit = {}
+    content: @Composable (PaddingValues) -> Unit = {},
+    title: String = "UPBudget",
+
 ) {
-    var title by rememberSaveable { mutableStateOf("Inicio") }
     var selectedItem by rememberSaveable { mutableStateOf("home") }
 
 
@@ -40,21 +41,8 @@ fun CustomScaffold(
         NavItem("Configuración", IconSettings, "settings")
     )
 
-    fun updateTitle(route: String) {
-        title = when (route) {
-            "home" -> "Inicio"
-            "promotions" -> "Promociones"
-            "financial_tips" -> "Consejos financieros"
-            "settings" -> "Configuración"
-            else -> "UPBudget"
-        }
-    }
-
-
     fun onItemSelected(currentItem: String) {
         selectedItem = currentItem
-        updateTitle(currentItem)
-
         when (currentItem) {
             "promotions" -> navController.navigate(PromotionsNavigation)
             "settings" -> navController.navigate(SettingsNavigation)
@@ -93,5 +81,5 @@ fun CustomScaffold(
 @Composable
 fun CustomScaffoldPreview() {
     val navController = rememberNavController()
-    CustomScaffold(navController = navController)
+    CustomScaffold(navController = navController, title = "Vista de ejemplo")
 }

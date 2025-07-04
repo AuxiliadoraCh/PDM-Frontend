@@ -67,6 +67,7 @@ fun PromotionsScreen(
     val scope = rememberCoroutineScope()
 
     CustomScaffold(
+        title = "Promotions",
         navController = navController,
         onBackPressed = {
             navController.navigate(HomeNavigation)
