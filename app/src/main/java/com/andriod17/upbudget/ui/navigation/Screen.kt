@@ -1,4 +1,5 @@
 package com.andriod17.upbudget.ui.navigation
+
 import kotlinx.serialization.Serializable
 
 @Serializable
@@ -14,28 +15,10 @@ object ContentNavigation
 object SettingsNavigation
 
 @Serializable
-object EditProfileNavigation
+object OnboardingInfoNavigation
 
 @Serializable
-object LearningNavigation
+object RegisterNavigation
 
 @Serializable
-object AdminHomeNavigation
-
-@Serializable
-object UsedCouponsNavigation
-
-@Serializable
-object UserManagementNavigation
-
-@Serializable
-object UserInformationNavigation
-
-@Serializable
-object AdminSettingsNavigation
-
-@Serializable
-object PromotionManagementNavigation
-
-
-
+object LoginNavigation
