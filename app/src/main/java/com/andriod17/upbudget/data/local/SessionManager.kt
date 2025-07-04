@@ -12,6 +12,17 @@ val Context.dataStore by preferencesDataStore(name = "user_session")
 
 class SessionManager(private val context: Context) {
     companion object {
+        @Volatile
+        private var INSTANCE: SessionManager? = null
+
+        fun getInstance(context: Context): SessionManager {
+            return INSTANCE ?: synchronized(this) {
+                val instance = SessionManager(context.applicationContext)
+                INSTANCE = instance
+                instance
+            }
+        }
+
         val USER_TOKEN = stringPreferencesKey("user_token")
         val USER_ID = stringPreferencesKey("user_id")
     }
