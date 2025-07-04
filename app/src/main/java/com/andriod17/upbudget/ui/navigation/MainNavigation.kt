@@ -19,11 +19,10 @@ import com.andriod17.upbudget.ui.screens.promotions.UsedCouponsScreen
 import com.andriod17.upbudget.ui.screens.settings.EditProfileScreen
 
 @Composable
-fun MainNavigation(navController: NavHostController) {
+fun MainNavigation(navController: NavHostController,startDestination: Any = OnboardingInfoNavigation) {
     NavHost(
         navController = navController,
-        startDestination = OnboardingInfoNavigation,
-
+        startDestination = startDestination,
     ) {
         composable<HomeNavigation>{
             HomeScreen(navController = navController)
@@ -46,23 +45,17 @@ fun MainNavigation(navController: NavHostController) {
         composable<LoginNavigation> {
             LoginScreen(navController = navController)
         }
-        composable<EditProfileNavigation>{
-            EditProfileScreen(
-                user = UserInfo(
-                    name = "Nombre ejemplo",
-                    username = "usuario",
-                    email = "email@ejemplo.com",
-                    imageUrl = "",
-                    registeredDate = "",
-                    totalTransactions = 0,
-                    lastLogin = ""
-                ),
-                onSave = {},
-                navController = navController
-            )
+        composable<UserManagementNavigation>{
+            UserManagementScreen(navController = navController)
         }
-        composable<UsedCouponsNavigation>{
-            UsedCouponsScreen(navController = navController)
+        composable<AdminHomeNavigation>{
+            AdminDashboardScreen(navController = navController)
+        }
+        composable<AdminSettingsNavigation>{
+            UserManagementScreen(navController = navController)
+        }
+        composable<PromotionManagementNavigation>{
+            PromotionManagementScreen(navHostController = navController)
         }
         composable<UserInformationNavigation> {
             UserDetailScreen(
@@ -80,6 +73,9 @@ fun MainNavigation(navController: NavHostController) {
                 navController = navController
             )
         }
+        composable<UsedCouponsNavigation>{
+            UsedCouponsScreen(navController = navController)
+        }
         composable<UserManagementNavigation>{
             UserManagementScreen(navController = navController)
         }
@@ -89,8 +85,20 @@ fun MainNavigation(navController: NavHostController) {
         composable<AdminSettingsNavigation>{
             UserManagementScreen(navController = navController)
         }
-        composable<PromotionManagementNavigation>{
-            PromotionManagementScreen(navHostController = navController)
+        composable<EditProfileNavigation>{
+            EditProfileScreen(
+                user = UserInfo(
+                    name = "Nombre ejemplo",
+                    username = "usuario",
+                    email = "email@ejemplo.com",
+                    imageUrl = "",
+                    registeredDate = "",
+                    totalTransactions = 0,
+                    lastLogin = ""
+                ),
+                onSave = {},
+                navController = navController
+            )
         }
     }
 }

@@ -9,7 +9,7 @@ object HomeNavigation
 object PromotionsNavigation
 
 @Serializable
-object ContentNavigation
+object LearningNavigation
 
 @Serializable
 object SettingsNavigation
@@ -18,16 +18,13 @@ object SettingsNavigation
 object OnboardingInfoNavigation
 
 @Serializable
+object EditProfileNavigation
+
+@Serializable
 object RegisterNavigation
 
 @Serializable
 object LoginNavigation
-
-@Serializable
-object EditProfileNavigation
-
-@Serializable
-object LearningNavigation
 
 @Serializable
 object AdminHomeNavigation

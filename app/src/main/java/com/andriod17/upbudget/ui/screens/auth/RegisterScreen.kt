@@ -1,10 +1,14 @@
 package com.andriod17.upbudget.ui.screens.auth
 
-import androidx.compose.foundation.layout.*
+import androidx.compose.foundation.layout.Arrangement
+import androidx.compose.foundation.layout.Column
+import androidx.compose.foundation.layout.Spacer
+import androidx.compose.foundation.layout.fillMaxSize
+import androidx.compose.foundation.layout.height
+import androidx.compose.foundation.layout.padding
 import androidx.compose.material3.Scaffold
 import androidx.compose.material3.Text
 import androidx.compose.runtime.Composable
-import androidx.compose.runtime.collectAsState
 import androidx.compose.runtime.getValue
 import androidx.compose.runtime.mutableStateOf
 import androidx.compose.runtime.remember
@@ -24,6 +28,7 @@ import androidx.compose.ui.unit.sp
 import androidx.lifecycle.viewmodel.compose.viewModel
 import androidx.navigation.NavController
 import com.andriod17.upbudget.R
+import com.andriod17.upbudget.data.local.SessionManager
 import com.andriod17.upbudget.data.remote.RetrofitInstance
 import com.andriod17.upbudget.data.remote.services.AuthService
 import com.andriod17.upbudget.data.repository.Auth.AuthRepositoryImpl
@@ -34,8 +39,6 @@ import com.andriod17.upbudget.ui.components.PrimaryActionButton
 import com.andriod17.upbudget.ui.components.SignInPrompt
 import com.andriod17.upbudget.ui.navigation.HomeNavigation
 import com.andriod17.upbudget.ui.navigation.LoginNavigation
-import com.andriod17.upbudget.viewmodel.Auth.Login.LoginViewModel
-import com.andriod17.upbudget.viewmodel.Auth.Login.LoginViewModelFactory
 import com.andriod17.upbudget.viewmodel.Auth.Register.RegisterViewModel
 import com.andriod17.upbudget.viewmodel.Auth.Register.RegisterViewModelFactory
 
@@ -44,10 +47,13 @@ fun RegisterScreen(
     navController: NavController,
     onGoogleSignInClick: () -> Unit = {},
 ) {
+    val context = LocalContext.current
+
     val authService: AuthService = remember { RetrofitInstance.authService }
     val authRepository = remember { AuthRepositoryImpl(authService) }
-    val viewModel: RegisterViewModel = viewModel(factory = RegisterViewModelFactory(authRepository))
-
+    val viewModel: RegisterViewModel = viewModel(
+        factory = RegisterViewModelFactory( authRepository = authRepository, sessionManager = SessionManager(context))
+    )
     var username by remember { mutableStateOf("") }
     var email by remember { mutableStateOf("") }
     var password by remember { mutableStateOf("") }
@@ -118,12 +124,4 @@ fun RegisterScreen(
             }
         }
     }
-}
-
-
-
-@Preview(showBackground = true, showSystemUi = true)
-@Composable
-fun RegisterScreenPreview() {
-    //RegisterScreen()
 }

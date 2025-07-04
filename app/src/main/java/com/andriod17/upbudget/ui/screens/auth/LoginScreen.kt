@@ -34,7 +34,6 @@ fun LoginScreen(
     val authService: AuthService = remember { RetrofitInstance.authService }
     val authRepository = remember { AuthRepositoryImpl(authService) }
     val viewModel: LoginViewModel = viewModel(factory = LoginViewModelFactory(authRepository))
-
     var email by remember { mutableStateOf("") }
     var password by remember { mutableStateOf("") }
 

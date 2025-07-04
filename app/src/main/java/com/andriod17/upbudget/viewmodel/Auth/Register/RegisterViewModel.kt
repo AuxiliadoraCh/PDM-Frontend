@@ -3,18 +3,19 @@ package com.andriod17.upbudget.viewmodel.Auth.Register
 import androidx.lifecycle.ViewModel
 import androidx.lifecycle.viewModelScope
 import androidx.navigation.NavController
+import com.andriod17.upbudget.data.local.SessionManager
 import com.andriod17.upbudget.data.repository.Auth.AuthRepository
 import com.andriod17.upbudget.helpers.Resource
 import com.andriod17.upbudget.ui.navigation.LoginNavigation
-import com.andriod17.upbudget.ui.navigation.RegisterNavigation
-import kotlinx.coroutines.delay
 import kotlinx.coroutines.flow.MutableStateFlow
 import kotlinx.coroutines.flow.StateFlow
 import kotlinx.coroutines.flow.collectLatest
-import kotlinx.coroutines.flow.update
 import kotlinx.coroutines.launch
 
-class RegisterViewModel(private val authRepository: AuthRepository) : ViewModel() {
+class RegisterViewModel(
+    private val authRepository: AuthRepository,
+    private val sessionManager: SessionManager
+) : ViewModel() {
     private val _loading = MutableStateFlow<Boolean>(false)
     val loading : StateFlow<Boolean> = _loading
 
@@ -28,6 +29,8 @@ class RegisterViewModel(private val authRepository: AuthRepository) : ViewModel(
 
                     is Resource.Success -> {
                         _loading.value = false
+                        sessionManager.saveAuthToken(result.data?.user?.access_token ?: "")
+                        sessionManager.saveUserId(result.data?.user?.user?.id ?: "")
                         onRegistrationSuccess()
                     }
 
