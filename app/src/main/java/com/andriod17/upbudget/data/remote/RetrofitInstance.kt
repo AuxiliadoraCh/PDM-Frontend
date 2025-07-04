@@ -1,5 +1,6 @@
 package com.andriod17.upbudget.data.remote
 
+import com.andriod17.upbudget.data.remote.expense.ExpenseService
 import com.andriod17.upbudget.data.remote.promotion.PromotionService
 import com.andriod17.upbudget.data.remote.used_coupon.UsedCouponService
 import okhttp3.OkHttpClient
@@ -28,5 +29,8 @@ object RetrofitInstance {
 
     val usedcouponService: UsedCouponService by lazy {
         retrofit.create(UsedCouponService::class.java)
+    }
+    val expenseService: ExpenseService by lazy {
+        retrofit.create(ExpenseService::class.java)
     }
 }
