@@ -6,14 +6,17 @@ import androidx.compose.foundation.lazy.LazyColumn
 import androidx.compose.foundation.lazy.items
 import androidx.compose.foundation.shape.RoundedCornerShape
 import androidx.compose.material3.*
+import androidx.compose.material3.CircularProgressIndicator
 import androidx.compose.runtime.*
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.tooling.preview.Preview
 import androidx.compose.ui.unit.dp
+import androidx.lifecycle.viewmodel.compose.viewModel
 import androidx.navigation.NavHostController
 import com.andriod17.upbudget.R
 import com.andriod17.upbudget.data.model.Promotion.PromotionItem
+import com.andriod17.upbudget.data.model.Promotion.toPromotionItem
 import com.andriod17.upbudget.ui.components.CouponCard
 import com.andriod17.upbudget.ui.components.CustomScaffold
 import com.andriod17.upbudget.ui.components.PromotionDetailSheet
@@ -27,40 +30,17 @@ import kotlinx.coroutines.launch
 fun PromotionsScreen(
     navController: NavHostController
 ) {
-    val coupons = listOf(
-        PromotionItem(
-            title = "Food Coupon",
-            subtitle = "5% off in eligible restaurants",
-            description = "Only for selected restaurants",
-            imageResId = R.drawable.foodcupon,
-            restaurantList = listOf("María's Food", "Eli's Pizzas", "Miss Rocío Restaurant", "Guillermo's Bar"),
-            couponCode = "FOOD5"
-        ),
-        PromotionItem(
-            title = "Clothing Coupon",
-            subtitle = "Free accessory at select stores",
-            description = "With purchases over \$25",
-            imageResId = R.drawable.clothescupon,
-            restaurantList = listOf("María's Food", "Eli's Pizzas", "Miss Rocío Restaurant", "Guillermo's Bar"),
-            couponCode = "FOOD5"
-        ),
-        PromotionItem(
-            title = "Pharmacy Coupon",
-            subtitle = "Get a free supplement sample",
-            description = "On your next purchase",
-            imageResId = R.drawable.pharmacycupon,
-            restaurantList = listOf("María's Food", "Eli's Pizzas", "Miss Rocío Restaurant", "Guillermo's Bar"),
-            couponCode = "FOOD5"
-        ),
-        PromotionItem(
-            title = "Beauty Coupon",
-            subtitle = "10% off in eligible brands",
-            description = "Only this weekend",
-            imageResId = R.drawable.makeupcupon,
-            restaurantList = listOf("María's Food", "Eli's Pizzas", "Miss Rocío Restaurant", "Guillermo's Bar"),
-            couponCode = "FOOD5"
-        )
-    )
+
+    val viewModel: PromotionListViewModel = viewModel(factory = PromotionListViewModel.Factory)
+    val promotions by viewModel.promotions.collectAsState()
+    val isLoading by viewModel.loading.collectAsState()
+
+    LaunchedEffect(Unit) {
+        viewModel.loadPromotions()
+    }
+
+    val coupons = promotions.map {it.toPromotionItem()}
+
 
     var selectedCoupon by remember { mutableStateOf<PromotionItem?>(null) }
     val sheetState = rememberModalBottomSheetState()
@@ -135,22 +115,26 @@ fun PromotionsScreen(
 
                     Spacer(modifier = Modifier.height(12.dp))
 
-                    LazyColumn(
-                        contentPadding = PaddingValues(horizontal = 16.dp, vertical = 8.dp),
-                        verticalArrangement = Arrangement.spacedBy(12.dp),
-                        modifier = Modifier.fillMaxSize()
-                    ) {
-                        items(coupons) { coupon ->
-                            CouponCard(
-                                title = coupon.title,
-                                subtitle = coupon.subtitle,
-                                description = coupon.description,
-                                imageResId = coupon.imageResId,
-                                onViewMoreClicked = {
-                                    selectedCoupon = coupon
-                                    scope.launch { sheetState.show() }
-                                }
-                            )
+                    if (isLoading){
+                        CircularProgressIndicator(modifier = Modifier.align(Alignment.CenterHorizontally))
+                    }else {
+                        LazyColumn(
+                            contentPadding = PaddingValues(horizontal = 16.dp, vertical = 8.dp),
+                            verticalArrangement = Arrangement.spacedBy(12.dp),
+                            modifier = Modifier.fillMaxSize()
+                        ) {
+                            items(coupons) { coupon ->
+                                CouponCard(
+                                    title = coupon.title,
+                                    subtitle = coupon.subtitle,
+                                    description = coupon.description,
+                                    imageResId = coupon.imageResId,
+                                    onViewMoreClicked = {
+                                        selectedCoupon = coupon
+                                        scope.launch { sheetState.show() }
+                                    }
+                                )
+                            }
                         }
                     }
                 }

@@ -22,6 +22,7 @@ import androidx.compose.ui.res.painterResource
 import androidx.compose.ui.text.font.FontWeight
 import androidx.compose.ui.tooling.preview.Preview
 import androidx.compose.ui.unit.dp
+import coil3.compose.AsyncImage
 import com.andriod17.upbudget.R
 
 
@@ -29,7 +30,7 @@ import com.andriod17.upbudget.R
 fun AdminCouponCard(
     title: String,
     subtitle: String,
-    imageResId: Int,
+    imageResId: String?,
     isActive: Boolean,
     onToggleActive: (Boolean) -> Unit
 ) {
@@ -41,8 +42,8 @@ fun AdminCouponCard(
         shape = RoundedCornerShape(16.dp)
     ) {
         Column {
-            Image(
-                painter = painterResource(id = imageResId),
+            AsyncImage(
+                model = imageResId ?: "https://via.placeholder.com/300x150.png?text=No+Image",
                 contentDescription = null,
                 contentScale = ContentScale.Crop,
                 modifier = Modifier
@@ -82,7 +83,7 @@ fun AdminCouponCardPreview() {
     AdminCouponCard(
         title = "Food Coupon",
         subtitle = "2x1 Mother’s Day breakfasts at select restaurants",
-        imageResId = R.drawable.foodcupon,
+        imageResId = "https://via.placeholder.com/300x150.png?text=No+Image",
         isActive = true,
         onToggleActive = {}
     )

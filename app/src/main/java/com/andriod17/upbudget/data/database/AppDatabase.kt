@@ -1,4 +1,5 @@
 package com.andriod17.upbudget.data.database
+
 import android.content.Context
 import androidx.room.Database
 import androidx.room.Room
@@ -8,16 +9,40 @@ import com.andriod17.upbudget.data.database.dao.PaymentMethodDao
 import com.andriod17.upbudget.data.database.entities.CategoryEntity
 import com.andriod17.upbudget.data.database.entities.IncomeEntity
 import com.andriod17.upbudget.data.database.entities.PaymentMethodEntity
+import androidx.room.TypeConverters
+import com.andriod17.upbudget.data.database.dao.EducationalContentDao
+import com.andriod17.upbudget.data.database.dao.ExpenseDao
+import com.andriod17.upbudget.data.database.dao.PromotionDao
+import com.andriod17.upbudget.data.database.dao.UsedCouponDao
+import com.andriod17.upbudget.data.database.entities.BudgetsEntity
+import com.andriod17.upbudget.data.database.entities.Converters
+import com.andriod17.upbudget.data.database.entities.EducationalContentEntity
+import com.andriod17.upbudget.data.database.entities.ExpenseEntity
+import com.andriod17.upbudget.data.database.entities.PromotionEntity
+import com.andriod17.upbudget.data.database.entities.UsedCouponEntity
 
 @Database(
-    entities = [IncomeEntity::class, CategoryEntity::class, PaymentMethodEntity::class],
+    entities = [PromotionEntity::class,
+        UsedCouponEntity::class,
+        BudgetsEntity::class,
+        ExpenseEntity::class,
+        EducationalContentEntity::class,
+        IncomeEntity::class,
+        CategoryEntity::class,
+        PaymentMethodEntity::class],
     version = 1,
     exportSchema = false
 )
 
-abstract class AppDatabase: RoomDatabase() {
+@TypeConverters(Converters::class)
+abstract class AppDatabase : RoomDatabase() {
+    abstract fun promotionDao(): PromotionDao
+    abstract fun usedCouponDao(): UsedCouponDao
+    abstract fun ExpenseDao(): ExpenseDao
+    abstract fun educationalContentDao(): EducationalContentDao
     abstract fun categoryDao(): CategoryDao
     abstract fun paymentMethodDao(): PaymentMethodDao
+
     companion object {
         @Volatile
         private var INSTANCE: AppDatabase? = null
@@ -38,4 +63,5 @@ abstract class AppDatabase: RoomDatabase() {
             }
         }
     }
+}
 }
