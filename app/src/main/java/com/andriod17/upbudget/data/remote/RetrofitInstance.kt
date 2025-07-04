@@ -1,5 +1,6 @@
-package com.andriod17.upbudget.data.remote
+package com.andriod17.upbudget.data.database
 
+import com.andriod17.upbudget.data.remote.educationalContent.EducationalContentService
 import com.andriod17.upbudget.data.remote.budgets.BudgetsService
 import com.andriod17.upbudget.data.remote.expense.ExpenseService
 import com.andriod17.upbudget.data.remote.promotion.PromotionService
@@ -25,7 +26,7 @@ object RetrofitInstance {
         .addConverterFactory(GsonConverterFactory.create())
         .build()
 
-    val budgetsService : BudgetsService by lazy {
+    val budgetsService: BudgetsService by lazy {
         retrofit.create(BudgetsService::class.java)
     }
 
@@ -42,5 +43,8 @@ object RetrofitInstance {
     }
     val authService: AuthService by lazy {
         retrofit.create(AuthService::class.java)
+    }
+    val educationalContentService: EducationalContentService by lazy {
+        retrofit.create(EducationalContentService::class.java)
     }
 }
