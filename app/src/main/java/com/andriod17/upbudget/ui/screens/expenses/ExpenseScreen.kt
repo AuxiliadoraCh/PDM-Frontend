@@ -14,7 +14,6 @@ import androidx.compose.foundation.layout.padding
 import androidx.compose.foundation.rememberScrollState
 import androidx.compose.foundation.verticalScroll
 import androidx.compose.material.icons.Icons
-import androidx.compose.material.icons.filled.CalendarToday
 import androidx.compose.material3.Icon
 import androidx.compose.material3.OutlinedTextField
 import androidx.compose.foundation.text.KeyboardActions
@@ -54,29 +53,32 @@ import androidx.compose.foundation.interaction.MutableInteractionSource
 import androidx.compose.foundation.interaction.collectIsPressedAsState
 import androidx.compose.foundation.layout.Box
 import androidx.compose.foundation.shape.RoundedCornerShape
+import androidx.compose.material.icons.filled.DateRange
 import androidx.compose.material3.LocalContentColor
 import androidx.compose.material3.MaterialTheme
 import androidx.compose.material3.PrimaryTabRow
 import androidx.compose.material3.Tab
 import androidx.compose.material3.TabRow
 import androidx.compose.material3.surfaceColorAtElevation
+import androidx.compose.runtime.mutableStateOf
 import androidx.compose.ui.graphics.Color
 import androidx.compose.ui.platform.LocalSoftwareKeyboardController
 import androidx.compose.ui.text.font.Font
 import androidx.compose.ui.text.font.FontFamily
 import androidx.compose.ui.text.style.TextOverflow
+import androidx.navigation.NavHostController
 import com.andriod17.upbudget.data.model.Expense.TransactionTab
 
 @OptIn(ExperimentalMaterial3Api::class)
 @Composable
 fun ExpenseScreen(
+    navController: NavHostController,
     expenseViewModel: ExpenseScreenViewModel = viewModel(),
     categoryViewModel: CategoryViewModel = viewModel()
 ) {
     val expenseUiState by expenseViewModel.uiState.collectAsState()
     val categoryUiState by categoryViewModel.uiState.collectAsState()
 
-    val navController = rememberNavController()
     val datePickerState = rememberDatePickerState(
         initialSelectedDateMillis = expenseUiState.selectedDateMillis
     )
@@ -113,9 +115,10 @@ fun ExpenseScreen(
         }
     }
 
-
     CustomScaffold(
-        title = "New Transaction", navController = navController
+        navController = navController,
+        showBackButton = true,
+        showSettingsIcon = false
     ) { innerPadding ->
         ExpenseScreenContent(
             padding = innerPadding,
@@ -237,7 +240,7 @@ fun ExpenseScreenContent(
                 label = { Text("Date") },
                 trailingIcon = {
                     Icon(
-                        imageVector = Icons.Filled.CalendarToday,
+                        imageVector = Icons.Filled.DateRange,
                         contentDescription = "Select date",
                         modifier = Modifier.clickable { onDateClick() }
                     )
@@ -345,8 +348,10 @@ fun ExpenseScreenContent(
     }
 }
 
-@Preview(showBackground = true, showSystemUi = true)
-@Composable
-fun ExpenseScreenPreview() {
-    ExpenseScreen()
-}
+//@Preview(showBackground = true, showSystemUi = true)
+//@Composable
+//fun ExpenseScreenPreview() {
+//    ExpenseScreen()
+//}
+
+
