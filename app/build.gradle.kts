@@ -3,6 +3,7 @@ plugins {
         alias(libs.plugins.kotlin.android)
         alias(libs.plugins.kotlin.compose)
         alias(libs.plugins.kotlin.serialization)
+        alias(libs.plugins.ksp)
 }
 
 android {
@@ -13,8 +14,8 @@ android {
         applicationId = "com.andriod17.upbudget"
         minSdk = 24
         targetSdk = 35
-        versionCode = 3
-        versionName = "1.2"
+        versionCode = 4
+        versionName = "1.3"
 
         testInstrumentationRunner = "androidx.test.runner.AndroidJUnitRunner"
     }
@@ -56,7 +57,7 @@ dependencies {
         testImplementation(libs.junit)
     implementation(libs.coil.compose)
     implementation(libs.coil.network.okhttp)
-    implementation(libs.ads.mobile.sdk)
+    //implementation(libs.ads.mobile.sdk)
     testImplementation(libs.junit)
         androidTestImplementation(libs.androidx.junit)
         androidTestImplementation(libs.androidx.espresso.core)
@@ -67,9 +68,15 @@ dependencies {
         implementation(libs.vico.core)
         implementation(libs.vico.compose)
         implementation(libs.vico.compose.m3)
+        implementation(libs.room.runtime)
+        implementation(libs.room.ktx)
 
     implementation(libs.retrofit)
     implementation(libs.converter.gson)
     implementation(libs.logging.interceptor)
+    ksp(libs.room.compiler)
+    implementation("androidx.datastore:datastore-preferences:1.0.0")
+    implementation("androidx.lifecycle:lifecycle-runtime-ktx:2.6.1")
 
+    implementation(libs.datastore.preferences)
 }

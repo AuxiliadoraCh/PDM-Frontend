@@ -7,34 +7,34 @@ import androidx.compose.foundation.layout.padding
 import androidx.compose.foundation.lazy.LazyColumn
 import androidx.compose.material3.OutlinedTextField
 import androidx.compose.material3.Text
-import androidx.compose.material3.TextFieldDefaults
 import androidx.compose.runtime.Composable
 import androidx.compose.runtime.getValue
 import androidx.compose.runtime.mutableStateOf
 import androidx.compose.runtime.remember
 import androidx.compose.runtime.setValue
 import androidx.compose.ui.Modifier
-import androidx.compose.ui.graphics.Color
-import androidx.compose.ui.res.painterResource
 import androidx.compose.ui.text.input.TextFieldValue
 import androidx.compose.ui.unit.dp
 import com.andriod17.upbudget.data.model.Promotion.PromotionItem
 import com.andriod17.upbudget.R
 import com.andriod17.upbudget.ui.components.AdminCouponCard
-import com.andriod17.upbudget.ui.components.TopBar
 import androidx.compose.foundation.layout.*
 import androidx.compose.foundation.lazy.items
 import androidx.compose.material.icons.Icons
 import androidx.compose.material.icons.filled.Search
 import androidx.compose.material3.Icon
-import androidx.compose.material3.OutlinedTextFieldDefaults
+import androidx.compose.material3.MaterialTheme
 import androidx.compose.runtime.*
 import androidx.compose.ui.tooling.preview.Preview
-import com.andriod17.upbudget.ui.components.AdminBottomBar
+import androidx.navigation.NavHostController
+import com.andriod17.upbudget.ui.components.CustomAdminScaffold
+import com.andriod17.upbudget.ui.navigation.AdminHomeNavigation
 
 
 @Composable
-fun PromotionManagementScreen() {
+fun PromotionManagementScreen(
+    navHostController: NavHostController
+) {
     var searchQuery by remember { mutableStateOf(TextFieldValue("")) }
     var selectedItem by remember { mutableStateOf("admin_home") }
     var couponList by remember {
@@ -44,69 +44,84 @@ fun PromotionManagementScreen() {
                     title = "Food Coupon",
                     subtitle = "2x1 Mother’s Day breakfasts at select restaurants",
                     description = "",
-                    imageResId = R.drawable.foodcupon,
+                    imageResId = "https://via.placeholder.com/300x150.png?text=No+Image",
                     isActive = true
                 ),
                 PromotionItem(
                     title = "Pharmacy Coupon",
                     subtitle = "Get a free supplement sample",
                     description = "",
-                    imageResId = R.drawable.pharmacycupon,
+                    imageResId = "https://via.placeholder.com/300x150.png?text=No+Image",
                     isActive = true
                 )
             )
         )
     }
 
-    Column(modifier = Modifier.fillMaxSize()) {
-        TopBar(
-            title = "Promotions management",
-            onBackPressed = {},
-            onSettingsPressed = {}
-        )
-
-        OutlinedTextField(
-            value = searchQuery,
-            onValueChange = { searchQuery = it },
-            placeholder = { Text("Find promotion") },
-            modifier = Modifier
-                .fillMaxWidth()
-                .padding(16.dp),
-            leadingIcon = {
-                Icon(
-                    imageVector = Icons.Filled.Search,
-                    contentDescription = null
+    CustomAdminScaffold(
+        navController = navHostController,
+        onBackPressed = {
+            navHostController.navigate(AdminHomeNavigation)
+        },
+        showBackButton = true,
+        showSettingsIcon = false,
+        content = { innerPadding ->
+            Column(
+                modifier = Modifier
+                    .padding(innerPadding)
+                    .padding(bottom = 64.dp)
+                    .fillMaxSize()
+            ) {
+                Text(
+                    text = "Promotions Management",
+                    style = MaterialTheme.typography.headlineSmall,
+                    modifier = Modifier.padding(horizontal = 16.dp, vertical = 12.dp)
                 )
-            }
-        )
 
-        LazyColumn(modifier = Modifier
-            .weight(1f) // 👈 Deja espacio para el BottomBar
-            .padding(horizontal = 8.dp)) {
-            items(couponList) { coupon ->
-                AdminCouponCard(
-                    title = coupon.title,
-                    subtitle = coupon.subtitle,
-                    imageResId = coupon.imageResId,
-                    isActive = coupon.isActive,
-                    onToggleActive = { newValue ->
-                        couponList = couponList.map {
-                            if (it.title == coupon.title) it.copy(isActive = newValue) else it
-                        }
+                OutlinedTextField(
+                    value = searchQuery,
+                    onValueChange = { searchQuery = it },
+                    placeholder = { Text("Find promotion") },
+                    modifier = Modifier
+                        .fillMaxWidth()
+                        .padding(horizontal = 16.dp),
+                    leadingIcon = {
+                        Icon(
+                            imageVector = Icons.Filled.Search,
+                            contentDescription = null
+                        )
                     }
                 )
+
+                LazyColumn(
+                    modifier = Modifier
+                        .weight(1f)
+                        .padding(8.dp)
+                ) {
+                    items(couponList.filter {
+                        it.title.contains(searchQuery.text, ignoreCase = true) ||
+                                it.subtitle.contains(searchQuery.text, ignoreCase = true)
+                    }) { coupon ->
+                        AdminCouponCard(
+                            title = coupon.title,
+                            subtitle = coupon.subtitle,
+                            imageResId = coupon.imageResId,
+                            isActive = coupon.isActive,
+                            onToggleActive = { newValue ->
+                                couponList = couponList.map {
+                                    if (it.title == coupon.title) it.copy(isActive = newValue) else it
+                                }
+                            }
+                        )
+                    }
+                }
             }
         }
-
-        AdminBottomBar(
-            selectedItem = selectedItem,
-            onItemSelected = { selectedItem = it }
-        )
-    }
+    )
 }
 
 @Preview(showBackground = true)
 @Composable
 fun PromotionManagementPreview(){
-    PromotionManagementScreen()
+    //PromotionManagementScreen()
 }

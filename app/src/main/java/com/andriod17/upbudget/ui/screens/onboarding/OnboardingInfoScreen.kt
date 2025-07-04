@@ -21,8 +21,8 @@ import androidx.compose.material3.Icon
 import androidx.compose.material3.Text
 import androidx.compose.runtime.Composable
 import androidx.compose.material3.TextButton
-import androidx.compose.runtime.mutableStateOf
-import androidx.compose.runtime.remember
+import androidx.compose.runtime.collectAsState
+import androidx.compose.runtime.getValue
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.graphics.Color
@@ -39,31 +39,25 @@ import androidx.compose.ui.text.font.Font
 import androidx.compose.ui.text.style.TextDecoration
 import androidx.compose.ui.tooling.preview.Preview
 import androidx.compose.foundation.layout.size
-import androidx.compose.runtime.getValue
-import androidx.compose.runtime.setValue
-
-
-data class OnboardingContent(
-    val image: Int,
-    val title: String,
-    val description: String
-)
+import androidx.lifecycle.viewmodel.compose.viewModel
+import androidx.navigation.NavController
+import androidx.compose.runtime.LaunchedEffect
+import com.andriod17.upbudget.ui.navigation.OnboardingInfoNavigation
+import com.andriod17.upbudget.ui.navigation.RegisterNavigation
+import com.andriod17.upbudget.viewmodel.Onboarding.OnboardingInfoViewModel
 
 @Composable
-fun OnboardingInfoScreen() {
-    var currentPage by remember { mutableStateOf(0) }
-    val onboardingData = listOf(
-        OnboardingContent(R.drawable.person_money, "Take Control", "Manage your money smarter,\n track your spending,\n and start saving with\n confidence."),
-        OnboardingContent(R.drawable.investing, "Budget Smarter", "Create simple budgets,\n set financial goals, and get reminders to stay on track."),
-        OnboardingContent(R.drawable.learn_save, "Learn & Save", "Get financial tips, unlock\n exclusive discounts, and\n grow your money every\n day.")
-    )
-
+fun OnboardingInfoScreen(
+    navController: NavController,
+    viewModel: OnboardingInfoViewModel = viewModel()
+) {
+    val currentPage by viewModel.currentPage.collectAsState()
+    val onboardingData = viewModel.onboardingData
     val page = onboardingData[currentPage]
 
     Box(
         modifier = Modifier
-            .width(412.dp)
-            .height(917.dp)
+            .fillMaxSize()
             .background(color = Color(0xFFFFFFFF))
     ) {
 
@@ -138,11 +132,7 @@ fun OnboardingInfoScreen() {
                 horizontalAlignment = Alignment.CenterHorizontally,
             ) {
                 Button(
-                    onClick = {
-                        if (currentPage < onboardingData.size - 1) {
-                            currentPage++
-                        }
-                    },
+                    onClick = { viewModel.nextPage() },
                     colors = ButtonDefaults.buttonColors(containerColor = Color(0xFF216B8A)),
                     shape = RoundedCornerShape(20.dp),
                     modifier = Modifier
@@ -169,7 +159,7 @@ fun OnboardingInfoScreen() {
                         )
                     }
                 }
-                TextButton(onClick = {}) {
+                TextButton(onClick = { viewModel.skip(navController) }) {
                     Text(
                         text = "Skip",
                         style = TextStyle(
@@ -199,5 +189,5 @@ fun OnboardingInfoScreen() {
 @Preview(showBackground = true, showSystemUi = true)
 @Composable
 fun OnboardingInfoScreenPreview() {
-    OnboardingInfoScreen()
+    //OnboardingInfoScreen()
 }

@@ -1,117 +1,112 @@
 package com.andriod17.upbudget.ui.screens.auth
 
+import androidx.compose.foundation.clickable
 import androidx.compose.foundation.layout.*
 import androidx.compose.material3.Text
+import androidx.compose.material3.OutlinedTextField
+import androidx.compose.material3.Button
+import androidx.compose.material3.Scaffold
 import androidx.compose.runtime.*
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
-import androidx.compose.ui.graphics.Color
-import androidx.compose.ui.text.TextStyle
-import androidx.compose.ui.text.font.Font
-import androidx.compose.ui.text.font.FontFamily
-import androidx.compose.ui.text.font.FontWeight
-import androidx.compose.ui.text.style.TextAlign
-import androidx.compose.ui.tooling.preview.Preview
 import androidx.compose.ui.unit.dp
 import androidx.compose.ui.unit.sp
+import androidx.compose.material3.TextButton
+import androidx.compose.ui.graphics.Color
+import androidx.compose.ui.text.TextStyle
 import androidx.lifecycle.viewmodel.compose.viewModel
+import androidx.compose.ui.tooling.preview.Preview
+import androidx.navigation.NavController
 import com.andriod17.upbudget.R
+import com.andriod17.upbudget.data.repository.Auth.AuthRepositoryImpl
 import com.andriod17.upbudget.ui.components.*
-import com.andriod17.upbudget.viewmodel.Login.LoginViewModel
-import androidx.compose.foundation.clickable
-import androidx.compose.ui.platform.LocalContext
+import com.andriod17.upbudget.ui.navigation.HomeNavigation
+import com.andriod17.upbudget.viewmodel.Auth.Login.LoginViewModel
+import com.andriod17.upbudget.viewmodel.Auth.Login.LoginViewModelFactory
+import com.andriod17.upbudget.data.remote.RetrofitInstance
+import com.andriod17.upbudget.data.remote.services.AuthService
 
 @Composable
 fun LoginScreen(
-    onLoginSuccess: () -> Unit = {},
-    onRegisterClick: () -> Unit = {},
-    onForgotPasswordClick: () -> Unit = {}
+    navController: NavController,
+    onForgotPasswordClick: () -> Unit = {},
 ) {
-    val context = LocalContext.current
-    // val userRepository = UserRepository(AppDatabase.getInstance(context).userDao())
-    // val viewModel: LoginViewModel = viewModel(factory = LoginViewModelFactory(userRepository))
-    val viewModel: LoginViewModel = viewModel()
-    val state by viewModel.uiState.collectAsState()
-    Column(
-        modifier = Modifier
-            .fillMaxSize()
-            .padding(19.dp),
-        horizontalAlignment = Alignment.CenterHorizontally
-    ) {
-        Spacer(modifier = Modifier.height(30.dp))
+    val authService: AuthService = remember { RetrofitInstance.authService }
+    val authRepository = remember { AuthRepositoryImpl(authService) }
+    val viewModel: LoginViewModel = viewModel(factory = LoginViewModelFactory(authRepository))
 
-        AuthTopSection(
-            iconResId = R.drawable.icon_up_budget,
-            title = "Sign in",
-            subtitle = "Hey there!\n Great to see you again"
-        )
+    var email by remember { mutableStateOf("") }
+    var password by remember { mutableStateOf("") }
 
-        Spacer(modifier = Modifier.height(30.dp))
+    Scaffold { innerPadding ->
+        Column(
+            modifier = Modifier
+                .padding(innerPadding)
+                .fillMaxSize()
+                .padding(19.dp),
+            horizontalAlignment = Alignment.CenterHorizontally
+        ) {
+            Spacer(modifier = Modifier.height(30.dp))
 
-        Column(verticalArrangement = Arrangement.spacedBy(15.dp)) {
-            CustomTextField(
-                label = "Email",
-                value = state.email,
-                onValueChange = viewModel::onEmailChange
+            AuthTopSection(
+                iconResId = R.drawable.icon_up_budget,
+                title = "Sign in",
+                subtitle = "Hey there!\n Great to see you again"
             )
 
-            CustomTextField(
-                label = "Password",
-                value = state.password,
-                isPassword = true,
-                onValueChange = viewModel::onPasswordChange
-            )
+            Spacer(modifier = Modifier.height(30.dp))
 
-            Text(
-                text = "Forgot Password?",
-                modifier = Modifier
-                    .align(Alignment.End)
-                    .padding(end = 8.dp)
-                    .clickable { onForgotPasswordClick() },
-                style = TextStyle(
-                    fontSize = 14.sp,
-                    fontFamily = FontFamily(Font(R.font.nunito_regular)),
-                    color = Color(0xFF211557),
-                    fontWeight = FontWeight.Medium
+            Column(verticalArrangement = Arrangement.spacedBy(15.dp)) {
+                CustomTextField(
+                    label = "Email",
+                    value = email,
+                    onValueChange = { email = it }
                 )
-            )
 
-            PrimaryActionButton(
-                text = if (state.isLoading) "Logging in..." else "Sign in",
-                onClick = viewModel::loginUser
-            )
-
-            Text(
-                text = "Or sign in with",
-                modifier = Modifier.align(Alignment.CenterHorizontally),
-                style = TextStyle(
-                    fontSize = 20.sp,
-                    lineHeight = 24.sp,
-                    fontFamily = FontFamily(Font(R.font.nunito_regular)),
-                    fontWeight = FontWeight(400),
-                    color = Color(0xFF000000),
-                    textAlign = TextAlign.Center,
+                CustomTextField(
+                    label = "Password",
+                    value = password,
+                    isPassword = true,
+                    onValueChange = { password = it }
                 )
-            )
 
-            GoogleSignInButton(
-                text = "Sign in with Google",
-                onClick = viewModel::logInWithGoogle
-            )
+                Text(
+                    text = "Forgot Password?",
+                    modifier = Modifier
+                        .align(Alignment.End)
+                        .padding(end = 8.dp)
+                        .clickable { onForgotPasswordClick() },
+                    style = TextStyle(
+                        fontSize = 14.sp,
+                        color = Color(0xFF211557)
+                    )
+                )
 
-            SignInPrompt(
-                promptText = "Don't have an account?",
-                actionText = "Sign up",
-                onActionClick = onRegisterClick
-            )
+                PrimaryActionButton(
+                    text = "Sign in",
+                    onClick = { viewModel.login(email, password, {navController.navigate(HomeNavigation)}) },
+                )
+
+                Text(
+                    text = "Or sign in with",
+                    modifier = Modifier.align(Alignment.CenterHorizontally),
+                    style = TextStyle(
+                        fontSize = 20.sp,
+                        color = Color.Black
+                    )
+                )
+
+                GoogleSignInButton(
+                    text = "Sign in with Google",
+                    onClick = { viewModel.logInWithGoogle() }
+                )
+
+                SignInPrompt(
+                    promptText = "Don't have an account?",
+                    actionText = "Sign up",
+                    onActionClick = { viewModel.onRegisterPromptClick(navController) }
+                )
+            }
         }
     }
-}
-
-
-@Preview(showBackground = true, showSystemUi = true)
-@Composable
-fun LoginScreenPreview() {
-    LoginScreen(
-    )
 }

@@ -11,7 +11,11 @@ import com.andriod17.upbudget.ui.icons.IconContent
 import com.andriod17.upbudget.ui.icons.IconHome
 import com.andriod17.upbudget.ui.icons.IconPromotions
 import com.andriod17.upbudget.ui.icons.IconSettings
+import com.andriod17.upbudget.ui.navigation.ContentNavigation
+import com.andriod17.upbudget.ui.navigation.HomeNavigation
 import com.andriod17.upbudget.ui.navigation.NavItem
+import com.andriod17.upbudget.ui.navigation.PromotionsNavigation
+import com.andriod17.upbudget.ui.navigation.SettingsNavigation
 
 @Composable
 fun CustomScaffold(
@@ -29,10 +33,10 @@ fun CustomScaffold(
     var selectedItem by rememberSaveable { mutableStateOf("home") }
 
     val navItems = listOf(
-        NavItem("Home", IconHome, "home"),
-        NavItem("Promotions", IconPromotions, "promotions"),
-        NavItem("Content", IconContent, "financial_tips"),
-        NavItem("Settings", IconSettings, "settings")
+        NavItem("Home", IconHome, HomeNavigation.toString()),
+        NavItem("Promotions", IconPromotions, PromotionsNavigation.toString()),
+        NavItem("Content", IconContent, ContentNavigation.toString()),
+        NavItem("Settings", IconSettings, SettingsNavigation.toString())
     )
 
     Scaffold(

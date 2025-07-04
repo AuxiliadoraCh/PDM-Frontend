@@ -1,5 +1,10 @@
 package com.andriod17.upbudget.data.remote
 
+import com.andriod17.upbudget.data.remote.budgets.BudgetsService
+import com.andriod17.upbudget.data.remote.expense.ExpenseService
+import com.andriod17.upbudget.data.remote.promotion.PromotionService
+import com.andriod17.upbudget.data.remote.used_coupon.UsedCouponService
+import com.andriod17.upbudget.data.remote.services.AuthService
 import okhttp3.OkHttpClient
 import okhttp3.logging.HttpLoggingInterceptor
 import retrofit2.Retrofit
@@ -19,4 +24,23 @@ object RetrofitInstance {
         .client(client)
         .addConverterFactory(GsonConverterFactory.create())
         .build()
+
+    val budgetsService : BudgetsService by lazy {
+        retrofit.create(BudgetsService::class.java)
+    }
+
+    val promotionService: PromotionService by lazy {
+        retrofit.create(PromotionService::class.java)
+    }
+
+    val usedcouponService: UsedCouponService by lazy {
+        retrofit.create(UsedCouponService::class.java)
+    }
+
+    val expenseService: ExpenseService by lazy {
+        retrofit.create(ExpenseService::class.java)
+    }
+    val authService: AuthService by lazy {
+        retrofit.create(AuthService::class.java)
+    }
 }
