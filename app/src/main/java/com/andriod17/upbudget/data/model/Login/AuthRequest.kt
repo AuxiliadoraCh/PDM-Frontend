@@ -4,8 +4,7 @@ data class AuthRequest(val email: String, val password: String)
 
 data class AuthResponse(
     val message: String,
-    val user:
-    UserDataWithToken
+    val user: UserDataWithToken
 )
 
 data class UserDataWithToken(
