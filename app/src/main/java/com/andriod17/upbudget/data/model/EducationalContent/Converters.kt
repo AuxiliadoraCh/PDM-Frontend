@@ -7,15 +7,21 @@ import java.time.format.DateTimeFormatter
 
 class Converters {
 
-    @RequiresApi(Build.VERSION_CODES.O)
     @TypeConverter
     fun fromOffsetDateTime(value: OffsetDateTime): String {
-        return value.format(DateTimeFormatter.ISO_OFFSET_DATE_TIME)
+        return if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.O) {
+            value.format(DateTimeFormatter.ISO_OFFSET_DATE_TIME)
+        } else {
+            throw UnsupportedOperationException("OffsetDateTime is not supported on API levels below 26")
+        }
     }
 
-    @RequiresApi(Build.VERSION_CODES.O)
     @TypeConverter
     fun toOffsetDateTime(value: String): OffsetDateTime {
-        return OffsetDateTime.parse(value, DateTimeFormatter.ISO_OFFSET_DATE_TIME)
+        return if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.O) {
+            OffsetDateTime.parse(value, DateTimeFormatter.ISO_OFFSET_DATE_TIME)
+        } else {
+            throw UnsupportedOperationException("OffsetDateTime is not supported on API levels below 26")
+        }
     }
 }
