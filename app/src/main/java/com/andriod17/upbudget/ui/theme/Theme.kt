@@ -1,6 +1,5 @@
 package com.andriod17.upbudget.ui.theme
 
-import android.app.Activity
 import android.os.Build
 import androidx.compose.foundation.isSystemInDarkTheme
 import androidx.compose.material3.MaterialTheme
@@ -10,6 +9,11 @@ import androidx.compose.material3.dynamicLightColorScheme
 import androidx.compose.material3.lightColorScheme
 import androidx.compose.runtime.Composable
 import androidx.compose.ui.platform.LocalContext
+import androidx.compose.ui.text.font.Font
+import androidx.compose.ui.text.font.FontFamily
+import androidx.compose.ui.text.font.FontWeight
+import com.andriod17.upbudget.R
+
 
 private val DarkColorScheme = darkColorScheme(
     primary = Purple80,
@@ -32,6 +36,18 @@ private val LightColorScheme = lightColorScheme(
     onSurface = Color(0xFF1C1B1F),
     */
 )
+
+val NunitoFontFamily = FontFamily(
+    Font(R.font.nunito_regular),
+    Font(R.font.nunito_bold, FontWeight.Bold),
+    Font(R.font.nunito_light, FontWeight.Light),
+    Font(R.font.nunito_medium, FontWeight.Medium),
+    Font(R.font.nunito_semibold, FontWeight.SemiBold),
+    Font(R.font.nunito_extrabold, FontWeight.ExtraBold)
+)
+
+
+
 
 @Composable
 fun UpBudgetTheme(
