@@ -30,9 +30,8 @@ fun MainNavigation(navController: NavHostController) {
         composable("settings"){
             SettingsScreen(navController = navController)
         }
-//        composable<ExpenseHistoryNavigation> {
-//            //Probar el view model pero me da error
-////            ExpenseHistoryScreen(viewModel = viewModel, navController = navController)
-//        }
+        composable<ExpenseHistoryNavigation>{
+            ExpenseHistoryScreen(navController = navController)
+        }
     }
 }
