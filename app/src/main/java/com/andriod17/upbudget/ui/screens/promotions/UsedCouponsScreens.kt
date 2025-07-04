@@ -18,6 +18,7 @@ import com.andriod17.upbudget.R
 import com.andriod17.upbudget.data.model.Promotion.PromotionItem
 import com.andriod17.upbudget.ui.components.CustomScaffold
 import com.andriod17.upbudget.ui.components.UsedCouponCard
+import com.andriod17.upbudget.ui.navigation.PromotionsNavigation
 import com.andriod17.upbudget.ui.theme.Purple40
 import com.andriod17.upbudget.ui.theme.Purple80
 
@@ -61,6 +62,9 @@ fun UsedCouponsScreen(navController: NavHostController) {
     var selectedFilter by remember { mutableStateOf("Recent") }
 
     CustomScaffold(
+        onBackPressed = {
+            navController.navigate(PromotionsNavigation)
+        },
         navController = navController,
         content = { innerPadding ->
             Column(

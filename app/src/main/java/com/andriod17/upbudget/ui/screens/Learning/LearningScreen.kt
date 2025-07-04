@@ -33,17 +33,30 @@ fun LearningScreen(
 ) {
     val learningItems = listOf(
         LearningItem(
-            title = "Ahorrar en compras",
+            title = "Ahorro",
             subtitle = "Consejos prácticos",
-            description = "Aprende cómo reducir tus gastos diarios sin sacrificar calidad.",
+            description = "El ahorro es la parte del dinero que decides no gastar hoy para usarlo en el futuro. Es una herramienta fundamental para alcanzar metas financieras, como comprar algo importante, pagar estudios o viajar, pero también para protegerte en caso de imprevistos, como una emergencia médica o pérdida de empleo.",
+            imageUrl = R.drawable.ahorro,
+        ),
+        LearningItem(
+            title = "Impuestos",
+            subtitle = "Guía básica",
+            description = "Los impuestos son pagos obligatorios que las personas y empresas hacen al Estado para financiar servicios públicos como salud, educación, seguridad, infraestructura y más.\n" +
+                    "No son voluntarios ni opcionales, y su monto depende de factores como tus ingresos, el tipo de bienes que compras o los servicios que usas.",
             imageUrl = R.drawable.media,
         ),
         LearningItem(
-            title = "Criptomonedas",
+            title = "Inversión",
             subtitle = "Guía básica",
-            description = "Conoce los fundamentos del mundo cripto y cómo empezar.",
-            imageUrl = R.drawable.media
-        )
+            description = "La inversión es el acto de destinar una parte de tu dinero a un proyecto, producto o activo con el objetivo de obtener ganancias en el futuro. A diferencia del ahorro, que busca guardar dinero de forma segura, la inversión busca multiplicarlo con el tiempo, aunque implica cierto nivel de riesgo.",
+            imageUrl = R.drawable.ingresos,
+        ),
+        LearningItem(
+            title = "Inflación",
+            subtitle = "Guía básica",
+            description = "La inflación es el aumento general y sostenido de los precios de los bienes y servicios en una economía. Esto significa que, con el paso del tiempo, el dinero pierde poder adquisitivo, ya que con la misma cantidad puedes comprar menos cosas.",
+            imageUrl = R.drawable.inflacion,
+        ),
     )
 
     CustomScaffold(

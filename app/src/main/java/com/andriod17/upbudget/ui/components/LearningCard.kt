@@ -67,7 +67,7 @@ fun LearningCard(
                     modifier = Modifier.height(36.dp)
                         .defaultMinSize(minWidth = 1.dp)
                 ) {
-                    Text(if (isExpanded) "View less" else "View more")
+                    Text(if (isExpanded) "Ver menos" else "Ver más")
                 }
             }
             if (isExpanded) {
