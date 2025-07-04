@@ -7,14 +7,15 @@ import java.util.Locale
 data class ExpenseUi(
     val amount: String = "",
     val paymentMethod: String = "",
-    val balance: Double = 0.0,
     val place: String = "",
     val category: String = "",
     val description: String = "",
-    val date: String = getCurrentDateCompat(),
-    val saveExpense: Boolean = false,
+    val date: String = "",
     val isSaving: Boolean = false,
-    val isIncome: Boolean = false 
+    val isIncome: Boolean,
+    val showDatePicker: Boolean = false,
+    val selectedTabIndex: Int = 0,
+    val selectedDateMillis: Long? = null
 )
 
 fun getCurrentDateCompat(): String {

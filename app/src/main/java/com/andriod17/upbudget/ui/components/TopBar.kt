@@ -30,21 +30,20 @@ fun TopBar(
     showSettingsIcon: Boolean = true,
     useOptionsIcon: Boolean = false,
     onOptionsClick: () -> Unit = {}
-)
-{
+) {
     CenterAlignedTopAppBar(
         modifier = Modifier
             .fillMaxWidth(),
-                title = {
-                Text(
-                    text = title,
-                    color = Color(0xFF180F3E),
-                    fontSize = 20.sp,
-                    fontFamily = FontFamily(Font(R.font.nunito_bold)),
-                )
-
+        title = {
+            Text(
+                text = title,
+                color = Color(0xFF180F3E),
+                fontSize = 20.sp,
+                fontFamily = FontFamily(Font(R.font.nunito_bold)),
+            )
         },
         navigationIcon = {
+            // Mostrar el ícono de opciones si useOptionsIcon es verdadero
             if (useOptionsIcon) {
                 IconButton(onClick = onOptionsClick) {
                     Icon(
@@ -54,6 +53,7 @@ fun TopBar(
                     )
                 }
             } else if (showBackButton) {
+                // Mostrar el ícono de retroceso si showBackButton es verdadero
                 IconButton(onClick = onBackPressed) {
                     Icon(
                         imageVector = Icons.Default.ArrowBack,
@@ -64,17 +64,19 @@ fun TopBar(
             }
         },
         actions = {
-            IconButton(onClick = onSettingsPressed) {
-                Icon(
-                    imageVector = Icons.Default.AccountCircle,
-                    contentDescription = "Profile",
-                    tint = Color(0xFF180F3E)
-                )
+            // Mostrar el ícono de perfil siempre (settings)
+            if (showSettingsIcon) {
+                IconButton(onClick = onSettingsPressed) {
+                    Icon(
+                        imageVector = Icons.Default.AccountCircle,
+                        contentDescription = "Profile",
+                        tint = Color(0xFF180F3E)
+                    )
+                }
             }
         },
         colors = TopAppBarDefaults.topAppBarColors(
             containerColor = Color(0xFFF9F0FF),
-
             titleContentColor = Color(0xFF180F3E),
             navigationIconContentColor = Color(0xFF180F3E),
             actionIconContentColor = Color(0xFF180F3E)

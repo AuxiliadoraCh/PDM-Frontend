@@ -8,6 +8,12 @@ import androidx.compose.material3.OutlinedTextField
 import androidx.compose.material3.Text
 import androidx.compose.runtime.Composable
 import androidx.compose.ui.Modifier
+import androidx.compose.ui.focus.FocusRequester
+import androidx.compose.ui.focus.focusRequester
+import androidx.compose.ui.focus.onFocusChanged
+import androidx.compose.ui.text.input.ImeAction
+import androidx.compose.foundation.text.KeyboardActions
+import androidx.compose.foundation.text.KeyboardOptions
 
 @OptIn(ExperimentalMaterial3Api::class)
 @Composable
@@ -16,29 +22,42 @@ fun OutlinedTextFieldWithDropdown(
     onValueChange: (String) -> Unit,
     label: String,
     options: List<String>,
-    expanded: Boolean,
-    onExpandedChange: (Boolean) -> Unit,
-    onOptionSelected: (String) -> Unit
+    onOptionSelected: (String) -> Unit,
+    modifier: Modifier = Modifier,
+    keyboardOptions: KeyboardOptions = KeyboardOptions.Default,
+    keyboardActions: KeyboardActions = KeyboardActions.Default
 ) {
+    var expanded by remember { mutableStateOf(false) }
+    val currentFocusRequester = remember { FocusRequester() }
+
     ExposedDropdownMenuBox(
         expanded = expanded,
-        onExpandedChange = onExpandedChange,
-        modifier = Modifier.fillMaxWidth()
+        onExpandedChange = { expanded = it },
+        modifier = modifier
+            .fillMaxWidth()
+            .focusRequester(currentFocusRequester)
+            .onFocusChanged { focusState ->
+                if (focusState.isFocused) {
+                    expanded = true
+                }
+            }
     ) {
         OutlinedTextField(
             value = value,
-            onValueChange = { onValueChange(it) },
+            onValueChange = onValueChange,
             readOnly = true,
             label = { Text(label) },
             trailingIcon = {
                 ExposedDropdownMenuDefaults.TrailingIcon(expanded = expanded)
             },
-            modifier = Modifier.menuAnchor().fillMaxWidth()
+            modifier = Modifier.menuAnchor().fillMaxWidth(),
+            keyboardOptions = keyboardOptions,
+            keyboardActions = keyboardActions
         )
 
         ExposedDropdownMenu(
             expanded = expanded,
-            onDismissRequest = { onExpandedChange(false) },
+            onDismissRequest = { expanded = false },
             modifier = Modifier.exposedDropdownSize(matchTextFieldWidth = true)
         ) {
             options.forEach { option ->
@@ -46,7 +65,7 @@ fun OutlinedTextFieldWithDropdown(
                     text = { Text(option) },
                     onClick = {
                         onOptionSelected(option)
-                        onExpandedChange(false)
+                        expanded = false
                     }
                 )
             }

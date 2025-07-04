@@ -35,5 +35,8 @@ class CategoryViewModel : ViewModel() {
             list.sumOf { it.amount.toDoubleOrNull() ?: 0.0 }
         }
     }
+    fun getCategoryIcon(categoryName: String): Int? {
+        return uiState.value.categories.find { it.name == categoryName }?.iconResId
+    }
 
 }

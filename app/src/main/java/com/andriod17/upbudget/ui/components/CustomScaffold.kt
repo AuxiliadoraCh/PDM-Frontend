@@ -1,21 +1,20 @@
 package com.andriod17.upbudget.ui.components
 
+import androidx.compose.foundation.background
 import androidx.compose.foundation.layout.PaddingValues
-import androidx.compose.foundation.layout.fillMaxSize
 import androidx.compose.material3.Scaffold
 import androidx.compose.runtime.*
 import androidx.compose.runtime.saveable.rememberSaveable
 import androidx.compose.ui.Modifier
+import androidx.compose.ui.graphics.Color
 import androidx.compose.ui.tooling.preview.Preview
 import androidx.navigation.NavHostController
-import androidx.navigation.compose.currentBackStackEntryAsState
 import androidx.navigation.compose.rememberNavController
 import com.andriod17.upbudget.ui.icons.IconContent
 import com.andriod17.upbudget.ui.icons.IconHome
 import com.andriod17.upbudget.ui.icons.IconPromotions
 import com.andriod17.upbudget.ui.icons.IconSettings
-import com.andriod17.upbudget.ui.navigation.*
-
+import com.andriod17.upbudget.ui.navigation.NavItem
 
 @Composable
 fun CustomScaffold(
@@ -56,10 +55,10 @@ fun CustomScaffold(
         updateTitle(currentItem)
 
         when (currentItem) {
-            "promotions" -> navController.navigate(PromotionsNavigation)
-            "settings" -> navController.navigate(SettingsNavigation)
-            "financial_tips" -> navController.navigate(LearningNavigation)
-            "home" -> navController.navigate(HomeNavigation)
+            //"promotions" -> navController.navigate(PromotionsNavigation)
+            //"settings" -> navController.navigate(SettingsNavigation)
+            //"financial_tips" -> navController.navigate(LearningNavigation)
+            //"home" -> navController.navigate(HomeNavigation)
             else -> navController.navigate(currentItem)
         }
     }

@@ -1,8 +1,10 @@
 package com.andriod17.upbudget.ui.screens.dashboard
 
 import androidx.compose.foundation.layout.Arrangement
+import androidx.compose.foundation.layout.Box
 import androidx.compose.foundation.layout.Column
 import androidx.compose.foundation.layout.Row
+import androidx.compose.foundation.layout.fillMaxSize
 import androidx.compose.foundation.layout.fillMaxWidth
 import androidx.compose.foundation.layout.padding
 import androidx.compose.foundation.rememberScrollState
@@ -30,7 +32,7 @@ import com.andriod17.upbudget.data.model.Home.HomeUi
 import com.andriod17.upbudget.ui.components.CategoriesSection
 import com.andriod17.upbudget.ui.components.CustomScaffold
 import com.andriod17.upbudget.ui.components.DashboardActionButton
-import com.andriod17.upbudget.ui.navigation.PromotionsNavigation
+import com.andriod17.upbudget.ui.navigation.ExpenseHistoryNavigation
 
 @Composable
 fun HomeScreenContent(
@@ -38,7 +40,7 @@ fun HomeScreenContent(
     modifier: Modifier = Modifier,
     navController: NavHostController,
 
-) {
+    ) {
     Column(
         modifier = modifier
             .verticalScroll(rememberScrollState())
@@ -65,13 +67,15 @@ fun HomeScreenContent(
                 iconPainter = painterResource(R.drawable.promotions),
                 label = "Promotions",
                 onClick = {
-                    navController.navigate(PromotionsNavigation)
+                    //navController.navigate(PromotionsNavigation)
                 }
             )
             DashboardActionButton(
                 iconVector = Icons.Default.Info,
                 label = "Information",
-                onClick = { /* TODO */ }
+                onClick = {
+                    navController.navigate(ExpenseHistoryNavigation)
+                }
             )
         }
         CategoriesSection()
@@ -104,3 +108,13 @@ fun HomeScreen(
 }
 
 
+
+
+
+
+@Preview(showBackground = true, showSystemUi = true)
+@Composable
+fun HomeScreenPreview() {
+HomeScreen(
+    navController = NavHostController(context = androidx.compose.ui.platform.LocalContext.current)
+)}
