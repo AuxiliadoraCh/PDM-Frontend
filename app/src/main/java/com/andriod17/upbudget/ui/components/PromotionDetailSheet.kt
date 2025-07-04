@@ -42,10 +42,6 @@ fun PromotionDetailSheet(promotion: PromotionItem, onClose: () -> Unit) {
                 .height(90.dp)
         )
 
-
-
-
-
         Text(
             text = "Description:",
             style = MaterialTheme.typography.labelMedium.copy(color = Purple40),

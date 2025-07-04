@@ -1,5 +1,6 @@
 package com.andriod17.upbudget.data.remote
 
+import com.andriod17.upbudget.data.remote.budgets.BudgetsService
 import com.andriod17.upbudget.data.remote.promotion.PromotionService
 import com.andriod17.upbudget.data.remote.used_coupon.UsedCouponService
 import okhttp3.OkHttpClient
@@ -21,6 +22,10 @@ object RetrofitInstance {
         .client(client)
         .addConverterFactory(GsonConverterFactory.create())
         .build()
+
+    val budgetsService : BudgetsService by lazy {
+        retrofit.create(BudgetsService::class.java)
+    }
 
     val promotionService: PromotionService by lazy {
         retrofit.create(PromotionService::class.java)
