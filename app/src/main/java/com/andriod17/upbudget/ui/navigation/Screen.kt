@@ -22,3 +22,27 @@ object RegisterNavigation
 
 @Serializable
 object LoginNavigation
+
+@Serializable
+object EditProfileNavigation
+
+@Serializable
+object LearningNavigation
+
+@Serializable
+object AdminHomeNavigation
+
+@Serializable
+object UsedCouponsNavigation
+
+@Serializable
+object UserManagementNavigation
+
+@Serializable
+object UserInformationNavigation
+
+@Serializable
+object AdminSettingsNavigation
+
+@Serializable
+object PromotionManagementNavigation
