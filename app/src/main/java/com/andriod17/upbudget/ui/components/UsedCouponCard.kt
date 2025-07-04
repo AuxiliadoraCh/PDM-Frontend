@@ -14,21 +14,29 @@ import androidx.compose.material3.CardDefaults
 import androidx.compose.material3.MaterialTheme
 import androidx.compose.material3.Text
 import androidx.compose.runtime.Composable
+import androidx.compose.runtime.remember
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
+import androidx.compose.ui.layout.ContentScale
 import androidx.compose.ui.res.painterResource
 import androidx.compose.ui.text.font.FontWeight
 import androidx.compose.ui.unit.dp
+import coil3.compose.AsyncImage
 import com.andriod17.upbudget.ui.theme.Purple40
 import com.andriod17.upbudget.ui.theme.Purple80
+import java.text.SimpleDateFormat
+import java.util.Date
+import java.util.Locale
 
 @Composable
 fun UsedCouponCard(
     title: String,
     subtitle: String,
-    imageResId: Int,
-    usedDate: String
+    imageResId: String?,
+    usedDate: Date
 ) {
+    val formatter = remember { SimpleDateFormat("dd/MM/yyyy", Locale.getDefault()) }
+    val formattedDate = formatter.format(usedDate)
     Card(
         shape = RoundedCornerShape(16.dp),
         elevation = CardDefaults.cardElevation(defaultElevation = 4.dp),
@@ -36,13 +44,13 @@ fun UsedCouponCard(
         modifier = Modifier.fillMaxWidth()
     ) {
         Column {
-            Image(
-                painter = painterResource(id = imageResId),
+            AsyncImage(
+                model = imageResId ?: "https://via.placeholder.com/300x150.png?text=No+Image",
                 contentDescription = null,
+                contentScale = ContentScale.Crop,
                 modifier = Modifier
                     .fillMaxWidth()
                     .height(90.dp)
-                    .padding(4.dp)
             )
 
             Row(
@@ -67,7 +75,7 @@ fun UsedCouponCard(
                             .background(Purple40.copy(alpha = 0.1f), RoundedCornerShape(12.dp))
                             .padding(horizontal = 8.dp, vertical = 4.dp)
                     )
-                    Text(text = usedDate, style = MaterialTheme.typography.labelSmall)
+                    Text(text = formattedDate, style = MaterialTheme.typography.labelSmall)
                 }
             }
         }

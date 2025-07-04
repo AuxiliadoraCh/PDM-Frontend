@@ -7,5 +7,3 @@ data class NavItem(
     val icon: ImageVector,
     val route: String
 )
-
-
