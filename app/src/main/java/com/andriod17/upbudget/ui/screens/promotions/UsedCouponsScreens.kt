@@ -24,7 +24,7 @@ import com.andriod17.upbudget.ui.theme.Purple80
 
 @Composable
 fun UsedCouponsScreen(navController: NavHostController) {
-    val viewModel: UsedCouponsViewModel = viewModel (factory = UsedCouponsViewModel.Factory )
+    val viewModel: UsedCouponsViewModel = viewModel(factory = UsedCouponsViewModel.Factory)
     val usedCoupons by viewModel.usedCoupons.collectAsState()
     val isLoading by viewModel.loading.collectAsState()
 
