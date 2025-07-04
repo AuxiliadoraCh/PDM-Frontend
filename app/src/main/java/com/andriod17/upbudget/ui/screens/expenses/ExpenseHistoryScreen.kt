@@ -46,146 +46,154 @@ fun ExpenseHistoryScreen(
 
 
     CustomScaffold(navController = navController) { innerPadding ->
-
-        Column(
+        Box(
             modifier = Modifier
-                .padding(innerPadding)
-                .padding(horizontal = 16.dp)
+                .fillMaxSize()
                 .background(Color.White)
+                .padding(innerPadding)
         ) {
-            BalanceSummarySection(
-                balanceAmount = "$${"%.2f".format(balance)}",
-                modifier = Modifier.align(Alignment.CenterHorizontally)
-            )
-
-            Spacer(modifier = Modifier.height(16.dp))
-
-            Card(
+            Column(
                 modifier = Modifier
-                    .fillMaxWidth()
-                    .height(100.dp)
-                    .padding(12.dp),
-                shape = RoundedCornerShape(15.dp),
-                elevation = CardDefaults.cardElevation(defaultElevation = 5.dp),
-                colors = CardDefaults.cardColors(containerColor = Color.White)
+                    .fillMaxSize()
+                    .background(Color.White)
+                    .padding(innerPadding)
+                    .padding(horizontal = 16.dp)
             ) {
-                Row(
-                    modifier = Modifier
-                        .fillMaxSize()
-                        .padding(horizontal = 50.dp),
-                    horizontalArrangement = Arrangement.SpaceBetween,
-                    verticalAlignment = Alignment.CenterVertically
-                ) {
-                    Column(horizontalAlignment = Alignment.CenterHorizontally) {
-                        Text(
-                            text = "Income",
-                            color = Color(0xFF4D9955),
-                            style = TextStyle(
-                                fontSize = 18.sp,
-                                fontFamily = FontFamily(Font(R.font.nunito_regular))
-                            )
-                        )
-                        Text(
-                            text = "$${"%.2f".format(income)}",
-                            color = Color.Black,
-                            style = TextStyle(
-                                fontSize = 14.sp,
-                                fontFamily = FontFamily(Font(R.font.nunito_regular))
-                            )
-                        )
-                    }
+                BalanceSummarySection(
+                    balanceAmount = "$${"%.2f".format(balance)}",
+                    modifier = Modifier.align(Alignment.CenterHorizontally)
+                )
 
-                    Divider(
-                        color = Color.Gray,
-                        thickness = 2.dp,
-                        modifier = Modifier
-                            .fillMaxHeight()
-                            .width(1.dp)
-                    )
+                Spacer(modifier = Modifier.height(16.dp))
 
-                    Column(horizontalAlignment = Alignment.CenterHorizontally) {
-                        Text(
-                            text = "Expense",
-                            color = Color(0xFFBA1A1A),
-                            style = TextStyle(
-                                fontSize = 18.sp,
-                                fontFamily = FontFamily(Font(R.font.nunito_regular))
-                            )
-                        )
-                        Text(
-                            text = "$${"%.2f".format(expense)}",
-                            color = Color.Black,
-                            style = TextStyle(
-                                fontSize = 14.sp,
-                                fontFamily = FontFamily(Font(R.font.nunito_regular))
-                            )
-                        )
-                    }
-                }
-            }
-
-            TimePeriodSelector(
-                selectedPeriod = selectedPeriod,
-                onPeriodSelected = { period ->
-                    viewModel.onPeriodSelected(period)
-                }
-            )
-
-            if (filteredExpenses.isEmpty()) {
-                Box(
+                Card(
                     modifier = Modifier
                         .fillMaxWidth()
-                        .padding(vertical = 32.dp),
-                    contentAlignment = Alignment.Center
+                        .height(100.dp)
+                        .padding(12.dp),
+                    shape = RoundedCornerShape(15.dp),
+                    elevation = CardDefaults.cardElevation(defaultElevation = 5.dp),
+                    colors = CardDefaults.cardColors(containerColor = Color.White)
                 ) {
-                    Text(
-                        text = "No transactions yet",
-                        style = TextStyle(
-                            fontSize = 18.sp,
-                            fontFamily = FontFamily(Font(R.font.nunito_semibold)),
-                            color = Color.Gray
+                    Row(
+                        modifier = Modifier
+                            .fillMaxSize()
+                            .padding(horizontal = 50.dp),
+                        horizontalArrangement = Arrangement.SpaceBetween,
+                        verticalAlignment = Alignment.CenterVertically
+                    ) {
+                        Column(horizontalAlignment = Alignment.CenterHorizontally) {
+                            Text(
+                                text = "Income",
+                                color = Color(0xFF4D9955),
+                                style = TextStyle(
+                                    fontSize = 18.sp,
+                                    fontFamily = FontFamily(Font(R.font.nunito_regular))
+                                )
+                            )
+                            Text(
+                                text = "$${"%.2f".format(income)}",
+                                color = Color.Black,
+                                style = TextStyle(
+                                    fontSize = 14.sp,
+                                    fontFamily = FontFamily(Font(R.font.nunito_regular))
+                                )
+                            )
+                        }
+
+                        Divider(
+                            color = Color.Gray,
+                            thickness = 2.dp,
+                            modifier = Modifier
+                                .fillMaxHeight()
+                                .width(1.dp)
                         )
-                    )
+
+                        Column(horizontalAlignment = Alignment.CenterHorizontally) {
+                            Text(
+                                text = "Expense",
+                                color = Color(0xFFBA1A1A),
+                                style = TextStyle(
+                                    fontSize = 18.sp,
+                                    fontFamily = FontFamily(Font(R.font.nunito_regular))
+                                )
+                            )
+                            Text(
+                                text = "$${"%.2f".format(expense)}",
+                                color = Color.Black,
+                                style = TextStyle(
+                                    fontSize = 14.sp,
+                                    fontFamily = FontFamily(Font(R.font.nunito_regular))
+                                )
+                            )
+                        }
+                    }
                 }
-            } else {
-                LazyColumn {
-                    items(filteredExpenses) { expense ->
-                        ExpenseHistoryItem(expense = expense, categoryViewModel = categoryViewModel)
+
+                TimePeriodSelector(
+                    selectedPeriod = selectedPeriod,
+                    onPeriodSelected = { period ->
+                        viewModel.onPeriodSelected(period)
+                    }
+                )
+
+                if (filteredExpenses.isEmpty()) {
+                    Box(
+                        modifier = Modifier
+                            .fillMaxWidth()
+                            .padding(vertical = 32.dp),
+                        contentAlignment = Alignment.Center
+                    ) {
+                        Text(
+                            text = "No transactions yet",
+                            style = TextStyle(
+                                fontSize = 18.sp,
+                                fontFamily = FontFamily(Font(R.font.nunito_semibold)),
+                                color = Color.Gray
+                            )
+                        )
+                    }
+                } else {
+                    LazyColumn {
+                        items(filteredExpenses) { expense ->
+                            ExpenseHistoryItem(
+                                expense = expense,
+                                categoryViewModel = categoryViewModel
+                            )
+                        }
                     }
                 }
             }
         }
     }
 }
-
-@SuppressLint("ViewModelConstructorInComposable")
-@Composable
-fun PreviewExpenseHistoryScreenContent() {
-    val navController = rememberNavController()
-    val viewModel = ExpenseScreenViewModel().apply {
-        val exampleExpenses = listOf(
-            ExpenseUi(amount = "50.00", paymentMethod = "Cash", category = "Food", description = "Lunch at restaurant", date = "2025-06-01", isIncome = false),
-            ExpenseUi(amount = "200.00", paymentMethod = "Bank Transfer", category = "Education", description = "April salary", date = "2025-06-03", isIncome = true),
-            ExpenseUi(amount = "15.00", paymentMethod = "Card", category = "Beauty", description = "Movie ticket", date = "2025-04-02", isIncome = false),
-            ExpenseUi(amount = "100.00", paymentMethod = "Cash", category = "Food", description = "Groceries", date = "2025-06-05", isIncome = false),
-            ExpenseUi(amount = "300.00", paymentMethod = "Bank Transfer", category = "Salary", description = "May salary", date = "2025-05-18", isIncome = true),
-            ExpenseUi(amount = "75.00", paymentMethod = "Credit Card", category = "Transportation", description = "Gas", date = "2025-06-07", isIncome = false),
-            ExpenseUi(amount = "120.00", paymentMethod = "Cash", category = "Entertainment", description = "Concert tickets", date = "2025-06-08", isIncome = false),
-            ExpenseUi(amount = "500.00", paymentMethod = "Bank Transfer", category = "Investment", description = "Investment gain", date = "2025-06-10", isIncome = true),
-        )
-
-        setExpensesForPreview(exampleExpenses)
-
-        onPeriodSelected("Current Month")
-    }
-    ExpenseHistoryScreen(viewModel = viewModel, navController = navController)
-}
-
-
-@Preview(showBackground = true)
-@Composable
-fun PreviewExpenseHistoryScreen() {
-    PreviewExpenseHistoryScreenContent()
-}
-
-
+//
+//@SuppressLint("ViewModelConstructorInComposable")
+//@Composable
+//fun PreviewExpenseHistoryScreenContent() {
+//    val navController = rememberNavController()
+//    val viewModel = ExpenseScreenViewModel().apply {
+//        val exampleExpenses = listOf(
+//            ExpenseUi(amount = "50.00", paymentMethod = "Cash", category = "Food", description = "Lunch at restaurant", date = "2025-06-01", isIncome = false),
+//            ExpenseUi(amount = "200.00", paymentMethod = "Bank Transfer", category = "Education", description = "April salary", date = "2025-06-03", isIncome = true),
+//            ExpenseUi(amount = "15.00", paymentMethod = "Card", category = "Beauty", description = "Movie ticket", date = "2025-04-02", isIncome = false),
+//            ExpenseUi(amount = "100.00", paymentMethod = "Cash", category = "Food", description = "Groceries", date = "2025-06-05", isIncome = false),
+//            ExpenseUi(amount = "300.00", paymentMethod = "Bank Transfer", category = "Salary", description = "May salary", date = "2025-05-18", isIncome = true),
+//            ExpenseUi(amount = "75.00", paymentMethod = "Credit Card", category = "Transportation", description = "Gas", date = "2025-06-07", isIncome = false),
+//            ExpenseUi(amount = "120.00", paymentMethod = "Cash", category = "Entertainment", description = "Concert tickets", date = "2025-06-08", isIncome = false),
+//            ExpenseUi(amount = "500.00", paymentMethod = "Bank Transfer", category = "Investment", description = "Investment gain", date = "2025-06-10", isIncome = true),
+//        )
+//
+//        setExpensesForPreview(exampleExpenses)
+//
+//        onPeriodSelected("Current Month")
+//    }
+//    ExpenseHistoryScreen(viewModel = viewModel, navController = navController)
+//}
+//
+//
+//@Preview(showBackground = true)
+//@Composable
+//fun PreviewExpenseHistoryScreen() {
+//    PreviewExpenseHistoryScreenContent()
+//}

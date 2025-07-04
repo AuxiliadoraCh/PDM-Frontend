@@ -3,6 +3,8 @@ package com.andriod17.upbudget.ui.components
 import androidx.compose.foundation.background
 import androidx.compose.foundation.layout.PaddingValues
 import androidx.compose.material3.Scaffold
+import androidx.compose.material3.TopAppBar
+import androidx.compose.material3.Text
 import androidx.compose.runtime.*
 import androidx.compose.runtime.saveable.rememberSaveable
 import androidx.compose.ui.Modifier
@@ -19,6 +21,7 @@ import com.andriod17.upbudget.ui.navigation.NavItem
 @Composable
 fun CustomScaffold(
     navController: NavHostController,
+    title: String = "Inicio", // Nuevo parámetro para el título personalizado
     onBackPressed: () -> Unit = {},
     onSettingsPressed: () -> Unit = {},
     showBackButton: Boolean = true,
@@ -28,7 +31,6 @@ fun CustomScaffold(
     floatingActionButton: @Composable (() -> Unit)? = null,
     content: @Composable (PaddingValues) -> Unit = {}
 ) {
-    var title by rememberSaveable { mutableStateOf("Inicio") }
     var selectedItem by rememberSaveable { mutableStateOf("home") }
 
 
@@ -39,20 +41,8 @@ fun CustomScaffold(
         NavItem("Configuración", IconSettings, "settings")
     )
 
-    fun updateTitle(route: String) {
-        title = when (route) {
-            "home" -> "Inicio"
-            "promotions" -> "Promociones"
-            "financial_tips" -> "Consejos financieros"
-            "settings" -> "Configuración"
-            else -> "UPBudget"
-        }
-    }
-
-
     fun onItemSelected(currentItem: String) {
         selectedItem = currentItem
-        updateTitle(currentItem)
 
         when (currentItem) {
             //"promotions" -> navController.navigate(PromotionsNavigation)
