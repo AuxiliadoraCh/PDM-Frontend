@@ -75,6 +75,8 @@ dependencies {
     implementation(libs.converter.gson)
     implementation(libs.logging.interceptor)
     ksp(libs.room.compiler)
+    implementation("androidx.datastore:datastore-preferences:1.0.0")
+    implementation("androidx.lifecycle:lifecycle-runtime-ktx:2.6.1")
 
     implementation(libs.datastore.preferences)
 }
