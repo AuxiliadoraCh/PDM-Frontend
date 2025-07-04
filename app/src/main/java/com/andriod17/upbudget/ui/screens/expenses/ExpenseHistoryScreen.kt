@@ -14,6 +14,7 @@ import androidx.compose.ui.graphics.Color
 import androidx.compose.ui.tooling.preview.Preview
 import androidx.compose.ui.unit.dp
 import androidx.lifecycle.viewmodel.compose.viewModel
+import androidx.navigation.compose.rememberNavController
 import com.andriod17.upbudget.data.model.Expense.ExpenseUi
 import com.andriod17.upbudget.ui.components.BalanceSummarySection
 import com.andriod17.upbudget.ui.components.CustomScaffold
@@ -39,7 +40,7 @@ fun ExpenseHistoryScreen(
             expense = expense,
             expenses = expenses
         ) },
-        navController =
+        navController = rememberNavController()
     )
 }
 
@@ -84,9 +85,9 @@ fun ExpenseHistoryScreenContent(
         }
     }
 }
-
-@Preview(showBackground = true, showSystemUi = true)
-@Composable
-fun ExpenseHistoryScreenPreview(){
-    ExpenseHistoryScreen()
-}
+//
+//@Preview(showBackground = true, showSystemUi = true)
+//@Composable
+//fun ExpenseHistoryScreenPreview(){
+//    ExpenseHistoryScreen()
+//}

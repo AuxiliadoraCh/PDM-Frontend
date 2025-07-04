@@ -18,7 +18,7 @@ import androidx.compose.ui.unit.dp
 import androidx.compose.ui.unit.sp
 import com.andriod17.upbudget.ui.components.AdminBottomBar
 import com.andriod17.upbudget.ui.components.TopBar
-import com.patrykandpatrick.vico.compose.component.rememberColumnChartEntryModel
+//import com.patrykandpatrick.vico.compose.component.rememberColumnChartEntryModel
 import com.patrykandpatrick.vico.compose.chart.column.columnChart
 import com.patrykandpatrick.vico.core.entry.entryModelOf
 
@@ -32,7 +32,7 @@ fun AdminDashboardScreen(
     val activePromotions = 51
     val usersPerDay = listOf(800, 850, 1000, 950, 300, 500, 400)
 
-    val chartData = entryModelOf(*usersPerDay.toIntArray())
+//    val chartData = entryModelOf(*usersPerDay.toIntArray())
 
     Column(modifier = Modifier.fillMaxSize()) {
         TopBar(
@@ -64,7 +64,7 @@ fun AdminDashboardScreen(
             Spacer(modifier = Modifier.height(24.dp))
 
             Text(text = "Active users per day", fontSize = 18.sp)
-            columnChart(chartData)
+//            columnChart(chartData)
 
             Spacer(modifier = Modifier.height(24.dp))
 
